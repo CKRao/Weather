@@ -22,11 +22,6 @@ import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by CKRAO on 2016/9/27.

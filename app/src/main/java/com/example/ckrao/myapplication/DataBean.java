@@ -19,7 +19,15 @@ public class DataBean {
 
     private String wendu;
     private String tianqi;
-    private URL imageUrl;
+    private int  imageId;
+
+    public int getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(int imageId) {
+        this.imageId = imageId;
+    }
 
     public String getWendu() {
         return wendu;
@@ -37,11 +45,5 @@ public class DataBean {
         this.tianqi = tianqi;
     }
 
-    public URL getImageUrl() {
-        return imageUrl;
-    }
 
-    public void setImageUrl(URL imageUrl) {
-        this.imageUrl = imageUrl;
-    }
 }

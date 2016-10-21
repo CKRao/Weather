@@ -5,14 +5,15 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/cardview_light_background"
+    android:background="#fff"
     android:orientation="vertical"
     >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_marginBottom="10dp">
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <TextView
             android:layout_width="0dp"
@@ -37,160 +38,250 @@
             android:text="查找"/>
     </LinearLayout>
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/Card_view"
+    <com.yalantis.phoenix.PullToRefreshView
+        android:id="@+id/pullToRefreshView"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:elevation="20dp"
-        app:cardBackgroundColor="@color/colorAccent"
-        app:cardCornerRadius="2dp">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="10dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/week"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="Week"
-                android:textSize="20sp"/>
-
-            <TextView
-                android:id="@+id/city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentTop="true"
-                android:text="City"
-                android:textSize="25sp"/>
-
-            <ImageView
-                android:id="@+id/img"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_toStartOf="@+id/temp"
-                android:paddingTop="10dp"
-                android:src="@drawable/weather"/>
-
-            <TextView
-                android:id="@+id/weather"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/city"
-                android:layout_marginEnd="13dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="70dp"
-
-                android:layout_marginTop="13dp"
-                android:layout_toStartOf="@+id/week"
-                android:text="weather"
-                android:textSize="25sp"/>
-
-            <TextView
-                android:id="@+id/temp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginLeft="40dp"
-                android:layout_toStartOf="@+id/week"
-                android:paddingBottom="20dp"
-                android:text="Temp"
-                android:textSize="40sp"
-                android:textStyle="bold"/>
-        </RelativeLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="2dp">
+                android:orientation="vertical">
 
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/Card_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    app:cardBackgroundColor="@color/colorPrimary"
+                    app:cardCornerRadius="2dp"
+                    app:cardElevation="5dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="2dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="10dp">
 
-            </android.support.v7.widget.CardView>
+                        <TextView
+                            android:id="@+id/week"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:text="Week"
+                            android:textColor="#000"
+                            android:textSize="20sp"/>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="2dp">
+                        <TextView
+                            android:id="@+id/city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentTop="true"
+                            android:text="City"
+                            android:textColor="#000"
+                            android:textSize="25sp"/>
 
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
+                        <ImageView
+                            android:id="@+id/img"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginBottom="15dp"
+                            android:src="@drawable/weather"
+                            android:textColor="#000"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/temp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Temp"
+                            android:textColor="#000"
+                            android:textSize="40sp"/>
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="2dp">
+                        <TextView
+                            android:id="@+id/weather"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/img"
+                            android:layout_centerHorizontal="true"
+                            android:text="weather"
+                            android:textColor="#000"
+                            android:textSize="25sp"/>
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
 
-            </android.support.v7.widget.CardView>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-15dp"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="3dp"
+                    app:cardElevation="10dp"
+                    app:cardMaxElevation="10dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true"
+                    >
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="2dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-            </android.support.v7.widget.CardView>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp">
 
-            <android.support.v7.widget.CardView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_margin="5dp"
-                android:layout_weight="1"
-                app:cardBackgroundColor="@color/colorPrimary"
-                app:cardCornerRadius="2dp">
+                            <ImageView
+                                android:id="@+id/id_cloth"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/cloth"/>
 
-            </android.support.v7.widget.CardView>
-        </LinearLayout>
-    </LinearLayout>
+                            <TextView
+                                android:id="@+id/id_cloth_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_cloth"
+                                android:text="穿衣指数"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
 
+                            <TextView
+                                android:id="@+id/id_cloth_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_cloth_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_cloth"
+                                android:maxLines="3"
+                                android:text="建议着薄外套、开衫牛仔衫裤等服装。年老体弱者应适当添加衣物，宜着夹克衫、薄毛衣等。"
+                                android:textColor="#000"
+                                android:textSize="15sp"/>
+                        </RelativeLayout>
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp">
+
+                            <ImageView
+                                android:id="@+id/id_sport"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/sport"/>
+
+                            <TextView
+                                android:id="@+id/id_sport_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20sp"
+                                android:layout_toRightOf="@id/id_sport"
+                                android:text="运动指数"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/id_sport_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_sport_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_sport"
+                                android:maxLines="3"
+                                android:text="天气较好，但考虑气温较低，推荐您进行室内运动，若户外适当增减衣物并注意防晒。"
+                                android:textColor="#000"
+                                android:textSize="15sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp">
+
+                            <ImageView
+                                android:id="@+id/id_ultraviolet_radiation"
+
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/ultraviolet_radiation"/>
+
+                            <TextView
+                                android:id="@+id/id_ultraviolet_radiation_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_ultraviolet_radiation"
+                                android:text="紫外线指数"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/id_ultraviolet_radiation_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_ultraviolet_radiation_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_ultraviolet_radiation"
+                                android:maxLines="3"
+                                android:text="属弱紫外线辐射天气，无需特别防护。若长期在户外，建议涂擦SPF在8-12之间的防晒护肤品。"
+                                android:textColor="#000"
+                                android:textSize="15sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="90dp">
+
+                            <ImageView
+                                android:id="@+id/id_air_conditioning"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/air_conditioning"/>
+
+                            <TextView
+                                android:id="@+id/id_air_conditioning_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_air_conditioning"
+                                android:text="空调指数"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/id_air_conditioning_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_air_conditioning_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_air_conditioning"
+                                android:maxLines="3"
+                                android:text="您将感到很舒适，一般不需要开启空调。"
+                                android:textColor="#000"
+                                android:textSize="15sp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </ScrollView>
+    </com.yalantis.phoenix.PullToRefreshView>
 </LinearLayout>
