@@ -11,10 +11,93 @@ public class CurrentWeatherBean {
     private String week;
     private String city;
     private String weather;
+    private String img, img_01, img_02, img_03,
+            week_01, week_02, week_03,
+            temp_01, temp_02, temp_03;
     private String mCloth_tx, mCloth_content,
             mAir_conditioning_content, mAir_conditioning_tx,
             mUltraviolet_radiation_content,
             mUltraviolet_radiation_tx, mSport_tx, mSport_content;
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
+
+    public String getImg_01() {
+        return img_01;
+    }
+
+    public void setImg_01(String img_01) {
+        this.img_01 = img_01;
+    }
+
+    public String getImg_02() {
+        return img_02;
+    }
+
+    public void setImg_02(String img_02) {
+        this.img_02 = img_02;
+    }
+
+    public String getImg_03() {
+        return img_03;
+    }
+
+    public void setImg_03(String img_03) {
+        this.img_03 = img_03;
+    }
+
+    public String getWeek_02() {
+        return week_02;
+    }
+
+    public void setWeek_02(String week_02) {
+        this.week_02 = week_02;
+    }
+
+    public String getWeek_01() {
+        return week_01;
+    }
+
+    public void setWeek_01(String week_01) {
+        this.week_01 = week_01;
+    }
+
+    public String getWeek_03() {
+        return week_03;
+    }
+
+    public void setWeek_03(String week_03) {
+        this.week_03 = week_03;
+    }
+
+    public String getTemp_01() {
+        return temp_01;
+    }
+
+    public void setTemp_01(String temp_01) {
+        this.temp_01 = temp_01;
+    }
+
+    public String getTemp_02() {
+        return temp_02;
+    }
+
+    public void setTemp_02(String temp_02) {
+        this.temp_02 = temp_02;
+    }
+
+    public String getTemp_03() {
+        return temp_03;
+    }
+
+    public void setTemp_03(String temp_03) {
+        this.temp_03 = temp_03;
+    }
 
     public String getCloth_tx() {
         return mCloth_tx;
