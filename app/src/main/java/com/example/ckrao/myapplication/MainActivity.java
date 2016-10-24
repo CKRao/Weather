@@ -2,6 +2,7 @@ package com.example.ckrao.myapplication;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
     private static boolean show = false;
-    private EditText mText;
     private Button mSearchButton;
     private PullToRefreshView mPullToRefreshView;
 
@@ -74,137 +74,9 @@ public class MainActivity extends AppCompatActivity {
         mSearchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dizhi = String.valueOf(mText.getText());
-                mText.setText("");
-                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                try {
-                    address = "http://api.jisuapi.com/weather/query?appkey=b968e6d10975a8c5&city="
-                            + URLEncoder.encode(dizhi, "UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-                mHttpuility = new Httpuility(address, new HttpCallBackListener() {
 
-
-                    @Override
-                    public void onFinish(String response) {
-                        try {
-                            JSONObject object = new JSONObject(response);
-
-                            JSONObject result = object.getJSONObject("result");
-                            String img = "img" + result.getString("img");
-                            String mCity = result.getString("city");
-                            String mWeek = result.getString("week");
-                            String mTemp = result.getString("temp");
-                            String mWeather = result.getString("weather");
-                            String air_conditioning_tx = null;
-                            String air_conditioning_content = null;
-                            String sport_tx = null;
-                            String sport_content = null;
-                            String ultraviolet_radiation_content = null;
-                            String ultraviolet_radiation_tx = null;
-                            String cloth_content = null;
-                            String cloth_tx = null;
-
-                            String img03 = null;
-                            String img02 = null;
-                            String img01 = null;
-                            String week01 = null;
-                            String week02 = null;
-                            String week03 = null;
-                            String temp01 = null;
-                            String temp02 = null;
-                            String temp03 = null;
-                            JSONArray index = result.getJSONArray("index");
-                            for (int i = 0; i < index.length(); i++) {
-                                JSONObject object1 = index.getJSONObject(i);
-                                switch (object1.getString("iname")) {
-                                    case "空调指数":
-                                        air_conditioning_tx = object1.getString("ivalue");
-                                        air_conditioning_content = object1.getString("detail");
-                                        break;
-                                    case "运动指数":
-                                        sport_tx = object1.getString("ivalue");
-                                        sport_content = object1.getString("detail");
-                                        break;
-                                    case "紫外线指数":
-                                        ultraviolet_radiation_tx = object1.getString("ivalue");
-                                        ultraviolet_radiation_content = object1.getString("detail");
-                                        break;
-                                    case "穿衣指数":
-                                        cloth_tx = object1.getString("ivalue");
-                                        cloth_content = object1.getString("detail");
-                                        break;
-                                    default:
-                                        break;
-                                }
-                            }
-                            JSONArray daily = result.getJSONArray("daily");
-                            for (int i = 1; i <= 3; i++) {
-                                JSONObject jsonObject = daily.getJSONObject(i);
-                                String date = jsonObject.getString("date").substring(5);
-                                JSONObject night = jsonObject.getJSONObject("night");
-                                JSONObject day = jsonObject.getJSONObject("day");
-                                switch (i) {
-                                    case 1:
-                                        week01 = date;
-                                        img01 = "img" + day.getString("img");
-                                        temp01 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
-                                        break;
-                                    case 2:
-                                        week02 = date;
-                                        img02 = "img" + day.getString("img");
-                                        temp02 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
-                                        break;
-                                    case 3:
-                                        week03 = date;
-                                        img03 = "img" + day.getString("img");
-                                        temp03 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
-                                        break;
-                                }
-                            }
-                            CurrentWeatherBean bean = new CurrentWeatherBean();
-                            bean.setCity(mCity);
-                            bean.setWeek(mWeek);
-                            bean.setTemp(mTemp);
-                            bean.setWeather(mWeather);
-                            bean.setAir_conditioning_tx(air_conditioning_tx);
-                            bean.setAir_conditioning_content(air_conditioning_content);
-                            bean.setSport_tx(sport_tx);
-                            bean.setSport_content(sport_content);
-                            bean.setUltraviolet_radiation_tx(ultraviolet_radiation_tx);
-                            bean.setUltraviolet_radiation_content(ultraviolet_radiation_content);
-                            bean.setCloth_tx(cloth_tx);
-                            bean.setCloth_content(cloth_content);
-                            bean.setImg(img);
-                            bean.setImg_01(img01);
-                            bean.setImg_02(img02);
-                            bean.setImg_03(img03);
-                            bean.setWeek_01(week01);
-                            bean.setWeek_02(week02);
-                            bean.setWeek_03(week03);
-                            bean.setTemp_01(temp01);
-                            bean.setTemp_02(temp02);
-                            bean.setTemp_03(temp03);
-                            showMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
-                                    sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
-                                    mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, week01, week02, week03, temp01, temp02, temp03);
-                            Message message = new Message();
-                            message.obj = bean;
-                            mHandler.sendMessage(message);
-
-
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Exception e) {
-
-                    }
-                });
+                Intent intent = new Intent(MainActivity.this,SelectActivity.class);
+                startActivityForResult(intent,0);
             }
         });
 
@@ -251,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         week = (TextView) findViewById(R.id.week);
         weather = (TextView) findViewById(R.id.weather);
         mSearchButton = (Button) findViewById(R.id.search);
-        mText = (EditText) findViewById(R.id.editText);
         mCloth_tx = (TextView) findViewById(R.id.id_cloth_tx);
         mCloth_content = (TextView) findViewById(R.id.id_cloth_content);
         mSport_tx = (TextView) findViewById(R.id.id_sport_tx);
@@ -434,8 +305,11 @@ public class MainActivity extends AppCompatActivity {
     private void showMessage(Context context, String air_conditioning_tx,
                              String air_conditioning_content, String sport_tx,
                              String sport_content, String ultraviolet_radiation_tx,
-                             String ultraviolet_radiation_content, String cloth_tx, String cloth_content,
-                             String mCity, String mWeek, String mTemp, String mWeather, String img, String img01, String img02, String img03, String week01, String week02, String week03, String temp01, String temp02, String temp03) {
+                             String ultraviolet_radiation_content, String cloth_tx,
+                             String cloth_content,String mCity, String mWeek, String mTemp,
+                             String mWeather, String img, String img01, String img02,
+                             String img03, String week01, String week02, String week03,
+                             String temp01, String temp02, String temp03) {
         SharedPreferences.Editor editor = PreferenceManager.
                 getDefaultSharedPreferences(context).edit();
         editor.putString("city", mCity);
@@ -464,5 +338,137 @@ public class MainActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data!=null){
+            dizhi = String.valueOf(data.getStringExtra("dizhi"));
+                try {
+                    address = "http://api.jisuapi.com/weather/query?appkey=b968e6d10975a8c5&city="
+                            + URLEncoder.encode(dizhi, "UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                mHttpuility = new Httpuility(address, new HttpCallBackListener() {
 
+
+                    @Override
+                    public void onFinish(String response) {
+                        try {
+                            JSONObject object = new JSONObject(response);
+
+                            JSONObject result = object.getJSONObject("result");
+                            String img = "img" + result.getString("img");
+                            String mCity = result.getString("city");
+                            String mWeek = result.getString("week");
+                            String mTemp = result.getString("temp");
+                            String mWeather = result.getString("weather");
+                            String air_conditioning_tx = null;
+                            String air_conditioning_content = null;
+                            String sport_tx = null;
+                            String sport_content = null;
+                            String ultraviolet_radiation_content = null;
+                            String ultraviolet_radiation_tx = null;
+                            String cloth_content = null;
+                            String cloth_tx = null;
+
+                            String img03 = null;
+                            String img02 = null;
+                            String img01 = null;
+                            String week01 = null;
+                            String week02 = null;
+                            String week03 = null;
+                            String temp01 = null;
+                            String temp02 = null;
+                            String temp03 = null;
+                            JSONArray index = result.getJSONArray("index");
+                            for (int i = 0; i < index.length(); i++) {
+                                JSONObject object1 = index.getJSONObject(i);
+                                switch (object1.getString("iname")) {
+                                    case "空调指数":
+                                        air_conditioning_tx = object1.getString("ivalue");
+                                        air_conditioning_content = object1.getString("detail");
+                                        break;
+                                    case "运动指数":
+                                        sport_tx = object1.getString("ivalue");
+                                        sport_content = object1.getString("detail");
+                                        break;
+                                    case "紫外线指数":
+                                        ultraviolet_radiation_tx = object1.getString("ivalue");
+                                        ultraviolet_radiation_content = object1.getString("detail");
+                                        break;
+                                    case "穿衣指数":
+                                        cloth_tx = object1.getString("ivalue");
+                                        cloth_content = object1.getString("detail");
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
+                            JSONArray daily = result.getJSONArray("daily");
+                            for (int i = 1; i <= 3; i++) {
+                                JSONObject jsonObject = daily.getJSONObject(i);
+                                String date = jsonObject.getString("date").substring(5);
+                                JSONObject night = jsonObject.getJSONObject("night");
+                                JSONObject day = jsonObject.getJSONObject("day");
+                                switch (i) {
+                                    case 1:
+                                        week01 = date;
+                                        img01 = "img" + day.getString("img");
+                                        temp01 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
+                                        break;
+                                    case 2:
+                                        week02 = date;
+                                        img02 = "img" + day.getString("img");
+                                        temp02 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
+                                        break;
+                                    case 3:
+                                        week03 = date;
+                                        img03 = "img" + day.getString("img");
+                                        temp03 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
+                                        break;
+                                }
+                            }
+                            CurrentWeatherBean bean = new CurrentWeatherBean();
+                            bean.setCity(mCity);
+                            bean.setWeek(mWeek);
+                            bean.setTemp(mTemp);
+                            bean.setWeather(mWeather);
+                            bean.setAir_conditioning_tx(air_conditioning_tx);
+                            bean.setAir_conditioning_content(air_conditioning_content);
+                            bean.setSport_tx(sport_tx);
+                            bean.setSport_content(sport_content);
+                            bean.setUltraviolet_radiation_tx(ultraviolet_radiation_tx);
+                            bean.setUltraviolet_radiation_content(ultraviolet_radiation_content);
+                            bean.setCloth_tx(cloth_tx);
+                            bean.setCloth_content(cloth_content);
+                            bean.setImg(img);
+                            bean.setImg_01(img01);
+                            bean.setImg_02(img02);
+                            bean.setImg_03(img03);
+                            bean.setWeek_01(week01);
+                            bean.setWeek_02(week02);
+                            bean.setWeek_03(week03);
+                            bean.setTemp_01(temp01);
+                            bean.setTemp_02(temp02);
+                            bean.setTemp_03(temp03);
+                            showMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
+                                    sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
+                                    mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, week01, week02, week03, temp01, temp02, temp03);
+                            Message message = new Message();
+                            message.obj = bean;
+                            mHandler.sendMessage(message);
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                  }
+                });
+        }
+    }
 }

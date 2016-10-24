@@ -15,20 +15,16 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#0080FF"/>
-
-        <EditText
-            android:id="@+id/editText"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="5"
-            android:background="#0080FF"
-            android:hint="请输入城市"/>
-
+       <TextView
+           android:paddingLeft="20dp"
+           android:textSize="30sp"
+           android:textColor="#000"
+           android:gravity="center_vertical"
+           android:text="极速天气"
+           android:layout_weight="5"
+           android:layout_width="0dp"
+           android:background="#0080FF"
+           android:layout_height="match_parent"/>
         <Button
             android:id="@+id/search"
             android:layout_width="0dp"
