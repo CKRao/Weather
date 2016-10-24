@@ -150,17 +150,17 @@ public class MainActivity extends AppCompatActivity {
                                     case 1:
                                         week01 = date;
                                         img01 = "img" + day.getString("img");
-                                        temp01 = night.getString("templow") + "～" + day.getString("temphigh");
+                                        temp01 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
                                         break;
                                     case 2:
                                         week02 = date;
                                         img02 = "img" + day.getString("img");
-                                        temp02 = night.getString("templow") + "～" + day.getString("temphigh");
+                                        temp02 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
                                         break;
                                     case 3:
                                         week03 = date;
                                         img03 = "img" + day.getString("img");
-                                        temp03 = night.getString("templow") + "～" + day.getString("temphigh");
+                                        temp03 = night.getString("templow") + "º～" + day.getString("temphigh") + "º";
                                         break;
                                 }
                             }
@@ -235,16 +235,14 @@ public class MainActivity extends AppCompatActivity {
                 temp_02.setText(bean.getTemp_02());
                 temp_03.setText(bean.getTemp_03());
             }
-
-            //通过图片名获取资源ID
-            private int getResource(String img) {
-                Context ctx = getApplicationContext();
-                int resId = getResources().getIdentifier(img, "drawable", ctx.getPackageName());
-                return resId;
-            }
         };
 
-
+    }
+        //通过图片名获取资源ID
+    private int getResource(String img) {
+        Context ctx = getApplicationContext();
+        int resId = getResources().getIdentifier(img, "drawable", ctx.getPackageName());
+        return resId;
     }
 
     private void initUI() {
@@ -352,17 +350,17 @@ public class MainActivity extends AppCompatActivity {
                             case 1:
                                 week01 = date;
                                 img01 = "img" + day.getString("img");
-                                temp01 = night.getString("templow") + "～" + day.getString("temphigh");
+                                temp01 = night.getString("templow") + "º～" + day.getString("temphigh")+"º";
                                 break;
                             case 2:
                                 week02 = date;
                                 img02 = "img" + day.getString("img");
-                                temp02 = night.getString("templow") + "～" + day.getString("temphigh");
+                                temp02 = night.getString("templow") + "º～" + day.getString("temphigh")+"º";
                                 break;
                             case 3:
                                 week03 = date;
                                 img03 = "img" + day.getString("img");
-                                temp03 = night.getString("templow") + "～" + day.getString("temphigh");
+                                temp03 = night.getString("templow") + "º～" + day.getString("temphigh")+"º";
                                 break;
                         }
                     }
@@ -409,10 +407,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        city.setText(prefs.getString("city", ""));
-        week.setText(prefs.getString("week", ""));
-        temp.setText(prefs.getString("temp", "") + "℃");
-        weather.setText(prefs.getString("weather", ""));
+        city.setText(prefs.getString("city", "未知"));
+        week.setText(prefs.getString("week", "未知"));
+        temp.setText(prefs.getString("temp", "0") + "℃");
+        weather.setText(prefs.getString("weather", "未知"));
         mCloth_tx.setText("穿衣指数——" + prefs.getString("cloth_tx", ""));
         mCloth_content.setText(prefs.getString("cloth_content", ""));
         mSport_tx.setText("运动指数——" + prefs.getString("sport_tx", ""));
@@ -421,7 +419,16 @@ public class MainActivity extends AppCompatActivity {
         mAir_conditioning_content.setText(prefs.getString("air_conditioning_content", ""));
         mUltraviolet_radiation_tx.setText("紫外线指数——" + prefs.getString("ultraviolet_radiation_tx", ""));
         mUltraviolet_radiation_content.setText(prefs.getString("ultraviolet_radiation_content", ""));
-
+        img.setImageResource(getResource(prefs.getString("img","img99")));
+        img_01.setImageResource(getResource(prefs.getString("img01","img99")));
+        img_02.setImageResource(getResource(prefs.getString("img02","img99")));
+        img_03.setImageResource(getResource(prefs.getString("img03","img99")));
+        week_01.setText(prefs.getString("week01","未知"));
+        week_02.setText(prefs.getString("week02","未知"));
+        week_03.setText(prefs.getString("week03","未知"));
+        temp_01.setText(prefs.getString("temp01",""));
+        temp_02.setText(prefs.getString("temp02",""));
+        temp_03.setText(prefs.getString("temp03",""));
     }
 
     private void showMessage(Context context, String air_conditioning_tx,

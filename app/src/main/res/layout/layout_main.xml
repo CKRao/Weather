@@ -51,7 +51,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="-7dp"
+                android:layout_marginTop="-3dp"
                 android:orientation="vertical">
 
                 <android.support.v7.widget.CardView
@@ -60,7 +60,7 @@
                     android:layout_height="180dp"
                     app:cardBackgroundColor="#0080FF"
                     app:cardCornerRadius="2dp"
-                    app:cardElevation="5dp"
+                    app:cardElevation="10dp"
                     app:cardPreventCornerOverlap="true"
                     app:cardUseCompatPadding="true">
 
@@ -108,6 +108,7 @@
                             android:textSize="40sp"/>
 
                         <TextView
+                            android:layout_marginTop="-15dp"
                             android:id="@+id/weather"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -176,7 +177,7 @@
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
                                 android:textColor="#000"
-                                android:textSize="20sp"/>
+                                android:textSize="23sp"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -220,7 +221,7 @@
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
                                 android:textColor="#000"
-                                android:textSize="20sp"/>
+                                android:textSize="23sp"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -264,7 +265,7 @@
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
                                 android:textColor="#000"
-                                android:textSize="20sp"/>
+                                android:textSize="23sp"/>
                         </RelativeLayout>
 
                     </LinearLayout>
@@ -320,7 +321,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_toRightOf="@id/id_cloth"
                                 android:maxLines="3"
-                                android:text="建议着薄外套、开衫牛仔衫裤等服装。年老体弱者应适当添加衣物，宜着夹克衫、薄毛衣等。"
+                                android:text=""
                                 android:textColor="#000"
                                 android:textSize="15sp"/>
                         </RelativeLayout>
@@ -356,7 +357,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_toRightOf="@id/id_sport"
                                 android:maxLines="3"
-                                android:text="天气较好，但考虑气温较低，推荐您进行室内运动，若户外适当增减衣物并注意防晒。"
+                                android:text=""
                                 android:textColor="#000"
                                 android:textSize="15sp"/>
                         </RelativeLayout>
@@ -393,7 +394,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_toRightOf="@id/id_ultraviolet_radiation"
                                 android:maxLines="3"
-                                android:text="属弱紫外线辐射天气，无需特别防护。若长期在户外，建议涂擦SPF在8-12之间的防晒护肤品。"
+                                android:text=""
                                 android:textColor="#000"
                                 android:textSize="15sp"/>
                         </RelativeLayout>
@@ -429,7 +430,7 @@
                                 android:layout_marginLeft="20dp"
                                 android:layout_toRightOf="@id/id_air_conditioning"
                                 android:maxLines="3"
-                                android:text="您将感到很舒适，一般不需要开启空调。"
+                                android:text=""
                                 android:textColor="#000"
                                 android:textSize="15sp"/>
                         </RelativeLayout>
