@@ -5,7 +5,12 @@
     android:layout_height="match_parent"
     android:background="#F0F0F0"
     android:orientation="vertical">
-
+    <ImageView
+        android:scaleType="fitXY"
+        android:id="@+id/id_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/selectbackground"/>
     <RelativeLayout
         android:background="#0080FF"
         android:layout_width="match_parent"

@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -18,6 +20,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,11 +41,34 @@ public class SelectActivity extends Activity {
     private SortAdapter adapter;
     private EditTextWithDel mEtCityName;
     private List<CitySortModel> SourceDateList;
-
+    private ImageView back;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 1) {
+                back.setVisibility(View.GONE);
+            }
+        }
+    };
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        back = (ImageView) findViewById(R.id.id_background);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                Message msg = new Message();
+                msg.what = 1;
+                mHandler.sendMessage(msg);
+
+            }
+        }).start();
         initViews();
     }
 
@@ -55,6 +81,7 @@ public class SelectActivity extends Activity {
         initDatas();
         initEvents();
         setAdapter();
+
     }
 
     private void setAdapter() {
@@ -79,7 +106,7 @@ public class SelectActivity extends Activity {
                         SourceDateList = filledData(arrayList);
                         Collections.sort(SourceDateList, new PinyinComparator());
                         adapter = new SortAdapter(SelectActivity.this, SourceDateList);
-                        sortListView.addHeaderView(initHeadView());
+//                        sortListView.addHeaderView(initHeadView());
                         sortListView.setAdapter(adapter);
                     }
                 });
@@ -147,20 +174,20 @@ public class SelectActivity extends Activity {
         sideBar.setTextView(dialog);
     }
 
-    private View initHeadView() {
-        View headView = getLayoutInflater().inflate(R.layout.headview, null);
-        GridView mGvCity = (GridView) headView.findViewById(R.id.gv_hot_city);
-
-        String[] datas = getResources().getStringArray(R.array.city);
-        ArrayList<String> cityList = new ArrayList<>();
-        for (int i = 0; i < datas.length; i++) {
-            cityList.add(datas[i]);
-        }
-
-        CityAdapter cAdapter = new CityAdapter(getApplicationContext(), R.layout.gridview_item, cityList);
-        mGvCity.setAdapter(cAdapter);
-        return headView;
-    }
+//    private View initHeadView() {
+//        View headView = getLayoutInflater().inflate(R.layout.headview, null);
+//        GridView mGvCity = (GridView) headView.findViewById(R.id.gv_hot_city);
+//
+//        String[] datas = getResources().getStringArray(R.array.city);
+//        ArrayList<String> cityList = new ArrayList<>();
+//        for (int i = 0; i < datas.length; i++) {
+//            cityList.add(datas[i]);
+//        }
+//
+//        CityAdapter cAdapter = new CityAdapter(getApplicationContext(), R.layout.gridview_item, cityList);
+//        mGvCity.setAdapter(cAdapter);
+//        return headView;
+//    }
 
     /**
      * 根据输入框中的值来过滤数据并更新ListView
@@ -188,19 +215,19 @@ public class SelectActivity extends Activity {
     private List<CitySortModel> filledData(final List<String> date) {
         final List<CitySortModel> mSortList = new ArrayList<>();
         final ArrayList<String> indexString = new ArrayList<>();
-                for (int i = 0; i < date.size(); i++) {
-                    CitySortModel sortModel = new CitySortModel();
-                    sortModel.setName(date.get(i));
-                    String pinyin = PinyinUtils.getPingYin(date.get(i));
-                    String sortString = pinyin.substring(0, 1).toUpperCase();
-                    if (sortString.matches("[A-Z]")) {
-                        sortModel.setSortLetters(sortString.toUpperCase());
-                        if (!indexString.contains(sortString)) {
-                            indexString.add(sortString);
-                        }
-                    }
-                    mSortList.add(sortModel);
+        for (int i = 0; i < date.size(); i++) {
+            CitySortModel sortModel = new CitySortModel();
+            sortModel.setName(date.get(i));
+            String pinyin = PinyinUtils.getPingYin(date.get(i));
+            String sortString = pinyin.substring(0, 1).toUpperCase();
+            if (sortString.matches("[A-Z]")) {
+                sortModel.setSortLetters(sortString.toUpperCase());
+                if (!indexString.contains(sortString)) {
+                    indexString.add(sortString);
                 }
+            }
+            mSortList.add(sortModel);
+        }
         Collections.sort(indexString);
         sideBar.setIndexText(indexString);
         return mSortList;
