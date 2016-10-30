@@ -65,7 +65,7 @@ public class SelectActivity extends Activity {
         AssetsDatabaseManager.initManager(getApplication());
         AssetsDatabaseManager am = AssetsDatabaseManager.getManager();
         final SQLiteDatabase db = am.getDatabase("cityid.db");
-        final List<String> arrayList = new ArrayList<>();
+        final List<CityModel> arrayList = new ArrayList<>();
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -73,7 +73,11 @@ public class SelectActivity extends Activity {
                 if (cursor.moveToFirst()) {
                     do {
                         String name = cursor.getString(cursor.getColumnIndex("city_area"));
-                        arrayList.add(name);
+                        String id=cursor.getString(cursor.getColumnIndex("city_id"));
+                        CityModel model = new CityModel();
+                        model.setCityname(name);
+                        model.setCityId(id);
+                        arrayList.add(model);
                     } while (cursor.moveToNext());
                 }
                 cursor.close();
@@ -112,7 +116,7 @@ public class SelectActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getCityId(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 String dizhi = ((CitySortModel) adapter.getItem(position)).getName();
                 intent.putExtra("dizhi", dizhi);
@@ -189,13 +193,14 @@ public class SelectActivity extends Activity {
         adapter.updateListView(mSortList);
     }
 
-    private List<CitySortModel> filledData(final List<String> date) {
+    private List<CitySortModel> filledData(final List<CityModel> data) {
         final List<CitySortModel> mSortList = new ArrayList<>();
         final ArrayList<String> indexString = new ArrayList<>();
-        for (int i = 0; i < date.size(); i++) {
+        for (int i = 0; i < data.size(); i++) {
             CitySortModel sortModel = new CitySortModel();
-            sortModel.setName(date.get(i));
-            String pinyin = PinyinUtils.getPingYin(date.get(i));
+            sortModel.setName(data.get(i).getCityname());
+            sortModel.setCityId(data.get(i).getCityId());
+            String pinyin = PinyinUtils.getPingYin(data.get(i).getCityname());
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {
                 sortModel.setSortLetters(sortString.toUpperCase());
