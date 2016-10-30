@@ -41,34 +41,11 @@ public class SelectActivity extends Activity {
     private SortAdapter adapter;
     private EditTextWithDel mEtCityName;
     private List<CitySortModel> SourceDateList;
-    private ImageView back;
-    private Handler mHandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 1) {
-                back.setVisibility(View.GONE);
-            }
-        }
-    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        back = (ImageView) findViewById(R.id.id_background);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                Message msg = new Message();
-                msg.what = 1;
-                mHandler.sendMessage(msg);
-
-            }
-        }).start();
         initViews();
     }
 
@@ -135,9 +112,9 @@ public class SelectActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position - 1)).getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
-                String dizhi = ((CitySortModel) adapter.getItem(position - 1)).getName();
+                String dizhi = ((CitySortModel) adapter.getItem(position)).getName();
                 intent.putExtra("dizhi", dizhi);
                 setResult(0, intent);
 //                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);

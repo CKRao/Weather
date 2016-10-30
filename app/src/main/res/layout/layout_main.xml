@@ -10,6 +10,7 @@
     >
 
     <LinearLayout
+        android:background="#0080FF"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:focusable="true"
@@ -23,16 +24,16 @@
            android:text="极速天气"
            android:layout_weight="5"
            android:layout_width="0dp"
-           android:background="#0080FF"
            android:layout_height="match_parent"/>
-        <Button
+        <ImageButton
+            android:padding="13dp"
             android:id="@+id/search"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:textColor="#000"
             android:background="#0080FF"
-            android:text="查找"/>
+            android:scaleType="fitCenter"
+            android:src="@drawable/search"/>
     </LinearLayout>
 
     <com.yalantis.phoenix.PullToRefreshView
