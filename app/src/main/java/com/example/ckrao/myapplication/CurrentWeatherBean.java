@@ -12,7 +12,6 @@ public class CurrentWeatherBean {
     private String city;
     private String weather;
     private String img, img_01, img_02, img_03,
-            week_01, week_02, week_03,
             temp_01, temp_02, temp_03;
     private String mCloth_tx, mCloth_content,
             mAir_conditioning_content, mAir_conditioning_tx,
@@ -49,30 +48,6 @@ public class CurrentWeatherBean {
 
     public void setImg_03(String img_03) {
         this.img_03 = img_03;
-    }
-
-    public String getWeek_02() {
-        return week_02;
-    }
-
-    public void setWeek_02(String week_02) {
-        this.week_02 = week_02;
-    }
-
-    public String getWeek_01() {
-        return week_01;
-    }
-
-    public void setWeek_01(String week_01) {
-        this.week_01 = week_01;
-    }
-
-    public String getWeek_03() {
-        return week_03;
-    }
-
-    public void setWeek_03(String week_03) {
-        this.week_03 = week_03;
     }
 
     public String getTemp_01() {
