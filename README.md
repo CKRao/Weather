@@ -1,5 +1,5 @@
 # Weather
-# 自己练手写的一个小项目：极速天气
+# 自己练手写的一个小项目：SpeedWeather
 ##城市列表是使用了简书上一位大神的仿美团城市选择Demo改的(http://www.jianshu.com/p/350f7df569fc)
 #天气API调用的是和风天气的。GIF可能掉帧
 ![image](https://github.com/CKRao/Weather/blob/master/jdfw.gif)
