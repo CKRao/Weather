@@ -3,13 +3,13 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#F0F0F0"
+              android:background="@drawable/edittext_background"
               android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#0080FF">
+        android:background="@color/colorPrimary">
 
         <TextView
             android:id="@+id/tv_title"

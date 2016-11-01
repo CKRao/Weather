@@ -9,6 +9,10 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
@@ -45,17 +49,27 @@ public class MainActivity extends AppCompatActivity {
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
     private static boolean show = false;
-    private ImageButton mSearchButton;
     private PullToRefreshView mPullToRefreshView;
-
+    private ImageButton mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose",false)){
+            Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+            startActivityForResult(intent, 0);
+        }
         setContentView(R.layout.layout_main);
         initUI();
         showWeather();
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
         //设置刷新监听者
         mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -67,14 +81,6 @@ public class MainActivity extends AppCompatActivity {
                         mPullToRefreshView.setRefreshing(false);
                     }
                 }, 1000);
-            }
-        });
-        mSearchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-                startActivityForResult(intent, 0);
             }
         });
 
@@ -118,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        mButton = (ImageButton) findViewById(R.id.id_img_bt);
         city = (TextView) findViewById(R.id.city);
         temp = (TextView) findViewById(R.id.temp);
         week = (TextView) findViewById(R.id.week);
         weather = (TextView) findViewById(R.id.weather);
-        mSearchButton = (ImageButton) findViewById(R.id.search);
         mCloth_tx = (TextView) findViewById(R.id.id_cloth_tx);
         mCloth_content = (TextView) findViewById(R.id.id_cloth_content);
         mSport_tx = (TextView) findViewById(R.id.id_sport_tx);
@@ -349,9 +355,9 @@ public class MainActivity extends AppCompatActivity {
         String ultraviolet_radiation_tx = bean.getHeWeatherdataservice().get(0).getSuggestion().getUv().getBrf();
         String cloth_content = bean.getHeWeatherdataservice().get(0).getSuggestion().getDrsg().getTxt();
         String cloth_tx = bean.getHeWeatherdataservice().get(0).getSuggestion().getDrsg().getBrf();
-        String img03 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getCond().getCode_n();
-        String img02 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getCond().getCode_n();
-        String img01 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getCond().getCode_n();
+        String img03 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getCond().getCode_d();
+        String img02 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getCond().getCode_d();
+        String img01 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getCond().getCode_d();
         String temp01 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMin()+
                 "º～"+bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMax()+"º";
         String temp02 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMin()+
@@ -385,4 +391,22 @@ public class MainActivity extends AppCompatActivity {
         message.obj = bean1;
         mHandler.sendMessage(message);
     }
+
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+//        switch (item.getItemId()){
+//            case R.id.search:
+//                startActivityForResult(intent, 0);
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

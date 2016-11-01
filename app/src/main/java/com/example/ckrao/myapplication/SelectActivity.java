@@ -6,18 +6,23 @@ package com.example.ckrao.myapplication;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,12 +34,31 @@ public class SelectActivity extends Activity {
     private SortAdapter adapter;
     private EditTextWithDel mEtCityName;
     private List<CitySortModel> SourceDateList;
+    private AlertDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        showProgressDialog();
         initViews();
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new AlertDialog.Builder(this).create();
+            mProgressDialog.setMessage("正在加载...");
+            mProgressDialog.setCanceledOnTouchOutside(false);
+        }
+        mProgressDialog.show();
+//        Log.i("mProgressDialog","show()");
+    }
+
+    private void closeProgressDialog() {
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
+//            Log.i("mProgressDialog","dismiss()");
+        }
     }
 
     private void initViews() {
@@ -46,7 +70,6 @@ public class SelectActivity extends Activity {
         initDatas();
         initEvents();
         setAdapter();
-
     }
 
     private void setAdapter() {
@@ -61,7 +84,7 @@ public class SelectActivity extends Activity {
                 if (cursor.moveToFirst()) {
                     do {
                         String name = cursor.getString(cursor.getColumnIndex("city_area"));
-                        String id=cursor.getString(cursor.getColumnIndex("city_id"));
+                        String id = cursor.getString(cursor.getColumnIndex("city_id"));
                         CityModel model = new CityModel();
                         model.setCityname(name);
                         model.setCityId(id);
@@ -77,6 +100,7 @@ public class SelectActivity extends Activity {
                         adapter = new SortAdapter(SelectActivity.this, SourceDateList);
 //                        sortListView.addHeaderView(initHeadView());
                         sortListView.setAdapter(adapter);
+                        closeProgressDialog();
                     }
                 });
             }
@@ -103,7 +127,12 @@ public class SelectActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-
+                if (!PreferenceManager.getDefaultSharedPreferences(SelectActivity.this).getBoolean("isChoose", false)) {
+                    SharedPreferences.Editor editor = PreferenceManager.
+                            getDefaultSharedPreferences(SelectActivity.this).edit();
+                    editor.putBoolean("isChoose", true);
+                    editor.commit();
+                }
                 Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent();
                 String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();

@@ -5,36 +5,32 @@
     android:id="@+id/drawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#fff"
     android:orientation="vertical"
     >
 
-    <LinearLayout
-        android:background="#0080FF"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
 
-       <TextView
-           android:paddingLeft="20dp"
-           android:textSize="30sp"
-           android:textColor="#000"
-           android:gravity="center_vertical"
-           android:text="极速天气"
-           android:layout_weight="5"
-           android:layout_width="0dp"
-           android:layout_height="match_parent"/>
-        <ImageButton
-            android:padding="13dp"
-            android:id="@+id/search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#0080FF"
-            android:scaleType="fitCenter"
-            android:src="@drawable/search"/>
-    </LinearLayout>
+        <RelativeLayout
+            android:background="@color/colorPrimary"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:paddingLeft="20dp"
+                android:layout_centerVertical="true"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SpeedWeather"/>
+            <ImageButton
+                android:id="@+id/id_img_bt"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_alignParentRight="true"
+                android:background="@color/colorPrimary"
+                android:padding="13dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/search"/>
+        </RelativeLayout>
+
 
     <com.yalantis.phoenix.PullToRefreshView
         android:id="@+id/pullToRefreshView"
@@ -55,13 +51,14 @@
                     android:id="@+id/Card_view"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
-                    app:cardBackgroundColor="#0080FF"
+                    app:cardBackgroundColor="#fff"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="10dp"
                     app:cardPreventCornerOverlap="true"
                     app:cardUseCompatPadding="true">
 
                     <RelativeLayout
+                        android:background="@drawable/bg"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp">
@@ -73,7 +70,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentRight="true"
                             android:text="Week"
-                            android:textColor="#000"
+                            android:textColor="#fff"
                             android:textSize="20sp"/>
 
                         <TextView
@@ -83,7 +80,7 @@
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentTop="true"
                             android:text="City"
-                            android:textColor="#000"
+                            android:textColor="#fff"
                             android:textSize="25sp"/>
 
                         <ImageView
@@ -93,7 +90,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginBottom="15dp"
                             android:src="@drawable/img999"
-                            android:textColor="#000"/>
+                            android:textColor="#fff"/>
 
                         <TextView
                             android:id="@+id/temp"
@@ -101,26 +98,26 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Temp"
-                            android:textColor="#000"
+                            android:textColor="#fff"
                             android:textSize="40sp"/>
 
                         <TextView
-                            android:layout_marginTop="-15dp"
                             android:id="@+id/weather"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/img"
                             android:layout_centerHorizontal="true"
+                            android:layout_marginTop="-15dp"
                             android:text="weather"
-                            android:textColor="#000"
+                            android:textColor="#fff"
                             android:textSize="25sp"/>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 
                 <android.support.v7.widget.CardView
-                    android:layout_marginTop="-10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="-10dp"
                     app:cardBackgroundColor="#fff"
                     app:cardCornerRadius="3dp"
                     app:cardElevation="10dp"
@@ -433,9 +430,9 @@
                         </RelativeLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
+
             </LinearLayout>
         </ScrollView>
+
     </com.yalantis.phoenix.PullToRefreshView>
-
-
 </LinearLayout>

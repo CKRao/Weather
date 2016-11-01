@@ -6,9 +6,9 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/weather_icon"
-        android:label="极速天气"
+        android:label="SpeedWeather"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AppCompat">
+        android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
