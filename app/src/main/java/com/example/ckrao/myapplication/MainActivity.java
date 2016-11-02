@@ -50,12 +50,11 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private static boolean show = false;
     private PullToRefreshView mPullToRefreshView;
-    private ImageButton mButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+//        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose",false)){
             Intent intent = new Intent(MainActivity.this, SelectActivity.class);
             startActivityForResult(intent, 0);
@@ -63,13 +62,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.layout_main);
         initUI();
         showWeather();
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-                startActivityForResult(intent, 0);
-            }
-        });
         //设置刷新监听者
         mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -124,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
-        mButton = (ImageButton) findViewById(R.id.id_img_bt);
         city = (TextView) findViewById(R.id.city);
         temp = (TextView) findViewById(R.id.temp);
         week = (TextView) findViewById(R.id.week);
@@ -392,21 +383,21 @@ public class MainActivity extends AppCompatActivity {
         mHandler.sendMessage(message);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-//        switch (item.getItemId()){
-//            case R.id.search:
-//                startActivityForResult(intent, 0);
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+        switch (item.getItemId()){
+            case R.id.search:
+                startActivityForResult(intent, 0);
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

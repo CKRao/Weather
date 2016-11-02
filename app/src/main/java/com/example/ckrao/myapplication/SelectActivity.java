@@ -5,13 +5,13 @@ package com.example.ckrao.myapplication;
  */
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -22,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +33,7 @@ public class SelectActivity extends Activity {
     private SortAdapter adapter;
     private EditTextWithDel mEtCityName;
     private List<CitySortModel> SourceDateList;
-    private AlertDialog mProgressDialog;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +45,9 @@ public class SelectActivity extends Activity {
 
     private void showProgressDialog() {
         if (mProgressDialog == null) {
-            mProgressDialog = new AlertDialog.Builder(this).create();
-            mProgressDialog.setMessage("正在加载...");
-            mProgressDialog.setCanceledOnTouchOutside(false);
+            mProgressDialog = new ProgressDialog(this);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            mProgressDialog.setMessage("加载中...");
         }
         mProgressDialog.show();
 //        Log.i("mProgressDialog","show()");
