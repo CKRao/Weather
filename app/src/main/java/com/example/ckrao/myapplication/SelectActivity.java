@@ -4,14 +4,16 @@ package com.example.ckrao.myapplication;
  * Created by clark on 2016/10/24.
  */
 
-import android.app.Activity;
+import android.app.Activity;;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,9 +21,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -33,7 +39,13 @@ public class SelectActivity extends Activity {
     private SortAdapter adapter;
     private EditTextWithDel mEtCityName;
     private List<CitySortModel> SourceDateList;
-    private ProgressDialog mProgressDialog;
+    private AlertDialog mDialog;
+    private ImageButton mImageButton;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient mClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +56,23 @@ public class SelectActivity extends Activity {
     }
 
     private void showProgressDialog() {
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            mProgressDialog.setMessage("加载中...");
+        if (mDialog == null) {
+            mDialog = new AlertDialog.Builder(this).create();
+            mDialog.setMessage("加载中...");
         }
-        mProgressDialog.show();
+        mDialog.show();
 //        Log.i("mProgressDialog","show()");
     }
 
     private void closeProgressDialog() {
-        if (mProgressDialog != null) {
-            mProgressDialog.dismiss();
+        if (mDialog != null) {
+            mDialog.dismiss();
 //            Log.i("mProgressDialog","dismiss()");
         }
     }
 
     private void initViews() {
+        mImageButton = (ImageButton) findViewById(R.id.id_back);
         mEtCityName = (EditTextWithDel) findViewById(R.id.et_search);
         sideBar = (SideBar) findViewById(R.id.sidrbar);
         dialog = (TextView) findViewById(R.id.dialog);
@@ -107,6 +119,12 @@ public class SelectActivity extends Activity {
     }
 
     private void initEvents() {
+        mImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         //设置右侧触摸监听
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
@@ -230,33 +248,5 @@ public class SelectActivity extends Activity {
         sideBar.setIndexText(indexString);
         return mSortList;
     }
-//    public class DBManager {
-//        private String DB_NAME = "cityid.db";
-//        private Context mContext;
-//
-//        public DBManager(Context mContext) {
-//            this.mContext = mContext;
-//        }
-//
-//        //把assets目录下的db文件复制到dbpath下
-//        public SQLiteDatabase DBManager(String packName) {
-//            String dbPath = "/data/data/" + packName
-//                    + "/databases/" + DB_NAME;
-//            if (!new File(dbPath).exists()) {
-//                try {
-//                    FileOutputStream out = new FileOutputStream(dbPath);
-//                    InputStream in = mContext.getAssets().open("cityid.db");
-//                    byte[] buffer = new byte[1024];
-//                    int readBytes = 0;
-//                    while ((readBytes = in.read(buffer)) != -1)
-//                        out.write(buffer, 0, readBytes);
-//                    in.close();
-//                    out.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            return SQLiteDatabase.openOrCreateDatabase(dbPath, null);
-//        }
-//    }
+
 }

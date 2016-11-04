@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawerLayout"
+    android:background="#fff"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -59,7 +60,7 @@
                     app:cardUseCompatPadding="true">
 
                     <RelativeLayout
-                        android:background="@drawable/bg"
+                        android:background="@drawable/bg1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:padding="10dp">
@@ -103,12 +104,13 @@
                             android:textSize="40sp"/>
 
                         <TextView
+                            android:layout_centerHorizontal="true"
                             android:layout_marginLeft="10dp"
                             android:id="@+id/weather"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/img"
-                            android:layout_marginTop="-15dp"
+                            android:layout_marginTop="-17dp"
                             android:text="weather"
                             android:textColor="#000"
                             android:textSize="25sp"/>
