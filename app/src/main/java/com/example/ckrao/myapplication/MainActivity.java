@@ -1,6 +1,7 @@
 package com.example.ckrao.myapplication;
 
 
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,25 +10,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.httpuility.HttpCallBackListener;
 import com.example.ckrao.myapplication.httpuility.Httpuility;
 import com.google.gson.Gson;
 import com.yalantis.phoenix.PullToRefreshView;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.List;
@@ -35,16 +29,27 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private String address;
     private String myCity_id;
-    private TextView city, week, temp, weather;
-    private TextView mCloth_tx, mCloth_content;
-    private TextView mAir_conditioning_content, mAir_conditioning_tx;
-    private TextView mUltraviolet_radiation_content, mUltraviolet_radiation_tx;
-    private ImageView img, img_01, img_02, img_03;
-    private TextView temp_01, temp_02, temp_03;
-    private TextView mSport_tx, mSport_content;
+    private TextView city;
+    private TextView week;
+    private TextView temp;
+    private TextView weather;
+    private TextView mCloth_tx;
+    private TextView mCloth_content;
+    private TextView mAir_conditioning_content;
+    private TextView mAir_conditioning_tx;
+    private TextView mUltraviolet_radiation_content;
+    private TextView mUltraviolet_radiation_tx;
+    private ImageView img;
+    private ImageView img_01;
+    private ImageView img_02;
+    private ImageView img_03;
+    private TextView temp_01;
+    private TextView temp_02;
+    private TextView temp_03;
+    private TextView mSport_tx;
+    private TextView mSport_content;
     private Httpuility mHttpuility;
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
@@ -54,14 +59,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        if(!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose",false)){
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
             Intent intent = new Intent(MainActivity.this, SelectActivity.class);
             startActivityForResult(intent, 0);
         }
         setContentView(R.layout.layout_main);
         initUI();
         showWeather();
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
         //设置刷新监听者
         mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -143,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void refreshData() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        myCity_id = prefs.getString("cityID","");
+        myCity_id = prefs.getString("cityID", "");
         try {
             address = "https://api.heweather.com/x3/weather?cityid=" + URLEncoder.encode(myCity_id, "UTF-8")
                     + "&key=b727f217188c4e8a91ecba4d349c73ff";
@@ -154,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish(String response) {
                 analysis(response);
+
             }
 
             @Override
@@ -162,87 +169,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-//    private void analysisJson(String response) throws JSONException {
-//        JSONObject object = new JSONObject(response);
-//        JSONObject result = object.getJSONObject("result");
-//        String img = "img" + result.getString("img");
-//        String mCity = result.getString("city");
-//        String mWeek = result.getString("week");
-//        String mTemp = result.getString("temp");
-//        String mWeather = result.getString("weather");
-//        String air_conditioning_tx = null;
-//        String air_conditioning_content = null;
-//        String sport_tx = null;
-//        String sport_content = null;
-//        String ultraviolet_radiation_content = null;
-//        String ultraviolet_radiation_tx = null;
-//        String cloth_content = null;
-//        String cloth_tx = null;
-//        String img03 = null;
-//        String img02 = null;
-//        String img01 = null;
-//        String temp01 = null;
-//        String temp02 = null;
-//        String temp03 = null;
-//        JSONArray index = result.getJSONArray("index");
-//        for (int i = 0; i < index.length(); i++) {
-//            JSONObject object1 = index.getJSONObject(i);
-//            switch (object1.getString("iname")) {
-//                case "空调指数":
-//                    air_conditioning_tx = object1.getString("ivalue");
-//                    air_conditioning_content = object1.getString("detail");
-//                    break;
-//                case "运动指数":
-//                    sport_tx = object1.getString("ivalue");
-//                    sport_content = object1.getString("detail");
-//                    break;
-//                case "紫外线指数":
-//                    ultraviolet_radiation_tx = object1.getString("ivalue");
-//                    ultraviolet_radiation_content = object1.getString("detail");
-//                    break;
-//                case "穿衣指数":
-//                    cloth_tx = object1.getString("ivalue");
-//                    cloth_content = object1.getString("detail");
-//                    break;
-//                default:
-//                    break;
-//            }
-//        }
-//        JSONArray daily = result.getJSONArray("daily");
-//        for (int i = 1; i <= 3; i++) {
-//            JSONObject jsonObject = daily.getJSONObject(i);
-//            String date = jsonObject.getString("date").substring(5);
-//            JSONObject night = jsonObject.getJSONObject("night");
-//            JSONObject day = jsonObject.getJSONObject("day");
-//        }
-//        CurrentWeatherBean bean = new CurrentWeatherBean();
-//        bean.setCity(mCity);
-//        bean.setWeek(mWeek);
-//        bean.setTemp(mTemp);
-//        bean.setWeather(mWeather);
-//        bean.setAir_conditioning_tx(air_conditioning_tx);
-//        bean.setAir_conditioning_content(air_conditioning_content);
-//        bean.setSport_tx(sport_tx);
-//        bean.setSport_content(sport_content);
-//        bean.setUltraviolet_radiation_tx(ultraviolet_radiation_tx);
-//        bean.setUltraviolet_radiation_content(ultraviolet_radiation_content);
-//        bean.setCloth_tx(cloth_tx);
-//        bean.setCloth_content(cloth_content);
-//        bean.setImg(img);
-//        bean.setImg_01(img01);
-//        bean.setImg_02(img02);
-//        bean.setImg_03(img03);
-//        bean.setTemp_01(temp01);
-//        bean.setTemp_02(temp02);
-//        bean.setTemp_03(temp03);
-//        saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
-//                sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
-//                mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03);
-//        Message message = new Message();
-//        message.obj = bean;
-//        mHandler.sendMessage(message);
-//    }
 
     private void showWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
@@ -267,16 +193,16 @@ public class MainActivity extends AppCompatActivity {
         temp_03.setText(prefs.getString("temp03", ""));
     }
 
-    private void saveMessage(Context context, String air_conditioning_tx,
-                             String air_conditioning_content, String sport_tx,
-                             String sport_content, String ultraviolet_radiation_tx,
-                             String ultraviolet_radiation_content, String cloth_tx,
-                             String cloth_content, String mCity, String mWeek, String mTemp,
-                             String mWeather, String img, String img01, String img02,
-                             String img03, String temp01, String temp02, String temp03,String cityID) {
+    public static void saveMessage(Context context, String air_conditioning_tx,
+                                   String air_conditioning_content, String sport_tx,
+                                   String sport_content, String ultraviolet_radiation_tx,
+                                   String ultraviolet_radiation_content, String cloth_tx,
+                                   String cloth_content, String mCity, String mWeek, String mTemp,
+                                   String mWeather, String img, String img01, String img02,
+                                   String img03, String temp01, String temp02, String temp03, String cityID) {
         SharedPreferences.Editor editor = PreferenceManager.
                 getDefaultSharedPreferences(context).edit();
-        editor.putString("cityID",cityID);
+        editor.putString("cityID", cityID);
         editor.putString("city", mCity);
         editor.putString("week", mWeek);
         editor.putString("temp", mTemp);
@@ -328,7 +254,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void analysis(String responce) {
+    public void analysis(String responce) {
         responce = responce.replace(" ", "").replace("3.0", "");
         Gson gson = new Gson();
         DataBean bean = gson.fromJson(responce, DataBean.class);
@@ -349,15 +275,15 @@ public class MainActivity extends AppCompatActivity {
         String img03 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getCond().getCode_d();
         String img02 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getCond().getCode_d();
         String img01 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getCond().getCode_d();
-        String temp01 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMin()+
-                "º～"+bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMax()+"º";
-        String temp02 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMin()+
-                "º～"+bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMax()+"º";
-        String temp03 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getTmp().getMin()+
-                "º～"+bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getTmp().getMax()+"º";
+        String temp01 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMin() +
+                "º～" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMax() + "º";
+        String temp02 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMin() +
+                "º～" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMax() + "º";
+        String temp03 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getTmp().getMin() +
+                "º～" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
-                mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03, CityID );
+                mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03, CityID);
         CurrentWeatherBean bean1 = new CurrentWeatherBean();
         bean1.setCity(mCity);
         bean1.setWeek(mWeek);
@@ -393,11 +319,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.search:
                 startActivityForResult(intent, 0);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
+
