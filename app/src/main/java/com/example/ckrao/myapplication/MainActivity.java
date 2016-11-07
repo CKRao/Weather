@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
@@ -22,12 +23,14 @@ import com.example.ckrao.myapplication.httpuility.HttpCallBackListener;
 import com.example.ckrao.myapplication.httpuility.Httpuility;
 import com.google.gson.Gson;
 import com.yalantis.phoenix.PullToRefreshView;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Calendar;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private String address;
     private String myCity_id;
@@ -53,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
     private Httpuility mHttpuility;
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
-    private static boolean show = false;
+    private static boolean isDay ;
     private PullToRefreshView mPullToRefreshView;
-
+    private RelativeLayout layout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 0);
         }
         setContentView(R.layout.layout_main);
+        determineTheTime();
         initUI();
         showWeather();
         Intent intent = new Intent(this, AutoUpdateService.class);
@@ -76,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         refreshData();
+
+
                         mPullToRefreshView.setRefreshing(false);
                     }
                 }, 1000);
@@ -89,6 +95,42 @@ public class MainActivity extends AppCompatActivity {
                 setTheInfo(bean);
             }
         };
+
+    }
+
+
+    private void setChange() {
+        if (isDay){
+            layout.setBackgroundResource(R.drawable.bg1);
+        }else {
+            layout.setBackgroundResource(R.drawable.bg);
+        }
+
+    }
+
+    private void determineTheTime() {
+        long time=System.currentTimeMillis();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(time);
+        int am_pm = calendar.get(Calendar.AM_PM);
+        int hour = calendar.get(Calendar.HOUR);
+        int minute = calendar.get(Calendar.MINUTE);
+        int minute_of_the_day = hour*60+minute;
+        final int startTime = 6*60;
+        final int endTime = 12*60;
+        if (am_pm == 0){
+            if (minute_of_the_day >= startTime && minute_of_the_day <= endTime) {
+                isDay = true;
+            } else {
+                isDay = false;
+            }
+        }else {
+            if (minute_of_the_day >= startTime && minute_of_the_day <= endTime) {
+                isDay = false;
+            } else {
+                isDay = true;
+            }
+        }
 
     }
 
@@ -122,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        layout = (RelativeLayout) findViewById(R.id.id_layout);
         city = (TextView) findViewById(R.id.city);
         temp = (TextView) findViewById(R.id.temp);
         week = (TextView) findViewById(R.id.week);
@@ -145,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
         temp_03 = (TextView) findViewById(R.id.temp_03);
 
         mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
+        setChange();
     }
 
     private void refreshData() {

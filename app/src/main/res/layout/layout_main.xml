@@ -60,6 +60,7 @@
                     app:cardUseCompatPadding="true">
 
                     <RelativeLayout
+                        android:id="@+id/id_layout"
                         android:background="@drawable/bg1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
