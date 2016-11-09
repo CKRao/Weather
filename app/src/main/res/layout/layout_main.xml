@@ -52,7 +52,7 @@
                 <android.support.v7.widget.CardView
                     android:id="@+id/Card_view"
                     android:layout_width="match_parent"
-                    android:layout_height="180dp"
+                    android:layout_height="200dp"
                     app:cardBackgroundColor="#fff"
                     app:cardCornerRadius="2dp"
                     app:cardElevation="10dp"
@@ -91,7 +91,6 @@
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:layout_centerHorizontal="true"
-                            android:layout_marginBottom="15dp"
                             android:src="@drawable/img999"
                             android:textColor="#fff"/>
 
@@ -102,19 +101,19 @@
                             android:layout_centerVertical="true"
                             android:text="Temp"
                             android:textColor="#000"
-                            android:textSize="40sp"/>
+                            android:textSize="50sp"/>
 
                         <TextView
-                            android:layout_centerHorizontal="true"
                             android:layout_marginLeft="10dp"
                             android:id="@+id/weather"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/img"
-                            android:layout_marginTop="-17dp"
                             android:text="weather"
                             android:textColor="#000"
-                            android:textSize="25sp"/>
+                            android:textSize="25sp"
+                            android:layout_alignBaseline="@+id/week"
+                            android:layout_alignBottom="@+id/week"
+                            android:layout_centerHorizontal="true"/>
                     </RelativeLayout>
                 </android.support.v7.widget.CardView>
 

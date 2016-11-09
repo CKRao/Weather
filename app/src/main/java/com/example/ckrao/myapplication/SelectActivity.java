@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,7 +52,7 @@ public class SelectActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        showProgressDialog();
+//        showProgressDialog();
         initViews();
     }
 
@@ -96,9 +97,11 @@ public class SelectActivity extends Activity {
                     do {
                         String name = cursor.getString(cursor.getColumnIndex("city_area"));
                         String id = cursor.getString(cursor.getColumnIndex("city_id"));
+                        String sortLetters = cursor.getString(cursor.getColumnIndex("city_spell_zh"));
                         CityModel model = new CityModel();
                         model.setCityname(name);
                         model.setCityId(id);
+                        model.setSortLetters(sortLetters);
                         arrayList.add(model);
                     } while (cursor.moveToNext());
                 }
@@ -111,7 +114,7 @@ public class SelectActivity extends Activity {
                         adapter = new SortAdapter(SelectActivity.this, SourceDateList);
 //                        sortListView.addHeaderView(initHeadView());
                         sortListView.setAdapter(adapter);
-                        closeProgressDialog();
+//                        closeProgressDialog();
                     }
                 });
             }
@@ -234,7 +237,8 @@ public class SelectActivity extends Activity {
             CitySortModel sortModel = new CitySortModel();
             sortModel.setName(data.get(i).getCityname());
             sortModel.setCityId(data.get(i).getCityId());
-            String pinyin = PinyinUtils.getPingYin(data.get(i).getCityname());
+//            String pinyin = PinyinUtils.getPingYin(data.get(i).getCityname());
+            String pinyin= data.get(i).getSortLetters();
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {
                 sortModel.setSortLetters(sortString.toUpperCase());

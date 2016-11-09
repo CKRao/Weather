@@ -7,6 +7,15 @@ package com.example.ckrao.myapplication;
 public class CityModel {
     private String Cityname;
     private String CityId;
+    private String sortLetters;
+
+    public String getSortLetters() {
+        return sortLetters;
+    }
+
+    public void setSortLetters(String sortLetters) {
+        this.sortLetters = sortLetters;
+    }
 
     public String getCityname() {
         return Cityname;

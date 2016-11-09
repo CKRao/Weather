@@ -1,10 +1,10 @@
 package com.example.ckrao.myapplication;
 
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -30,7 +30,7 @@ import java.util.Calendar;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private String address;
     private String myCity_id;
@@ -56,9 +56,10 @@ public class MainActivity extends AppCompatActivity{
     private Httpuility mHttpuility;
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
-    private static boolean isDay ;
+    private static boolean isDay;
     private PullToRefreshView mPullToRefreshView;
     private RelativeLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,9 +70,9 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.layout_main);
         determineTheTime();
         initUI();
-        showWeather();
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
+        showWeather();
         //设置刷新监听者
         mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
             @Override
@@ -100,31 +101,35 @@ public class MainActivity extends AppCompatActivity{
 
 
     private void setChange() {
-        if (isDay){
+        if (isDay) {
             layout.setBackgroundResource(R.drawable.bg1);
-        }else {
+        } else {
             layout.setBackgroundResource(R.drawable.bg);
+            city.setTextColor(Color.WHITE);
+            weather.setTextColor(Color.WHITE);
+            temp.setTextColor(Color.WHITE);
+            week.setTextColor(Color.WHITE);
         }
 
     }
 
     private void determineTheTime() {
-        long time=System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(time);
         int am_pm = calendar.get(Calendar.AM_PM);
         int hour = calendar.get(Calendar.HOUR);
         int minute = calendar.get(Calendar.MINUTE);
-        int minute_of_the_day = hour*60+minute;
-        final int startTime = 6*60;
-        final int endTime = 12*60;
-        if (am_pm == 0){
+        int minute_of_the_day = hour * 60 + minute;
+        final int startTime = 6 * 60;
+        final int endTime = 12 * 60;
+        if (am_pm == 0) {
             if (minute_of_the_day >= startTime && minute_of_the_day <= endTime) {
                 isDay = true;
             } else {
                 isDay = false;
             }
-        }else {
+        } else {
             if (minute_of_the_day >= startTime && minute_of_the_day <= endTime) {
                 isDay = false;
             } else {
@@ -235,6 +240,7 @@ public class MainActivity extends AppCompatActivity{
         temp_01.setText(prefs.getString("temp01", ""));
         temp_02.setText(prefs.getString("temp02", ""));
         temp_03.setText(prefs.getString("temp03", ""));
+
     }
 
     public static void saveMessage(Context context, String air_conditioning_tx,
