@@ -319,6 +319,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             myCity_id = String.valueOf(data.getStringExtra("city_id"));
+            Snackbar.make(layout,data.getStringExtra("city_name"),
+                    Snackbar.LENGTH_LONG).show();
             try {
                 address = "https://api.heweather.com/x3/weather?cityid=" + URLEncoder.encode(myCity_id, "UTF-8")
                         + "&key=b727f217188c4e8a91ecba4d349c73ff";
@@ -330,6 +332,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onFinish(String response) {
                     try {
                         analysis(response);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

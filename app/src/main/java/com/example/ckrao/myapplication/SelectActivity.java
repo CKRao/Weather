@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -52,25 +53,9 @@ public class SelectActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        showProgressDialog();
         initViews();
     }
 
-    private void showProgressDialog() {
-        if (mDialog == null) {
-            mDialog = new AlertDialog.Builder(this).create();
-            mDialog.setMessage("加载中...");
-        }
-        mDialog.show();
-//        Log.i("mProgressDialog","show()");
-    }
-
-    private void closeProgressDialog() {
-        if (mDialog != null) {
-            mDialog.dismiss();
-//            Log.i("mProgressDialog","dismiss()");
-        }
-    }
 
     private void initViews() {
         mImageButton = (ImageButton) findViewById(R.id.id_back);
@@ -153,10 +138,13 @@ public class SelectActivity extends Activity {
                     editor.putBoolean("isChoose", true);
                     editor.commit();
                 }
-                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
+
                 Intent intent = new Intent();
                 String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();
+                String city_name = ((CitySortModel) adapter.getItem(position)).getName();
                 intent.putExtra("city_id", city_id);
+                intent.putExtra("city_name",city_name);
                 setResult(0, intent);
 //                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
