@@ -1,6 +1,7 @@
 package com.example.ckrao.myapplication;
 
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,14 +10,21 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.httpuility.HttpCallBackListener;
@@ -26,6 +34,7 @@ import com.yalantis.phoenix.PullToRefreshView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.List;
 
@@ -34,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String address;
     private String myCity_id;
-    private TextView city;
     private TextView week;
     private TextView temp;
     private TextView weather;
@@ -44,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView mAir_conditioning_tx;
     private TextView mUltraviolet_radiation_content;
     private TextView mUltraviolet_radiation_tx;
-    private ImageView img;
     private ImageView img_01;
     private ImageView img_02;
     private ImageView img_03;
@@ -59,39 +66,63 @@ public class MainActivity extends AppCompatActivity {
     private static boolean isDay;
     private PullToRefreshView mPullToRefreshView;
     private RelativeLayout layout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private FloatingActionButton mFloatingActionButton;
+    private ImageView bgImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
             Intent intent = new Intent(MainActivity.this, SelectActivity.class);
             startActivityForResult(intent, 0);
         }
-        setContentView(R.layout.layout_main);
+        setContentView(R.layout.coordinatorlayout);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+         collapsingToolbarLayout =
+                (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
         determineTheTime();
         initUI();
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
         showWeather();
-        //设置刷新监听者
-        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRefresh() {
-                mPullToRefreshView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        refreshData();
-
-
-                        mPullToRefreshView.setRefreshing(false);
-                    }
-                }, 1000);
+            public void onClick(View v) {
+                ObjectAnimator animator =ObjectAnimator.ofFloat(mFloatingActionButton,"rotation",0F,360F);
+                animator.setDuration(800).start();
+                refreshData();
             }
         });
+        //设置刷新监听者
+//        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                mPullToRefreshView.postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        refreshData();
+//
+//
+//                        mPullToRefreshView.setRefreshing(false);
+//                    }
+//                }, 1000);
+//            }
+//        });
 
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
+
                 CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
                 setTheInfo(bean);
             }
@@ -102,10 +133,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setChange() {
         if (isDay) {
-            layout.setBackgroundResource(R.drawable.bg1);
+            bgImg.setImageResource(R.drawable.background1);
         } else {
-            layout.setBackgroundResource(R.drawable.bg);
-            city.setTextColor(Color.WHITE);
+            layout.setBackgroundColor(Color.DKGRAY);
             weather.setTextColor(Color.WHITE);
             temp.setTextColor(Color.WHITE);
             week.setTextColor(Color.WHITE);
@@ -140,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setTheInfo(CurrentWeatherBean bean) {
-        city.setText(bean.getCity());
+        collapsingToolbarLayout.setTitle(bean.getCity());
         week.setText(bean.getWeek());
         temp.setText(bean.getTemp() + "℃");
         weather.setText(bean.getWeather());
@@ -152,7 +182,6 @@ public class MainActivity extends AppCompatActivity {
         mAir_conditioning_content.setText(bean.getAir_conditioning_content());
         mUltraviolet_radiation_tx.setText("紫外线指数——" + bean.getUltraviolet_radiation_tx());
         mUltraviolet_radiation_content.setText(bean.getUltraviolet_radiation_content());
-        img.setImageResource(getResource(bean.getImg()));
         img_01.setImageResource(getResource(bean.getImg_01()));
         img_02.setImageResource(getResource(bean.getImg_02()));
         img_03.setImageResource(getResource(bean.getImg_03()));
@@ -169,8 +198,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUI() {
+        bgImg = (ImageView) findViewById(R.id.id_bg_img);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.id_float_bt);
         layout = (RelativeLayout) findViewById(R.id.id_layout);
-        city = (TextView) findViewById(R.id.city);
         temp = (TextView) findViewById(R.id.temp);
         week = (TextView) findViewById(R.id.week);
         weather = (TextView) findViewById(R.id.weather);
@@ -183,7 +213,6 @@ public class MainActivity extends AppCompatActivity {
         mAir_conditioning_tx = (TextView) findViewById(R.id.id_air_conditioning_tx);
         mAir_conditioning_content = (TextView) findViewById(R.id.id_air_conditioning_content);
 
-        img = (ImageView) findViewById(R.id.img);
         img_01 = (ImageView) findViewById(R.id.id_wea_01);
         img_02 = (ImageView) findViewById(R.id.id_wea_02);
         img_03 = (ImageView) findViewById(R.id.id_wea_03);
@@ -192,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         temp_02 = (TextView) findViewById(R.id.temp_02);
         temp_03 = (TextView) findViewById(R.id.temp_03);
 
-        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
+//        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
         setChange();
     }
 
@@ -209,19 +238,29 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish(String response) {
                 analysis(response);
-
+               runOnUiThread(new Runnable() {
+                   @Override
+                   public void run() {
+                       Toast.makeText(getApplicationContext(),"更新成功",Toast.LENGTH_SHORT).show();
+                   }
+               });
             }
 
             @Override
             public void onError(Exception e) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(),"更新失败",Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
 
     private void showWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        city.setText(prefs.getString("city", "未知"));
+       collapsingToolbarLayout.setTitle(prefs.getString("city", "SpeedWeather"));
         week.setText(prefs.getString("week", "未知"));
         temp.setText(prefs.getString("temp", "0") + "℃");
         weather.setText(prefs.getString("weather", "未知"));
@@ -233,7 +272,6 @@ public class MainActivity extends AppCompatActivity {
         mAir_conditioning_content.setText(prefs.getString("air_conditioning_content", ""));
         mUltraviolet_radiation_tx.setText("紫外线指数——" + prefs.getString("ultraviolet_radiation_tx", ""));
         mUltraviolet_radiation_content.setText(prefs.getString("ultraviolet_radiation_content", ""));
-        img.setImageResource(getResource(prefs.getString("img", "img99")));
         img_01.setImageResource(getResource(prefs.getString("img01", "img99")));
         img_02.setImageResource(getResource(prefs.getString("img02", "img99")));
         img_03.setImageResource(getResource(prefs.getString("img03", "img99")));
