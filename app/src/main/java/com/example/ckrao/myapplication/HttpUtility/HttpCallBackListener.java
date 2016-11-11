@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication.httpuility;
+package com.example.ckrao.myapplication.HttpUtility;
 
 /**
  * Created by CKRAO on 2016/9/27.

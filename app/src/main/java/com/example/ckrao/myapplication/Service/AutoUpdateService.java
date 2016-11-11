@@ -8,18 +8,15 @@ import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.util.Log;
 
 import com.example.ckrao.myapplication.DataBean;
 import com.example.ckrao.myapplication.MainActivity;
-import com.example.ckrao.myapplication.httpuility.HttpCallBackListener;
-import com.example.ckrao.myapplication.httpuility.Httpuility;
+import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
+import com.example.ckrao.myapplication.HttpUtility.Httpuility;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.Map;
 
 /**
  * Created by clark on 2016/11/5.

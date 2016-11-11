@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication.httpuility;
+package com.example.ckrao.myapplication.HttpUtility;
 
 import android.content.Context;
 

@@ -12,10 +12,9 @@ import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.ActionBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -27,14 +26,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
-import com.example.ckrao.myapplication.httpuility.HttpCallBackListener;
-import com.example.ckrao.myapplication.httpuility.Httpuility;
+import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
+import com.example.ckrao.myapplication.HttpUtility.Httpuility;
+import com.example.ckrao.myapplication.Utility.ToastUtil;
 import com.google.gson.Gson;
 import com.yalantis.phoenix.PullToRefreshView;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.security.MessageDigest;
 import java.util.Calendar;
 import java.util.List;
 
@@ -241,7 +240,8 @@ public class MainActivity extends AppCompatActivity {
                runOnUiThread(new Runnable() {
                    @Override
                    public void run() {
-                       Toast.makeText(getApplicationContext(),"更新成功",Toast.LENGTH_SHORT).show();
+//                       ToastUtil.showToast(getApplicationContext(),"更新成功");
+                       Snackbar.make(bgImg,"更新成功",Snackbar.LENGTH_SHORT).show();
                    }
                });
             }
@@ -251,7 +251,8 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(),"更新失败",Toast.LENGTH_SHORT).show();
+                        Snackbar.make(bgImg,"更新失败",Snackbar.LENGTH_SHORT).show();
+//                        ToastUtil.showToast(getApplicationContext(),"更新失败");
                     }
                 });
             }
