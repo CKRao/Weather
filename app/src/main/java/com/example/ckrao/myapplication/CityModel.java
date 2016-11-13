@@ -6,7 +6,7 @@ package com.example.ckrao.myapplication;
 
 public class CityModel {
     private String Cityname;
-    private String CityId;
+//    private String CityId;
     private String sortLetters;
 
     public String getSortLetters() {
@@ -25,11 +25,11 @@ public class CityModel {
         Cityname = cityname;
     }
 
-    public String getCityId() {
-        return CityId;
-    }
-
-    public void setCityId(String cityId) {
-        CityId = cityId;
-    }
+//    public String getCityId() {
+//        return CityId;
+//    }
+//
+//    public void setCityId(String cityId) {
+//        CityId = cityId;
+//    }
 }

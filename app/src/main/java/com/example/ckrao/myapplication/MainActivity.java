@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
 import com.example.ckrao.myapplication.HttpUtility.Httpuility;
@@ -32,42 +31,43 @@ import com.example.ckrao.myapplication.Utility.ToastUtil;
 import com.google.gson.Gson;
 import com.yalantis.phoenix.PullToRefreshView;
 
+import org.androidannotations.annotations.Click;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.List;
-
-
 public class MainActivity extends AppCompatActivity {
-
+    TextView week;
+    TextView temp;
+    TextView weather;
+    TextView mCloth_tx;
+    TextView mCloth_content;
+    TextView mAir_conditioning_content;
+    TextView mAir_conditioning_tx;
+    TextView mUltraviolet_radiation_content;
+    TextView mUltraviolet_radiation_tx;
+    ImageView img_01;
+    ImageView img_02;
+    ImageView img_03;
+    TextView temp_01;
+    TextView temp_02;
+    TextView temp_03;
+    TextView mSport_tx;
+    TextView mSport_content;
+    RelativeLayout layout;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    FloatingActionButton mFloatingActionButton;
+    ImageView bgImg;
     private String address;
-    private String myCity_id;
-    private TextView week;
-    private TextView temp;
-    private TextView weather;
-    private TextView mCloth_tx;
-    private TextView mCloth_content;
-    private TextView mAir_conditioning_content;
-    private TextView mAir_conditioning_tx;
-    private TextView mUltraviolet_radiation_content;
-    private TextView mUltraviolet_radiation_tx;
-    private ImageView img_01;
-    private ImageView img_02;
-    private ImageView img_03;
-    private TextView temp_01;
-    private TextView temp_02;
-    private TextView temp_03;
-    private TextView mSport_tx;
-    private TextView mSport_content;
+    private String myCity;
     private Httpuility mHttpuility;
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
     private static boolean isDay;
-    private PullToRefreshView mPullToRefreshView;
-    private RelativeLayout layout;
-    private CollapsingToolbarLayout collapsingToolbarLayout;
-    private FloatingActionButton mFloatingActionButton;
-    private ImageView bgImg;
+//    private PullToRefreshView mPullToRefreshView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,43 +81,28 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-         collapsingToolbarLayout =
-                (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
         determineTheTime();
         initUI();
+        setChange();
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
         showWeather();
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObjectAnimator animator =ObjectAnimator.ofFloat(mFloatingActionButton,"rotation",0F,360F);
-                animator.setDuration(800).start();
+             ObjectAnimator.ofFloat(mFloatingActionButton,"rotation",0F,360F).
+                     setDuration(800).
+                     start();
                 refreshData();
             }
         });
-        //设置刷新监听者
-//        mPullToRefreshView.setOnRefreshListener(new PullToRefreshView.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                mPullToRefreshView.postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        refreshData();
-//
-//
-//                        mPullToRefreshView.setRefreshing(false);
-//                    }
-//                }, 1000);
-//            }
-//        });
-
         mHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
@@ -126,19 +111,6 @@ public class MainActivity extends AppCompatActivity {
                 setTheInfo(bean);
             }
         };
-
-    }
-
-
-    private void setChange() {
-        if (isDay) {
-            bgImg.setImageResource(R.drawable.background1);
-        } else {
-            layout.setBackgroundColor(Color.DKGRAY);
-            weather.setTextColor(Color.WHITE);
-            temp.setTextColor(Color.WHITE);
-            week.setTextColor(Color.WHITE);
-        }
 
     }
 
@@ -164,6 +136,46 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 isDay = true;
             }
+        }
+
+    }
+
+    private void initUI() {
+        bgImg = (ImageView) findViewById(R.id.id_bg_img);
+        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.id_float_bt);
+        layout = (RelativeLayout) findViewById(R.id.id_layout);
+        temp = (TextView) findViewById(R.id.temp);
+        week = (TextView) findViewById(R.id.week);
+        weather = (TextView) findViewById(R.id.weather);
+        mCloth_tx = (TextView) findViewById(R.id.id_cloth_tx);
+        mCloth_content = (TextView) findViewById(R.id.id_cloth_content);
+        mSport_tx = (TextView) findViewById(R.id.id_sport_tx);
+        mSport_content = (TextView) findViewById(R.id.id_sport_content);
+        mUltraviolet_radiation_tx = (TextView) findViewById(R.id.id_ultraviolet_radiation_tx);
+        mUltraviolet_radiation_content = (TextView) findViewById(R.id.id_ultraviolet_radiation_content);
+        mAir_conditioning_tx = (TextView) findViewById(R.id.id_air_conditioning_tx);
+        mAir_conditioning_content = (TextView) findViewById(R.id.id_air_conditioning_content);
+
+        img_01 = (ImageView) findViewById(R.id.id_wea_01);
+        img_02 = (ImageView) findViewById(R.id.id_wea_02);
+        img_03 = (ImageView) findViewById(R.id.id_wea_03);
+
+        temp_01 = (TextView) findViewById(R.id.temp_01);
+        temp_02 = (TextView) findViewById(R.id.temp_02);
+        temp_03 = (TextView) findViewById(R.id.temp_03);
+
+//        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
+
+    }
+
+    private void setChange() {
+        if (isDay) {
+            bgImg.setImageResource(R.drawable.background1);
+        } else {
+            layout.setBackgroundColor(Color.DKGRAY);
+            weather.setTextColor(Color.WHITE);
+            temp.setTextColor(Color.WHITE);
+            week.setTextColor(Color.WHITE);
         }
 
     }
@@ -196,39 +208,11 @@ public class MainActivity extends AppCompatActivity {
         return resId;
     }
 
-    private void initUI() {
-        bgImg = (ImageView) findViewById(R.id.id_bg_img);
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.id_float_bt);
-        layout = (RelativeLayout) findViewById(R.id.id_layout);
-        temp = (TextView) findViewById(R.id.temp);
-        week = (TextView) findViewById(R.id.week);
-        weather = (TextView) findViewById(R.id.weather);
-        mCloth_tx = (TextView) findViewById(R.id.id_cloth_tx);
-        mCloth_content = (TextView) findViewById(R.id.id_cloth_content);
-        mSport_tx = (TextView) findViewById(R.id.id_sport_tx);
-        mSport_content = (TextView) findViewById(R.id.id_sport_content);
-        mUltraviolet_radiation_tx = (TextView) findViewById(R.id.id_ultraviolet_radiation_tx);
-        mUltraviolet_radiation_content = (TextView) findViewById(R.id.id_ultraviolet_radiation_content);
-        mAir_conditioning_tx = (TextView) findViewById(R.id.id_air_conditioning_tx);
-        mAir_conditioning_content = (TextView) findViewById(R.id.id_air_conditioning_content);
-
-        img_01 = (ImageView) findViewById(R.id.id_wea_01);
-        img_02 = (ImageView) findViewById(R.id.id_wea_02);
-        img_03 = (ImageView) findViewById(R.id.id_wea_03);
-
-        temp_01 = (TextView) findViewById(R.id.temp_01);
-        temp_02 = (TextView) findViewById(R.id.temp_02);
-        temp_03 = (TextView) findViewById(R.id.temp_03);
-
-//        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
-        setChange();
-    }
-
     private void refreshData() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        myCity_id = prefs.getString("cityID", "");
+        myCity = prefs.getString("city", "");
         try {
-            address = "https://api.heweather.com/x3/weather?cityid=" + URLEncoder.encode(myCity_id, "UTF-8")
+            address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
                     + "&key=b727f217188c4e8a91ecba4d349c73ff";
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -237,13 +221,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFinish(String response) {
                 analysis(response);
-               runOnUiThread(new Runnable() {
-                   @Override
-                   public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
 //                       ToastUtil.showToast(getApplicationContext(),"更新成功");
-                       Snackbar.make(bgImg,"更新成功",Snackbar.LENGTH_SHORT).show();
-                   }
-               });
+                        Snackbar.make(bgImg, "更新成功", Snackbar.LENGTH_SHORT).show();
+                    }
+                });
             }
 
             @Override
@@ -251,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Snackbar.make(bgImg,"更新失败",Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(bgImg, "更新失败", Snackbar.LENGTH_SHORT).show();
 //                        ToastUtil.showToast(getApplicationContext(),"更新失败");
                     }
                 });
@@ -261,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void showWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-       collapsingToolbarLayout.setTitle(prefs.getString("city", "SpeedWeather"));
+        collapsingToolbarLayout.setTitle(prefs.getString("city", "SpeedWeather"));
         week.setText(prefs.getString("week", "未知"));
         temp.setText(prefs.getString("temp", "0") + "℃");
         weather.setText(prefs.getString("weather", "未知"));
@@ -291,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
                                    String img03, String temp01, String temp02, String temp03, String cityID) {
         SharedPreferences.Editor editor = PreferenceManager.
                 getDefaultSharedPreferences(context).edit();
-        editor.putString("cityID", cityID);
+//        editor.putString("cityID", cityID);
         editor.putString("city", mCity);
         editor.putString("week", mWeek);
         editor.putString("temp", mTemp);
@@ -318,11 +302,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-            myCity_id = String.valueOf(data.getStringExtra("city_id"));
-            Snackbar.make(layout,data.getStringExtra("city_name"),
+            myCity = String.valueOf(data.getStringExtra("city_name"));
+            Snackbar.make(layout, myCity,
                     Snackbar.LENGTH_LONG).show();
             try {
-                address = "https://api.heweather.com/x3/weather?cityid=" + URLEncoder.encode(myCity_id, "UTF-8")
+                address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
                         + "&key=b727f217188c4e8a91ecba4d349c73ff";
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -346,33 +330,32 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void analysis(String responce) {
-        responce = responce.replace(" ", "").replace("3.0", "");
+    public void analysis(String response) {
         Gson gson = new Gson();
-        DataBean bean = gson.fromJson(responce, DataBean.class);
-        String CityID = bean.getHeWeatherdataservice().get(0).getBasic().getId();
-        String img = "img" + bean.getHeWeatherdataservice().get(0).getNow().getCond().getCode();
-        String mCity = bean.getHeWeatherdataservice().get(0).getBasic().getCity();
-        String mWeek = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getDate().substring(5);
-        String mTemp = bean.getHeWeatherdataservice().get(0).getNow().getTmp();
-        String mWeather = bean.getHeWeatherdataservice().get(0).getNow().getCond().getTxt();
-        String air_conditioning_tx = bean.getHeWeatherdataservice().get(0).getSuggestion().getFlu().getBrf();
-        String air_conditioning_content = bean.getHeWeatherdataservice().get(0).getSuggestion().getFlu().getTxt();
-        String sport_tx = bean.getHeWeatherdataservice().get(0).getSuggestion().getSport().getBrf();
-        String sport_content = bean.getHeWeatherdataservice().get(0).getSuggestion().getSport().getTxt();
-        String ultraviolet_radiation_content = bean.getHeWeatherdataservice().get(0).getSuggestion().getUv().getTxt();
-        String ultraviolet_radiation_tx = bean.getHeWeatherdataservice().get(0).getSuggestion().getUv().getBrf();
-        String cloth_content = bean.getHeWeatherdataservice().get(0).getSuggestion().getDrsg().getTxt();
-        String cloth_tx = bean.getHeWeatherdataservice().get(0).getSuggestion().getDrsg().getBrf();
-        String img03 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getCond().getCode_d();
-        String img02 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getCond().getCode_d();
-        String img01 = "img" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getCond().getCode_d();
-        String temp01 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMin() +
-                "º～" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(0).getTmp().getMax() + "º";
-        String temp02 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMin() +
-                "º～" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(1).getTmp().getMax() + "º";
-        String temp03 = bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getTmp().getMin() +
-                "º～" + bean.getHeWeatherdataservice().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
+        DataBean bean = gson.fromJson(response, DataBean.class);
+        String CityID = bean.getHeWeather5().get(0).getBasic().getId();
+        String img = "img" + bean.getHeWeather5().get(0).getNow().getCond().getCode();
+        String mCity = bean.getHeWeather5().get(0).getBasic().getCity();
+        String mWeek = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate().substring(5);
+        String mTemp = bean.getHeWeather5().get(0).getNow().getTmp();
+        String mWeather = bean.getHeWeather5().get(0).getNow().getCond().getTxt();
+        String air_conditioning_tx = bean.getHeWeather5().get(0).getSuggestion().getFlu().getBrf();
+        String air_conditioning_content = bean.getHeWeather5().get(0).getSuggestion().getFlu().getTxt();
+        String sport_tx = bean.getHeWeather5().get(0).getSuggestion().getSport().getBrf();
+        String sport_content = bean.getHeWeather5().get(0).getSuggestion().getSport().getTxt();
+        String ultraviolet_radiation_content = bean.getHeWeather5().get(0).getSuggestion().getUv().getTxt();
+        String ultraviolet_radiation_tx = bean.getHeWeather5().get(0).getSuggestion().getUv().getBrf();
+        String cloth_content = bean.getHeWeather5().get(0).getSuggestion().getDrsg().getTxt();
+        String cloth_tx = bean.getHeWeather5().get(0).getSuggestion().getDrsg().getBrf();
+        String img03 = "img" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getCond().getCode_d();
+        String img02 = "img" + bean.getHeWeather5().get(0).getDaily_forecast().get(1).getCond().getCode_d();
+        String img01 = "img" + bean.getHeWeather5().get(0).getDaily_forecast().get(0).getCond().getCode_d();
+        String temp01 = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getTmp().getMin() +
+                "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(0).getTmp().getMax() + "º";
+        String temp02 = bean.getHeWeather5().get(0).getDaily_forecast().get(1).getTmp().getMin() +
+                "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(1).getTmp().getMax() + "º";
+        String temp03 = bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMin() +
+                "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
                 mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03, CityID);

@@ -9,89 +9,33 @@ import java.util.List;
 public class DataBean {
 
 
-    /**
-     * aqi : {"city":{"aqi":"16","co":"0","no2":"15","o3":"51","pm10":"13","pm25":"10","qlty":"优","so2":"2"}}
-     * basic : {"city":"北京","cnty":"中国","id":"CN101010100","lat":"39.904000","lon":"116.391000","update":{"loc":"2016-10-30 20:54","utc":"2016-10-30 12:54"}}
-     * daily_forecast : [{"astro":{"sr":"06:41","ss":"17:14"},"cond":{"code_d":"104","code_n":"101","txt_d":"阴","txt_n":"多云"},"date":"2016-10-30","hum":"42","pcpn":"0.0","pop":"0","pres":"1028","tmp":{"max":"13","min":"0"},"vis":"10","wind":{"deg":"342","dir":"北风","sc":"4-5","spd":"17"}},{"astro":{"sr":"06:42","ss":"17:13"},"cond":{"code_d":"100","code_n":"100","txt_d":"晴","txt_n":"晴"},"date":"2016-10-31","hum":"24","pcpn":"0.0","pop":"0","pres":"1038","tmp":{"max":"6","min":"-4"},"vis":"10","wind":{"deg":"354","dir":"无持续风向","sc":"微风","spd":"5"}},{"astro":{"sr":"06:43","ss":"17:12"},"cond":{"code_d":"101","code_n":"100","txt_d":"多云","txt_n":"晴"},"date":"2016-11-01","hum":"47","pcpn":"0.0","pop":"0","pres":"1034","tmp":{"max":"8","min":"-2"},"vis":"10","wind":{"deg":"204","dir":"无持续风向","sc":"微风","spd":"2"}},{"astro":{"sr":"06:44","ss":"17:11"},"cond":{"code_d":"100","code_n":"100","txt_d":"晴","txt_n":"晴"},"date":"2016-11-02","hum":"58","pcpn":"0.0","pop":"0","pres":"1025","tmp":{"max":"12","min":"2"},"vis":"10","wind":{"deg":"165","dir":"无持续风向","sc":"微风","spd":"0"}},{"astro":{"sr":"06:45","ss":"17:10"},"cond":{"code_d":"100","code_n":"100","txt_d":"晴","txt_n":"晴"},"date":"2016-11-03","hum":"40","pcpn":"0.0","pop":"0","pres":"1024","tmp":{"max":"14","min":"3"},"vis":"10","wind":{"deg":"197","dir":"无持续风向","sc":"微风","spd":"5"}},{"astro":{"sr":"06:47","ss":"17:08"},"cond":{"code_d":"502","code_n":"502","txt_d":"霾","txt_n":"霾"},"date":"2016-11-04","hum":"44","pcpn":"0.0","pop":"0","pres":"1018","tmp":{"max":"15","min":"4"},"vis":"10","wind":{"deg":"6","dir":"无持续风向","sc":"微风","spd":"1"}},{"astro":{"sr":"06:48","ss":"17:07"},"cond":{"code_d":"100","code_n":"101","txt_d":"晴","txt_n":"多云"},"date":"2016-11-05","hum":"64","pcpn":"0.0","pop":"0","pres":"1015","tmp":{"max":"16","min":"5"},"vis":"10","wind":{"deg":"167","dir":"无持续风向","sc":"微风","spd":"4"}}]
-     * hourly_forecast : [{"date":"2016-10-30 22:00","hum":"31","pop":"0","pres":"1037","tmp":"4","wind":{"deg":"6","dir":"北风","sc":"3-4","spd":"17"}}]
-     * now : {"cond":{"code":"101","txt":"多云"},"fl":"4","hum":"26","pcpn":"0","pres":"1031","tmp":"8","vis":"10","wind":{"deg":"340","dir":"北风","sc":"6-7","spd":"35"}}
-     * status : ok
-     * suggestion : {"comf":{"brf":"较舒适","txt":"白天天气晴好，早晚会感觉偏凉，午后舒适、宜人。"},"cw":{"brf":"较不宜","txt":"较不宜洗车，未来一天无雨，风力较大，如果执意擦洗汽车，要做好蒙上污垢的心理准备。"},"drsg":{"brf":"冷","txt":"天气冷，建议着棉服、羽绒服、皮夹克加羊毛衫等冬季服装。年老体弱者宜着厚棉衣、冬大衣或厚羽绒服。"},"flu":{"brf":"极易发","txt":"将有一次强降温过程，天气寒冷，极易发生感冒，请特别注意增加衣服保暖防寒。"},"sport":{"brf":"较不宜","txt":"天气较好，但考虑风力较大，天气寒冷，推荐您进行室内运动，若在户外运动须注意保暖。"},"trav":{"brf":"一般","txt":"天气较好，温度稍低，加之风稍大，让人感觉有点凉，会对外出有一定影响，外出注意防风保暖。"},"uv":{"brf":"中等","txt":"属中等强度紫外线辐射天气，外出时建议涂擦SPF高于15、PA+的防晒护肤品，戴帽子、太阳镜。"}}
-     */
+    private List<HeWeather5Bean> HeWeather5;
 
-    private List<HeWeatherdataserviceBean> HeWeatherdataservice;
-
-    public List<HeWeatherdataserviceBean> getHeWeatherdataservice() {
-        return HeWeatherdataservice;
+    public List<HeWeather5Bean> getHeWeather5() {
+        return HeWeather5;
     }
 
-    public void setHeWeatherdataservice(List<HeWeatherdataserviceBean> HeWeatherdataservice) {
-        this.HeWeatherdataservice = HeWeatherdataservice;
+    public void setHeWeather5(List<HeWeather5Bean> HeWeather5) {
+        this.HeWeather5 = HeWeather5;
     }
 
-    public static class HeWeatherdataserviceBean {
+    public static class HeWeather5Bean {
         /**
-         * city : {"aqi":"16","co":"0","no2":"15","o3":"51","pm10":"13","pm25":"10","qlty":"优","so2":"2"}
+         * aqi : {"city":{"aqi":"166","co":"3","no2":"83","o3":"2","pm10":"133","pm25":"166","qlty":"中度污染","so2":"14"}}
+         * basic : {"city":"北京","cnty":"中国","id":"CN101010100","lat":"39.904000","lon":"116.391000","update":{"loc":"2016-11-13 16:57","utc":"2016-11-13 08:57"}}
+         * daily_forecast : [{"astro":{"mr":"16:25","ms":"04:51","sr":"06:57","ss":"17:00"},"cond":{"code_d":"502","code_n":"502","txt_d":"霾","txt_n":"霾"},"date":"2016-11-13","hum":"85","pcpn":"0.0","pop":"0","pres":"1018","tmp":{"max":"11","min":"3"},"uv":"2","vis":"10","wind":{"deg":"177","dir":"无持续风向","sc":"微风","spd":"3"}},{"astro":{"mr":"17:09","ms":"06:05","sr":"06:58","ss":"16:59"},"cond":{"code_d":"101","code_n":"100","txt_d":"多云","txt_n":"晴"},"date":"2016-11-14","hum":"24","pcpn":"0.0","pop":"0","pres":"1026","tmp":{"max":"12","min":"-2"},"uv":"2","vis":"10","wind":{"deg":"327","dir":"北风","sc":"4-5","spd":"21"}},{"astro":{"mr":"17:57","ms":"07:18","sr":"06:59","ss":"16:58"},"cond":{"code_d":"100","code_n":"101","txt_d":"晴","txt_n":"多云"},"date":"2016-11-15","hum":"37","pcpn":"0.0","pop":"0","pres":"1027","tmp":{"max":"9","min":"-1"},"uv":"2","vis":"10","wind":{"deg":"192","dir":"无持续风向","sc":"微风","spd":"4"}},{"astro":{"mr":"18:51","ms":"08:29","sr":"07:00","ss":"16:57"},"cond":{"code_d":"101","code_n":"502","txt_d":"多云","txt_n":"霾"},"date":"2016-11-16","hum":"46","pcpn":"0.0","pop":"1","pres":"1023","tmp":{"max":"11","min":"1"},"uv":"2","vis":"10","wind":{"deg":"114","dir":"无持续风向","sc":"微风","spd":"0"}},{"astro":{"mr":"19:49","ms":"09:36","sr":"07:01","ss":"16:56"},"cond":{"code_d":"502","code_n":"502","txt_d":"霾","txt_n":"霾"},"date":"2016-11-17","hum":"83","pcpn":"0.1","pop":"20","pres":"1023","tmp":{"max":"10","min":"5"},"uv":"2","vis":"10","wind":{"deg":"127","dir":"无持续风向","sc":"微风","spd":"9"}},{"astro":{"mr":"20:51","ms":"10:34","sr":"07:03","ss":"16:56"},"cond":{"code_d":"502","code_n":"502","txt_d":"霾","txt_n":"霾"},"date":"2016-11-18","hum":"93","pcpn":"10.4","pop":"56","pres":"1017","tmp":{"max":"9","min":"4"},"uv":"-999","vis":"2","wind":{"deg":"19","dir":"无持续风向","sc":"微风","spd":"8"}},{"astro":{"mr":"21:55","ms":"11:26","sr":"07:04","ss":"16:55"},"cond":{"code_d":"101","code_n":"104","txt_d":"多云","txt_n":"阴"},"date":"2016-11-19","hum":"92","pcpn":"16.7","pop":"100","pres":"1027","tmp":{"max":"10","min":"2"},"uv":"-999","vis":"9","wind":{"deg":"126","dir":"北风","sc":"3-4","spd":"12"}}]
+         * hourly_forecast : [{"cond":{"code":"502","txt":"霾"},"date":"2016-11-13 19:00","hum":"91","pop":"0","pres":"1016","tmp":"8","wind":{"deg":"66","dir":"无持续风向","sc":"微风","spd":"3"}},{"cond":{"code":"502","txt":"霾"},"date":"2016-11-13 22:00","hum":"84","pop":"0","pres":"1018","tmp":"8","wind":{"deg":"22","dir":"北风","sc":"微风","spd":"7"}}]
+         * now : {"cond":{"code":"502","txt":"霾"},"fl":"9","hum":"75","pcpn":"0","pres":"1014","tmp":"9","vis":"3","wind":{"deg":"160","dir":"东风","sc":"4-5","spd":"20"}}
+         * status : ok
+         * suggestion : {"air":{"brf":"很差","txt":"气象条件不利于空气污染物稀释、扩散和清除，请尽量避免在室外长时间活动。"},"comf":{"brf":"较舒适","txt":"白天天气阴沉，会感到有点儿凉，但大部分人完全可以接受。"},"cw":{"brf":"不宜","txt":"不宜洗车，未来24小时内有霾，如果在此期间洗车，会弄脏您的爱车。"},"drsg":{"brf":"较冷","txt":"建议着厚外套加毛衣等服装。年老体弱者宜着大衣、呢外套加羊毛衫。"},"flu":{"brf":"较易发","txt":"天气转凉，空气湿度较大，较易发生感冒，体质较弱的朋友请注意适当防护。"},"sport":{"brf":"较不宜","txt":"有扬沙或浮尘，建议适当停止户外运动，选择在室内进行运动，以避免吸入更多沙尘，有损健康。"},"trav":{"brf":"较不宜","txt":"空气质量差，不适宜旅游"},"uv":{"brf":"最弱","txt":"属弱紫外线辐射天气，无需特别防护。若长期在户外，建议涂擦SPF在8-12之间的防晒护肤品。"}}
          */
 
         private AqiBean aqi;
-        /**
-         * city : 北京
-         * cnty : 中国
-         * id : CN101010100
-         * lat : 39.904000
-         * lon : 116.391000
-         * update : {"loc":"2016-10-30 20:54","utc":"2016-10-30 12:54"}
-         */
-
         private BasicBean basic;
-        /**
-         * cond : {"code":"101","txt":"多云"}
-         * fl : 4
-         * hum : 26
-         * pcpn : 0
-         * pres : 1031
-         * tmp : 8
-         * vis : 10
-         * wind : {"deg":"340","dir":"北风","sc":"6-7","spd":"35"}
-         */
-
         private NowBean now;
         private String status;
-        /**
-         * comf : {"brf":"较舒适","txt":"白天天气晴好，早晚会感觉偏凉，午后舒适、宜人。"}
-         * cw : {"brf":"较不宜","txt":"较不宜洗车，未来一天无雨，风力较大，如果执意擦洗汽车，要做好蒙上污垢的心理准备。"}
-         * drsg : {"brf":"冷","txt":"天气冷，建议着棉服、羽绒服、皮夹克加羊毛衫等冬季服装。年老体弱者宜着厚棉衣、冬大衣或厚羽绒服。"}
-         * flu : {"brf":"极易发","txt":"将有一次强降温过程，天气寒冷，极易发生感冒，请特别注意增加衣服保暖防寒。"}
-         * sport : {"brf":"较不宜","txt":"天气较好，但考虑风力较大，天气寒冷，推荐您进行室内运动，若在户外运动须注意保暖。"}
-         * trav : {"brf":"一般","txt":"天气较好，温度稍低，加之风稍大，让人感觉有点凉，会对外出有一定影响，外出注意防风保暖。"}
-         * uv : {"brf":"中等","txt":"属中等强度紫外线辐射天气，外出时建议涂擦SPF高于15、PA+的防晒护肤品，戴帽子、太阳镜。"}
-         */
-
         private SuggestionBean suggestion;
-        /**
-         * astro : {"sr":"06:41","ss":"17:14"}
-         * cond : {"code_d":"104","code_n":"101","txt_d":"阴","txt_n":"多云"}
-         * date : 2016-10-30
-         * hum : 42
-         * pcpn : 0.0
-         * pop : 0
-         * pres : 1028
-         * tmp : {"max":"13","min":"0"}
-         * vis : 10
-         * wind : {"deg":"342","dir":"北风","sc":"4-5","spd":"17"}
-         */
-
         private List<DailyForecastBean> daily_forecast;
-        /**
-         * date : 2016-10-30 22:00
-         * hum : 31
-         * pop : 0
-         * pres : 1037
-         * tmp : 4
-         * wind : {"deg":"6","dir":"北风","sc":"3-4","spd":"17"}
-         */
-
         private List<HourlyForecastBean> hourly_forecast;
 
         public AqiBean getAqi() {
@@ -152,14 +96,7 @@ public class DataBean {
 
         public static class AqiBean {
             /**
-             * aqi : 16
-             * co : 0
-             * no2 : 15
-             * o3 : 51
-             * pm10 : 13
-             * pm25 : 10
-             * qlty : 优
-             * so2 : 2
+             * city : {"aqi":"166","co":"3","no2":"83","o3":"2","pm10":"133","pm25":"166","qlty":"中度污染","so2":"14"}
              */
 
             private CityBean city;
@@ -173,6 +110,17 @@ public class DataBean {
             }
 
             public static class CityBean {
+                /**
+                 * aqi : 166
+                 * co : 3
+                 * no2 : 83
+                 * o3 : 2
+                 * pm10 : 133
+                 * pm25 : 166
+                 * qlty : 中度污染
+                 * so2 : 14
+                 */
+
                 private String aqi;
                 private String co;
                 private String no2;
@@ -249,16 +197,20 @@ public class DataBean {
         }
 
         public static class BasicBean {
+            /**
+             * city : 北京
+             * cnty : 中国
+             * id : CN101010100
+             * lat : 39.904000
+             * lon : 116.391000
+             * update : {"loc":"2016-11-13 16:57","utc":"2016-11-13 08:57"}
+             */
+
             private String city;
             private String cnty;
             private String id;
             private String lat;
             private String lon;
-            /**
-             * loc : 2016-10-30 20:54
-             * utc : 2016-10-30 12:54
-             */
-
             private UpdateBean update;
 
             public String getCity() {
@@ -310,6 +262,11 @@ public class DataBean {
             }
 
             public static class UpdateBean {
+                /**
+                 * loc : 2016-11-13 16:57
+                 * utc : 2016-11-13 08:57
+                 */
+
                 private String loc;
                 private String utc;
 
@@ -333,8 +290,14 @@ public class DataBean {
 
         public static class NowBean {
             /**
-             * code : 101
-             * txt : 多云
+             * cond : {"code":"502","txt":"霾"}
+             * fl : 9
+             * hum : 75
+             * pcpn : 0
+             * pres : 1014
+             * tmp : 9
+             * vis : 3
+             * wind : {"deg":"160","dir":"东风","sc":"4-5","spd":"20"}
              */
 
             private CondBean cond;
@@ -344,13 +307,6 @@ public class DataBean {
             private String pres;
             private String tmp;
             private String vis;
-            /**
-             * deg : 340
-             * dir : 北风
-             * sc : 6-7
-             * spd : 35
-             */
-
             private WindBean wind;
 
             public CondBean getCond() {
@@ -418,6 +374,11 @@ public class DataBean {
             }
 
             public static class CondBean {
+                /**
+                 * code : 502
+                 * txt : 霾
+                 */
+
                 private String code;
                 private String txt;
 
@@ -439,6 +400,13 @@ public class DataBean {
             }
 
             public static class WindBean {
+                /**
+                 * deg : 160
+                 * dir : 东风
+                 * sc : 4-5
+                 * spd : 20
+                 */
+
                 private String deg;
                 private String dir;
                 private String sc;
@@ -480,47 +448,32 @@ public class DataBean {
 
         public static class SuggestionBean {
             /**
-             * brf : 较舒适
-             * txt : 白天天气晴好，早晚会感觉偏凉，午后舒适、宜人。
+             * air : {"brf":"很差","txt":"气象条件不利于空气污染物稀释、扩散和清除，请尽量避免在室外长时间活动。"}
+             * comf : {"brf":"较舒适","txt":"白天天气阴沉，会感到有点儿凉，但大部分人完全可以接受。"}
+             * cw : {"brf":"不宜","txt":"不宜洗车，未来24小时内有霾，如果在此期间洗车，会弄脏您的爱车。"}
+             * drsg : {"brf":"较冷","txt":"建议着厚外套加毛衣等服装。年老体弱者宜着大衣、呢外套加羊毛衫。"}
+             * flu : {"brf":"较易发","txt":"天气转凉，空气湿度较大，较易发生感冒，体质较弱的朋友请注意适当防护。"}
+             * sport : {"brf":"较不宜","txt":"有扬沙或浮尘，建议适当停止户外运动，选择在室内进行运动，以避免吸入更多沙尘，有损健康。"}
+             * trav : {"brf":"较不宜","txt":"空气质量差，不适宜旅游"}
+             * uv : {"brf":"最弱","txt":"属弱紫外线辐射天气，无需特别防护。若长期在户外，建议涂擦SPF在8-12之间的防晒护肤品。"}
              */
 
+            private AirBean air;
             private ComfBean comf;
-            /**
-             * brf : 较不宜
-             * txt : 较不宜洗车，未来一天无雨，风力较大，如果执意擦洗汽车，要做好蒙上污垢的心理准备。
-             */
-
             private CwBean cw;
-            /**
-             * brf : 冷
-             * txt : 天气冷，建议着棉服、羽绒服、皮夹克加羊毛衫等冬季服装。年老体弱者宜着厚棉衣、冬大衣或厚羽绒服。
-             */
-
             private DrsgBean drsg;
-            /**
-             * brf : 极易发
-             * txt : 将有一次强降温过程，天气寒冷，极易发生感冒，请特别注意增加衣服保暖防寒。
-             */
-
             private FluBean flu;
-            /**
-             * brf : 较不宜
-             * txt : 天气较好，但考虑风力较大，天气寒冷，推荐您进行室内运动，若在户外运动须注意保暖。
-             */
-
             private SportBean sport;
-            /**
-             * brf : 一般
-             * txt : 天气较好，温度稍低，加之风稍大，让人感觉有点凉，会对外出有一定影响，外出注意防风保暖。
-             */
-
             private TravBean trav;
-            /**
-             * brf : 中等
-             * txt : 属中等强度紫外线辐射天气，外出时建议涂擦SPF高于15、PA+的防晒护肤品，戴帽子、太阳镜。
-             */
-
             private UvBean uv;
+
+            public AirBean getAir() {
+                return air;
+            }
+
+            public void setAir(AirBean air) {
+                this.air = air;
+            }
 
             public ComfBean getComf() {
                 return comf;
@@ -578,7 +531,38 @@ public class DataBean {
                 this.uv = uv;
             }
 
+            public static class AirBean {
+                /**
+                 * brf : 很差
+                 * txt : 气象条件不利于空气污染物稀释、扩散和清除，请尽量避免在室外长时间活动。
+                 */
+
+                private String brf;
+                private String txt;
+
+                public String getBrf() {
+                    return brf;
+                }
+
+                public void setBrf(String brf) {
+                    this.brf = brf;
+                }
+
+                public String getTxt() {
+                    return txt;
+                }
+
+                public void setTxt(String txt) {
+                    this.txt = txt;
+                }
+            }
+
             public static class ComfBean {
+                /**
+                 * brf : 较舒适
+                 * txt : 白天天气阴沉，会感到有点儿凉，但大部分人完全可以接受。
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -600,6 +584,11 @@ public class DataBean {
             }
 
             public static class CwBean {
+                /**
+                 * brf : 不宜
+                 * txt : 不宜洗车，未来24小时内有霾，如果在此期间洗车，会弄脏您的爱车。
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -621,6 +610,11 @@ public class DataBean {
             }
 
             public static class DrsgBean {
+                /**
+                 * brf : 较冷
+                 * txt : 建议着厚外套加毛衣等服装。年老体弱者宜着大衣、呢外套加羊毛衫。
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -642,6 +636,11 @@ public class DataBean {
             }
 
             public static class FluBean {
+                /**
+                 * brf : 较易发
+                 * txt : 天气转凉，空气湿度较大，较易发生感冒，体质较弱的朋友请注意适当防护。
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -663,6 +662,11 @@ public class DataBean {
             }
 
             public static class SportBean {
+                /**
+                 * brf : 较不宜
+                 * txt : 有扬沙或浮尘，建议适当停止户外运动，选择在室内进行运动，以避免吸入更多沙尘，有损健康。
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -684,6 +688,11 @@ public class DataBean {
             }
 
             public static class TravBean {
+                /**
+                 * brf : 较不宜
+                 * txt : 空气质量差，不适宜旅游
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -705,6 +714,11 @@ public class DataBean {
             }
 
             public static class UvBean {
+                /**
+                 * brf : 最弱
+                 * txt : 属弱紫外线辐射天气，无需特别防护。若长期在户外，建议涂擦SPF在8-12之间的防晒护肤品。
+                 */
+
                 private String brf;
                 private String txt;
 
@@ -728,39 +742,30 @@ public class DataBean {
 
         public static class DailyForecastBean {
             /**
-             * sr : 06:41
-             * ss : 17:14
+             * astro : {"mr":"16:25","ms":"04:51","sr":"06:57","ss":"17:00"}
+             * cond : {"code_d":"502","code_n":"502","txt_d":"霾","txt_n":"霾"}
+             * date : 2016-11-13
+             * hum : 85
+             * pcpn : 0.0
+             * pop : 0
+             * pres : 1018
+             * tmp : {"max":"11","min":"3"}
+             * uv : 2
+             * vis : 10
+             * wind : {"deg":"177","dir":"无持续风向","sc":"微风","spd":"3"}
              */
 
             private AstroBean astro;
-            /**
-             * code_d : 104
-             * code_n : 101
-             * txt_d : 阴
-             * txt_n : 多云
-             */
-
-            private CondBean cond;
+            private CondBeanX cond;
             private String date;
             private String hum;
             private String pcpn;
             private String pop;
             private String pres;
-            /**
-             * max : 13
-             * min : 0
-             */
-
             private TmpBean tmp;
+            private String uv;
             private String vis;
-            /**
-             * deg : 342
-             * dir : 北风
-             * sc : 4-5
-             * spd : 17
-             */
-
-            private WindBean wind;
+            private WindBeanX wind;
 
             public AstroBean getAstro() {
                 return astro;
@@ -770,11 +775,11 @@ public class DataBean {
                 this.astro = astro;
             }
 
-            public CondBean getCond() {
+            public CondBeanX getCond() {
                 return cond;
             }
 
-            public void setCond(CondBean cond) {
+            public void setCond(CondBeanX cond) {
                 this.cond = cond;
             }
 
@@ -826,6 +831,14 @@ public class DataBean {
                 this.tmp = tmp;
             }
 
+            public String getUv() {
+                return uv;
+            }
+
+            public void setUv(String uv) {
+                this.uv = uv;
+            }
+
             public String getVis() {
                 return vis;
             }
@@ -834,17 +847,42 @@ public class DataBean {
                 this.vis = vis;
             }
 
-            public WindBean getWind() {
+            public WindBeanX getWind() {
                 return wind;
             }
 
-            public void setWind(WindBean wind) {
+            public void setWind(WindBeanX wind) {
                 this.wind = wind;
             }
 
             public static class AstroBean {
+                /**
+                 * mr : 16:25
+                 * ms : 04:51
+                 * sr : 06:57
+                 * ss : 17:00
+                 */
+
+                private String mr;
+                private String ms;
                 private String sr;
                 private String ss;
+
+                public String getMr() {
+                    return mr;
+                }
+
+                public void setMr(String mr) {
+                    this.mr = mr;
+                }
+
+                public String getMs() {
+                    return ms;
+                }
+
+                public void setMs(String ms) {
+                    this.ms = ms;
+                }
 
                 public String getSr() {
                     return sr;
@@ -863,7 +901,14 @@ public class DataBean {
                 }
             }
 
-            public static class CondBean {
+            public static class CondBeanX {
+                /**
+                 * code_d : 502
+                 * code_n : 502
+                 * txt_d : 霾
+                 * txt_n : 霾
+                 */
+
                 private String code_d;
                 private String code_n;
                 private String txt_d;
@@ -903,6 +948,11 @@ public class DataBean {
             }
 
             public static class TmpBean {
+                /**
+                 * max : 11
+                 * min : 3
+                 */
+
                 private String max;
                 private String min;
 
@@ -923,7 +973,14 @@ public class DataBean {
                 }
             }
 
-            public static class WindBean {
+            public static class WindBeanX {
+                /**
+                 * deg : 177
+                 * dir : 无持续风向
+                 * sc : 微风
+                 * spd : 3
+                 */
+
                 private String deg;
                 private String dir;
                 private String sc;
@@ -964,19 +1021,31 @@ public class DataBean {
         }
 
         public static class HourlyForecastBean {
+            /**
+             * cond : {"code":"502","txt":"霾"}
+             * date : 2016-11-13 19:00
+             * hum : 91
+             * pop : 0
+             * pres : 1016
+             * tmp : 8
+             * wind : {"deg":"66","dir":"无持续风向","sc":"微风","spd":"3"}
+             */
+
+            private CondBeanXX cond;
             private String date;
             private String hum;
             private String pop;
             private String pres;
             private String tmp;
-            /**
-             * deg : 6
-             * dir : 北风
-             * sc : 3-4
-             * spd : 17
-             */
+            private WindBeanXX wind;
 
-            private WindBean wind;
+            public CondBeanXX getCond() {
+                return cond;
+            }
+
+            public void setCond(CondBeanXX cond) {
+                this.cond = cond;
+            }
 
             public String getDate() {
                 return date;
@@ -1018,15 +1087,48 @@ public class DataBean {
                 this.tmp = tmp;
             }
 
-            public WindBean getWind() {
+            public WindBeanXX getWind() {
                 return wind;
             }
 
-            public void setWind(WindBean wind) {
+            public void setWind(WindBeanXX wind) {
                 this.wind = wind;
             }
 
-            public static class WindBean {
+            public static class CondBeanXX {
+                /**
+                 * code : 502
+                 * txt : 霾
+                 */
+
+                private String code;
+                private String txt;
+
+                public String getCode() {
+                    return code;
+                }
+
+                public void setCode(String code) {
+                    this.code = code;
+                }
+
+                public String getTxt() {
+                    return txt;
+                }
+
+                public void setTxt(String txt) {
+                    this.txt = txt;
+                }
+            }
+
+            public static class WindBeanXX {
+                /**
+                 * deg : 66
+                 * dir : 无持续风向
+                 * sc : 微风
+                 * spd : 3
+                 */
+
                 private String deg;
                 private String dir;
                 private String sc;

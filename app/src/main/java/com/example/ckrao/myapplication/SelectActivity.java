@@ -81,11 +81,9 @@ public class SelectActivity extends Activity {
                 if (cursor.moveToFirst()) {
                     do {
                         String name = cursor.getString(cursor.getColumnIndex("city_area"));
-                        String id = cursor.getString(cursor.getColumnIndex("city_id"));
                         String sortLetters = cursor.getString(cursor.getColumnIndex("city_spell_zh"));
                         CityModel model = new CityModel();
                         model.setCityname(name);
-                        model.setCityId(id);
                         model.setSortLetters(sortLetters);
                         arrayList.add(model);
                     } while (cursor.moveToNext());
@@ -141,9 +139,8 @@ public class SelectActivity extends Activity {
 //                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent();
-                String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();
+//                String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();
                 String city_name = ((CitySortModel) adapter.getItem(position)).getName();
-                intent.putExtra("city_id", city_id);
                 intent.putExtra("city_name",city_name);
                 setResult(0, intent);
 //                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -224,7 +221,6 @@ public class SelectActivity extends Activity {
         for (int i = 0; i < data.size(); i++) {
             CitySortModel sortModel = new CitySortModel();
             sortModel.setName(data.get(i).getCityname());
-            sortModel.setCityId(data.get(i).getCityId());
 //            String pinyin = PinyinUtils.getPingYin(data.get(i).getCityname());
             String pinyin= data.get(i).getSortLetters();
             String sortString = pinyin.substring(0, 1).toUpperCase();
