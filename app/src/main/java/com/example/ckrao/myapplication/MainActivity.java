@@ -2,6 +2,7 @@ package com.example.ckrao.myapplication;
 
 
 import android.animation.ObjectAnimator;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,22 +25,21 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
+
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
 import com.example.ckrao.myapplication.HttpUtility.Httpuility;
-import com.example.ckrao.myapplication.Utility.ToastUtil;
 import com.google.gson.Gson;
-import com.yalantis.phoenix.PullToRefreshView;
-
-import org.androidannotations.annotations.Click;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
+import com.baidu.location.Poi;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
     TextView week;
     TextView temp;
@@ -61,6 +62,9 @@ public class MainActivity extends AppCompatActivity {
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton mFloatingActionButton;
     ImageView bgImg;
+    LocationClient mLocationClient;
+    BDLocationListener mBDLocationListener = new MyLocationListener();
+    Toolbar toolbar;
     private String address;
     private String myCity;
     private Httpuility mHttpuility;
@@ -78,18 +82,11 @@ public class MainActivity extends AppCompatActivity {
             startActivityForResult(intent, 0);
         }
         setContentView(R.layout.coordinatorlayout);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.id_toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
-        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
+        mLocationClient = new LocationClient(getApplicationContext());
+        mLocationClient.registerLocationListener(mBDLocationListener);
         determineTheTime();
         initUI();
+        initLocation();
         setChange();
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
@@ -97,9 +94,9 @@ public class MainActivity extends AppCompatActivity {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             ObjectAnimator.ofFloat(mFloatingActionButton,"rotation",0F,360F).
-                     setDuration(800).
-                     start();
+                ObjectAnimator.ofFloat(mFloatingActionButton, "rotation", 0F, 360F).
+                        setDuration(800).
+                        start();
                 refreshData();
             }
         });
@@ -111,7 +108,28 @@ public class MainActivity extends AppCompatActivity {
                 setTheInfo(bean);
             }
         };
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               if (mLocationClient.isStarted()){
+                   mLocationClient.stop();
+               }
+                mLocationClient.start();
+            }
+        });
+    }
 
+    private void initLocation() {
+        LocationClientOption option = new LocationClientOption();
+        //设置定位模式，高精度，低功耗，仅设备
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        //默认true，定位SDK内部是一个SERVICE，并放到了独立进程，设置是否在stop的时候杀死这个进程，默认不杀死
+        option.setIgnoreKillProcess(false);
+        option.setOpenGps(true);
+        option.setIsNeedAddress(true);
+        Log.i("initLocation","init");
+        mLocationClient.setLocOption(option);
+        Log.i("initLocation"," mLocationClient.setLocOption(option);");
     }
 
     private void determineTheTime() {
@@ -163,7 +181,10 @@ public class MainActivity extends AppCompatActivity {
         temp_01 = (TextView) findViewById(R.id.temp_01);
         temp_02 = (TextView) findViewById(R.id.temp_02);
         temp_03 = (TextView) findViewById(R.id.temp_03);
-
+        toolbar = (Toolbar) findViewById(R.id.id_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
 //        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
 
     }
@@ -391,6 +412,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Intent intent = new Intent(MainActivity.this, SelectActivity.class);
@@ -401,6 +423,43 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    class MyLocationListener implements BDLocationListener {
+        @Override
+        public void onReceiveLocation( BDLocation location) {
+           setTheLocalCity(location.getCity().replace("市",""));
+            Log.i("clarkRao",location.getCity());
 
+        }
+
+    }
+
+
+    private void setTheLocalCity(String city) {
+        Snackbar.make(layout,"当前城市："+city,
+                Snackbar.LENGTH_LONG).show();
+        try {
+            address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(city, "UTF-8")
+                    + "&key=b727f217188c4e8a91ecba4d349c73ff";
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        mHttpuility = new Httpuility(address, new HttpCallBackListener() {
+            @Override
+            public void onFinish(String response) {
+                try {
+                    analysis(response);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Exception e) {
+
+            }
+        });
+        mLocationClient.stop();
+    }
 }
 
