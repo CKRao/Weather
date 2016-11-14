@@ -2,7 +2,6 @@ package com.example.ckrao.myapplication;
 
 
 import android.animation.ObjectAnimator;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -26,18 +25,25 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.ckrao.myapplication.Model.CurrentWeatherBean;
+import com.example.ckrao.myapplication.Model.DataBean;
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
 import com.example.ckrao.myapplication.HttpUtility.Httpuility;
+import com.example.ckrao.myapplication.Utility.GetWeekOfDate;
 import com.google.gson.Gson;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.location.Poi;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -58,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     TextView temp_03;
     TextView mSport_tx;
     TextView mSport_content;
+    TextView mRainfall,mHumidity,mPm;
     RelativeLayout layout;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton mFloatingActionButton;
@@ -77,10 +84,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
-            Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-            startActivityForResult(intent, 0);
-        }
         setContentView(R.layout.coordinatorlayout);
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
@@ -88,6 +91,15 @@ public class MainActivity extends AppCompatActivity {
         initUI();
         initLocation();
         setChange();
+        if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
+//            Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+//            startActivityForResult(intent, 0);
+            mLocationClient.start();
+            SharedPreferences.Editor editor = PreferenceManager.
+                    getDefaultSharedPreferences(this).edit();
+            editor.putBoolean("isChoose", true);
+            editor.commit();
+        }
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
         showWeather();
@@ -111,9 +123,9 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               if (mLocationClient.isStarted()){
-                   mLocationClient.stop();
-               }
+                if (mLocationClient.isStarted()) {
+                    mLocationClient.stop();
+                }
                 mLocationClient.start();
             }
         });
@@ -127,9 +139,9 @@ public class MainActivity extends AppCompatActivity {
         option.setIgnoreKillProcess(false);
         option.setOpenGps(true);
         option.setIsNeedAddress(true);
-        Log.i("initLocation","init");
+        Log.i("initLocation", "init");
         mLocationClient.setLocOption(option);
-        Log.i("initLocation"," mLocationClient.setLocOption(option);");
+        Log.i("initLocation", " mLocationClient.setLocOption(option);");
     }
 
     private void determineTheTime() {
@@ -181,6 +193,10 @@ public class MainActivity extends AppCompatActivity {
         temp_01 = (TextView) findViewById(R.id.temp_01);
         temp_02 = (TextView) findViewById(R.id.temp_02);
         temp_03 = (TextView) findViewById(R.id.temp_03);
+
+        mRainfall = (TextView) findViewById(R.id.rainfall);
+        mHumidity = (TextView) findViewById(R.id.humidity);
+        mPm = (TextView) findViewById(R.id.pm);
         toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -204,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
     private void setTheInfo(CurrentWeatherBean bean) {
         collapsingToolbarLayout.setTitle(bean.getCity());
         week.setText(bean.getWeek());
-        temp.setText(bean.getTemp() + "℃");
+        temp.setText(bean.getTemp() + "°");
         weather.setText(bean.getWeather());
         mCloth_tx.setText("穿衣指数——" + bean.getCloth_tx());
         mCloth_content.setText(bean.getCloth_content());
@@ -220,6 +236,9 @@ public class MainActivity extends AppCompatActivity {
         temp_01.setText(bean.getTemp_01());
         temp_02.setText(bean.getTemp_02());
         temp_03.setText(bean.getTemp_03());
+        mRainfall.setText(bean.getRainfall()+"%");
+        mHumidity.setText(bean.getHumidity()+"%");
+        mPm.setText(bean.getPm());
     }
 
     //通过图片名获取资源ID
@@ -268,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         collapsingToolbarLayout.setTitle(prefs.getString("city", "SpeedWeather"));
         week.setText(prefs.getString("week", "未知"));
-        temp.setText(prefs.getString("temp", "0") + "℃");
+        temp.setText(prefs.getString("temp", "0") + "°");
         weather.setText(prefs.getString("weather", "未知"));
         mCloth_tx.setText("穿衣指数——" + prefs.getString("cloth_tx", ""));
         mCloth_content.setText(prefs.getString("cloth_content", ""));
@@ -284,7 +303,9 @@ public class MainActivity extends AppCompatActivity {
         temp_01.setText(prefs.getString("temp01", ""));
         temp_02.setText(prefs.getString("temp02", ""));
         temp_03.setText(prefs.getString("temp03", ""));
-
+        mRainfall.setText(prefs.getString("rainfall","降雨量")+"%");
+        mHumidity.setText(prefs.getString("humidity","湿度")+"%");
+        mPm.setText(prefs.getString("pm","PM2.5"));
     }
 
     public static void saveMessage(Context context, String air_conditioning_tx,
@@ -293,10 +314,14 @@ public class MainActivity extends AppCompatActivity {
                                    String ultraviolet_radiation_content, String cloth_tx,
                                    String cloth_content, String mCity, String mWeek, String mTemp,
                                    String mWeather, String img, String img01, String img02,
-                                   String img03, String temp01, String temp02, String temp03, String cityID) {
+                                   String img03, String temp01, String temp02, String temp03,
+                                   String cityID, String rainfall, String humidity, String pm) {
         SharedPreferences.Editor editor = PreferenceManager.
                 getDefaultSharedPreferences(context).edit();
 //        editor.putString("cityID", cityID);
+        editor.putString("rainfall",rainfall);
+        editor.putString("humidity",humidity);
+        editor.putString("pm",pm);
         editor.putString("city", mCity);
         editor.putString("week", mWeek);
         editor.putString("temp", mTemp);
@@ -351,13 +376,20 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void analysis(String response) {
+    public void analysis(String response)  {
         Gson gson = new Gson();
         DataBean bean = gson.fromJson(response, DataBean.class);
+        DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = fmt.parse( bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         String CityID = bean.getHeWeather5().get(0).getBasic().getId();
         String img = "img" + bean.getHeWeather5().get(0).getNow().getCond().getCode();
         String mCity = bean.getHeWeather5().get(0).getBasic().getCity();
-        String mWeek = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate().substring(5);
+        String mWeek = GetWeekOfDate.getWeekOfDate(date);
         String mTemp = bean.getHeWeather5().get(0).getNow().getTmp();
         String mWeather = bean.getHeWeather5().get(0).getNow().getCond().getTxt();
         String air_conditioning_tx = bean.getHeWeather5().get(0).getSuggestion().getFlu().getBrf();
@@ -377,9 +409,13 @@ public class MainActivity extends AppCompatActivity {
                 "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(1).getTmp().getMax() + "º";
         String temp03 = bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMin() +
                 "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
+        String rainfall = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getPcpn();
+        String humidity = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getHum();
+        String pm = bean.getHeWeather5().get(0).getAqi().getCity().getPm25();
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
-                mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03, CityID);
+                mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03,
+                CityID,rainfall,humidity,pm);
         CurrentWeatherBean bean1 = new CurrentWeatherBean();
         bean1.setCity(mCity);
         bean1.setWeek(mWeek);
@@ -400,6 +436,9 @@ public class MainActivity extends AppCompatActivity {
         bean1.setTemp_01(temp01);
         bean1.setTemp_02(temp02);
         bean1.setTemp_03(temp03);
+        bean1.setRainfall(rainfall);
+        bean1.setHumidity(humidity);
+        bean1.setPm(pm);
         Message message = new Message();
         message.obj = bean1;
         mHandler.sendMessage(message);
@@ -423,11 +462,12 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
     class MyLocationListener implements BDLocationListener {
         @Override
-        public void onReceiveLocation( BDLocation location) {
-           setTheLocalCity(location.getCity().replace("市",""));
-            Log.i("clarkRao",location.getCity());
+        public void onReceiveLocation(BDLocation location) {
+            setTheLocalCity(location.getCity().replace("市", ""));
+            Log.i("clarkRao", location.getCity());
 
         }
 
@@ -435,7 +475,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void setTheLocalCity(String city) {
-        Snackbar.make(layout,"当前城市："+city,
+        Snackbar.make(layout, "当前城市：" + city,
                 Snackbar.LENGTH_LONG).show();
         try {
             address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(city, "UTF-8")

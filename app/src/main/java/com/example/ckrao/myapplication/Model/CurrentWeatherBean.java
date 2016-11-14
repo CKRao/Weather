@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication;
+package com.example.ckrao.myapplication.Model;
 
 import android.graphics.drawable.GradientDrawable;
 
@@ -17,6 +17,31 @@ public class CurrentWeatherBean {
             mAir_conditioning_content, mAir_conditioning_tx,
             mUltraviolet_radiation_content,
             mUltraviolet_radiation_tx, mSport_tx, mSport_content;
+    private String rainfall, humidity, pm;
+
+    public String getRainfall() {
+        return rainfall;
+    }
+
+    public void setRainfall(String rainfall) {
+        this.rainfall = rainfall;
+    }
+
+    public String getHumidity() {
+        return humidity;
+    }
+
+    public void setHumidity(String humidity) {
+        this.humidity = humidity;
+    }
+
+    public String getPm() {
+        return pm;
+    }
+
+    public void setPm(String pm) {
+        this.pm = pm;
+    }
 
     public String getImg() {
         return img;

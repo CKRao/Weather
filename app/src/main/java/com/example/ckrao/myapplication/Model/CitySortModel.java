@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication;
+package com.example.ckrao.myapplication.Model;
 
 public class CitySortModel {
 

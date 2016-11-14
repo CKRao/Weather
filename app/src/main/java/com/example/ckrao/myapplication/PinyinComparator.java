@@ -1,5 +1,7 @@
 package com.example.ckrao.myapplication;
 
+import com.example.ckrao.myapplication.Model.CitySortModel;
+
 import java.util.Comparator;
 
 /**

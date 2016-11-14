@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication;
+package com.example.ckrao.myapplication.Model;
 
 /**
  * Created by clark on 2016/10/30.

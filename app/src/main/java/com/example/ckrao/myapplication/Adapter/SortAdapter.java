@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication;
+package com.example.ckrao.myapplication.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
+
+import com.example.ckrao.myapplication.Model.CitySortModel;
+import com.example.ckrao.myapplication.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.ckrao.myapplication;
+package com.example.ckrao.myapplication.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
+
+import com.example.ckrao.myapplication.R;
 
 import java.util.List;
 

@@ -9,14 +9,19 @@ import android.os.IBinder;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
-import com.example.ckrao.myapplication.DataBean;
+import com.example.ckrao.myapplication.Model.DataBean;
 import com.example.ckrao.myapplication.MainActivity;
 import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
 import com.example.ckrao.myapplication.HttpUtility.Httpuility;
+import com.example.ckrao.myapplication.Utility.GetWeekOfDate;
 import com.google.gson.Gson;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by clark on 2016/11/5.
@@ -36,30 +41,37 @@ public class AutoUpdateService extends Service {
             }
         }).start();
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        int anHour = 2*60*60*1000;//4小时毫秒数
-        long triggerAtTime = SystemClock.elapsedRealtime()+anHour;
-        Intent i = new Intent(this,AutoUpdateReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,i,0);
-        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,triggerAtTime,pendingIntent);
+        int anHour = 2 * 60 * 60 * 1000;//4小时毫秒数
+        long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
+        Intent i = new Intent(this, AutoUpdateReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pendingIntent);
 //        Log.i("myck","request");
         return super.onStartCommand(intent, flags, startId);
     }
 
     private void updateWeather() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        String cityID = prefs.getString("cityID", "");
+        String city = prefs.getString("city", "");
         try {
-            String address = address = "https://api.heweather.com/x3/weather?cityid=" + URLEncoder.encode(cityID, "UTF-8")
+            String address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(city, "UTF-8")
                     + "&key=b727f217188c4e8a91ecba4d349c73ff";
             new Httpuility(address, new HttpCallBackListener() {
                 @Override
                 public void onFinish(String response) {
                     Gson gson = new Gson();
                     DataBean bean = gson.fromJson(response, DataBean.class);
+                    DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+                    Date date = null;
+                    try {
+                        date = fmt.parse( bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate());
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                     String CityID = bean.getHeWeather5().get(0).getBasic().getId();
                     String img = "img" + bean.getHeWeather5().get(0).getNow().getCond().getCode();
                     String mCity = bean.getHeWeather5().get(0).getBasic().getCity();
-                    String mWeek = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate().substring(5);
+                    String mWeek = GetWeekOfDate.getWeekOfDate(date);
                     String mTemp = bean.getHeWeather5().get(0).getNow().getTmp();
                     String mWeather = bean.getHeWeather5().get(0).getNow().getCond().getTxt();
                     String air_conditioning_tx = bean.getHeWeather5().get(0).getSuggestion().getFlu().getBrf();
@@ -79,9 +91,12 @@ public class AutoUpdateService extends Service {
                             "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(1).getTmp().getMax() + "º";
                     String temp03 = bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMin() +
                             "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
+                    String rainfall = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getPcpn();
+                    String humidity = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getHum();
+                    String pm = bean.getHeWeather5().get(0).getAqi().getCity().getPm25();
                     MainActivity.saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                             sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
-                            mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03, CityID);
+                            mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03, CityID, rainfall, humidity, pm);
                 }
 
                 @Override

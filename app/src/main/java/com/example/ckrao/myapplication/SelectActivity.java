@@ -5,29 +5,27 @@ package com.example.ckrao.myapplication;
  */
 
 import android.app.Activity;;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.ckrao.myapplication.Adapter.SortAdapter;
+import com.example.ckrao.myapplication.Model.CityModel;
+import com.example.ckrao.myapplication.Model.CitySortModel;
+import com.example.ckrao.myapplication.Utility.PinyinUtils;
 import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
@@ -130,12 +128,12 @@ public class SelectActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (!PreferenceManager.getDefaultSharedPreferences(SelectActivity.this).getBoolean("isChoose", false)) {
-                    SharedPreferences.Editor editor = PreferenceManager.
-                            getDefaultSharedPreferences(SelectActivity.this).edit();
-                    editor.putBoolean("isChoose", true);
-                    editor.commit();
-                }
+//                if (!PreferenceManager.getDefaultSharedPreferences(SelectActivity.this).getBoolean("isChoose", false)) {
+//                    SharedPreferences.Editor editor = PreferenceManager.
+//                            getDefaultSharedPreferences(SelectActivity.this).edit();
+//                    editor.putBoolean("isChoose", true);
+//                    editor.commit();
+//                }
 //                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent();
