@@ -1,15 +1,20 @@
 package com.example.ckrao.myapplication;
 
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -64,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     TextView temp_03;
     TextView mSport_tx;
     TextView mSport_content;
-    TextView mRainfall,mHumidity,mPm;
+    TextView mRainfall, mHumidity, mPm;
     RelativeLayout layout;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton mFloatingActionButton;
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
     private List<DataBean> mDataBeanList;
     private Handler mHandler;
     private static boolean isDay;
+    private static final int BAIDU_GPS_OPEN_STATE = 100;
 //    private PullToRefreshView mPullToRefreshView;
 
     @Override
@@ -85,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.coordinatorlayout);
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
         determineTheTime();
@@ -94,14 +102,23 @@ public class MainActivity extends AppCompatActivity {
         if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
 //            Intent intent = new Intent(MainActivity.this, SelectActivity.class);
 //            startActivityForResult(intent, 0);
-            mLocationClient.start();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED) {
+                    requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_WIFI_STATE},
+                            BAIDU_GPS_OPEN_STATE);
+                }
+
+            }else {
+                mLocationClient.start();
+            }
             SharedPreferences.Editor editor = PreferenceManager.
                     getDefaultSharedPreferences(this).edit();
             editor.putBoolean("isChoose", true);
             editor.commit();
         }
-        Intent intent = new Intent(this, AutoUpdateService.class);
-        startService(intent);
         showWeather();
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    Snackbar.make(layout,"获取定位权限失败",Snackbar.LENGTH_LONG).show();
+                }
                 if (mLocationClient.isStarted()) {
                     mLocationClient.stop();
                 }
@@ -236,8 +257,8 @@ public class MainActivity extends AppCompatActivity {
         temp_01.setText(bean.getTemp_01());
         temp_02.setText(bean.getTemp_02());
         temp_03.setText(bean.getTemp_03());
-        mRainfall.setText(bean.getRainfall()+"%");
-        mHumidity.setText(bean.getHumidity()+"%");
+        mRainfall.setText(bean.getRainfall() + "%");
+        mHumidity.setText(bean.getHumidity() + "%");
         mPm.setText(bean.getPm());
     }
 
@@ -303,9 +324,9 @@ public class MainActivity extends AppCompatActivity {
         temp_01.setText(prefs.getString("temp01", ""));
         temp_02.setText(prefs.getString("temp02", ""));
         temp_03.setText(prefs.getString("temp03", ""));
-        mRainfall.setText(prefs.getString("rainfall","降雨量")+"%");
-        mHumidity.setText(prefs.getString("humidity","湿度")+"%");
-        mPm.setText(prefs.getString("pm","PM2.5"));
+        mRainfall.setText(prefs.getString("rainfall", "降雨量") + "%");
+        mHumidity.setText(prefs.getString("humidity", "湿度") + "%");
+        mPm.setText(prefs.getString("pm", "PM2.5"));
     }
 
     public static void saveMessage(Context context, String air_conditioning_tx,
@@ -319,9 +340,9 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = PreferenceManager.
                 getDefaultSharedPreferences(context).edit();
 //        editor.putString("cityID", cityID);
-        editor.putString("rainfall",rainfall);
-        editor.putString("humidity",humidity);
-        editor.putString("pm",pm);
+        editor.putString("rainfall", rainfall);
+        editor.putString("humidity", humidity);
+        editor.putString("pm", pm);
         editor.putString("city", mCity);
         editor.putString("week", mWeek);
         editor.putString("temp", mTemp);
@@ -376,13 +397,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void analysis(String response)  {
+    public void analysis(String response) {
         Gson gson = new Gson();
         DataBean bean = gson.fromJson(response, DataBean.class);
-        DateFormat fmt =new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         Date date = null;
         try {
-            date = fmt.parse( bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate());
+            date = fmt.parse(bean.getHeWeather5().get(0).getDaily_forecast().get(0).getDate());
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -415,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
                 mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03,
-                CityID,rainfall,humidity,pm);
+                CityID, rainfall, humidity, pm);
         CurrentWeatherBean bean1 = new CurrentWeatherBean();
         bean1.setCity(mCity);
         bean1.setWeek(mWeek);
@@ -451,6 +472,22 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case BAIDU_GPS_OPEN_STATE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                  // 获取到权限，作相应处理
+                    mLocationClient.start();
+                } else {
+                    Snackbar.make(layout,"获取定位权限失败",Snackbar.LENGTH_LONG).show();
+                }
+                break;
+            default:
+                break;
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

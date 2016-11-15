@@ -16,14 +16,14 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
 
 
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 startActivity(new Intent(SplashActivity.this,MainActivity.class));
                 finish();
-        
-//            }
-//        },500);
+        overridePendingTransition(R.anim.stand,R.anim.splash);
+            }
+        },500);
 
     }
 }
