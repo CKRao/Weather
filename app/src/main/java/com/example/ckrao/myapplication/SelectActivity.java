@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -139,6 +140,7 @@ public class SelectActivity extends Activity {
                 Intent intent = new Intent();
 //                String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();
                 String city_name = ((CitySortModel) adapter.getItem(position)).getName();
+//                Log.i("Rao", "onItemClick: "+city_name);
                 intent.putExtra("city_name",city_name);
                 setResult(0, intent);
 //                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -203,7 +205,10 @@ public class SelectActivity extends Activity {
             mSortList.clear();
             for (CitySortModel sortModel : SourceDateList) {
                 String name = sortModel.getName();
-                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1 || PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+                String sorString = sortModel.getFullSort();
+                //PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())
+                if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1
+                        ||sorString .toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
                     mSortList.add(sortModel);
                 }
             }
@@ -221,6 +226,7 @@ public class SelectActivity extends Activity {
             sortModel.setName(data.get(i).getCityname());
 //            String pinyin = PinyinUtils.getPingYin(data.get(i).getCityname());
             String pinyin= data.get(i).getSortLetters();
+            sortModel.setFullSort(pinyin.toUpperCase());
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {
                 sortModel.setSortLetters(sortString.toUpperCase());

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     TextView temp_03;
     TextView mSport_tx;
     TextView mSport_content;
-    TextView mRainfall, mHumidity, mPm;
+    TextView mRainfall, mHumidity, mWinddirection;
     RelativeLayout layout;
     CollapsingToolbarLayout collapsingToolbarLayout;
     FloatingActionButton mFloatingActionButton;
@@ -217,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
 
         mRainfall = (TextView) findViewById(R.id.rainfall);
         mHumidity = (TextView) findViewById(R.id.humidity);
-        mPm = (TextView) findViewById(R.id.pm);
+        mWinddirection = (TextView) findViewById(R.id.winddirection);
         toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -259,7 +259,7 @@ public class MainActivity extends AppCompatActivity {
         temp_03.setText(bean.getTemp_03());
         mRainfall.setText(bean.getRainfall() + "%");
         mHumidity.setText(bean.getHumidity() + "%");
-        mPm.setText(bean.getPm());
+        mWinddirection.setText(bean.getWinddirection());
     }
 
     //通过图片名获取资源ID
@@ -326,7 +326,7 @@ public class MainActivity extends AppCompatActivity {
         temp_03.setText(prefs.getString("temp03", ""));
         mRainfall.setText(prefs.getString("rainfall", "降雨量") + "%");
         mHumidity.setText(prefs.getString("humidity", "湿度") + "%");
-        mPm.setText(prefs.getString("pm", "PM2.5"));
+        mWinddirection.setText(prefs.getString("winddirection", "None"));
     }
 
     public static void saveMessage(Context context, String air_conditioning_tx,
@@ -336,13 +336,13 @@ public class MainActivity extends AppCompatActivity {
                                    String cloth_content, String mCity, String mWeek, String mTemp,
                                    String mWeather, String img, String img01, String img02,
                                    String img03, String temp01, String temp02, String temp03,
-                                   String cityID, String rainfall, String humidity, String pm) {
+                                   String cityID, String rainfall, String humidity, String winddirection) {
         SharedPreferences.Editor editor = PreferenceManager.
                 getDefaultSharedPreferences(context).edit();
 //        editor.putString("cityID", cityID);
         editor.putString("rainfall", rainfall);
         editor.putString("humidity", humidity);
-        editor.putString("pm", pm);
+        editor.putString("winddirection", winddirection);
         editor.putString("city", mCity);
         editor.putString("week", mWeek);
         editor.putString("temp", mTemp);
@@ -369,12 +369,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-            myCity = String.valueOf(data.getStringExtra("city_name"));
+            myCity = data.getStringExtra("city_name");
             Snackbar.make(layout, myCity,
                     Snackbar.LENGTH_LONG).show();
             try {
                 address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
                         + "&key=b727f217188c4e8a91ecba4d349c73ff";
+                Log.i("Rao", address);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
@@ -382,8 +383,8 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onFinish(String response) {
                     try {
+                        Log.i("Rao", response);
                         analysis(response);
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -432,11 +433,12 @@ public class MainActivity extends AppCompatActivity {
                 "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
         String rainfall = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getPcpn();
         String humidity = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getHum();
-        String pm = bean.getHeWeather5().get(0).getAqi().getCity().getPm25();
+        String winddirection = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getWind().getDir();
+//        String pm = null;
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
                 mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03,
-                CityID, rainfall, humidity, pm);
+                CityID, rainfall, humidity,winddirection);
         CurrentWeatherBean bean1 = new CurrentWeatherBean();
         bean1.setCity(mCity);
         bean1.setWeek(mWeek);
@@ -459,7 +461,7 @@ public class MainActivity extends AppCompatActivity {
         bean1.setTemp_03(temp03);
         bean1.setRainfall(rainfall);
         bean1.setHumidity(humidity);
-        bean1.setPm(pm);
+        bean1.setWinddirection(winddirection);
         Message message = new Message();
         message.obj = bean1;
         mHandler.sendMessage(message);
@@ -503,7 +505,7 @@ public class MainActivity extends AppCompatActivity {
     class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-            setTheLocalCity(location.getCity().replace("市", ""));
+            setTheLocalCity(location.getCity().replace("市", "").replace("县",""));
             Log.i("clarkRao", location.getCity());
 
         }

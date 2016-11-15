@@ -17,7 +17,15 @@ public class CurrentWeatherBean {
             mAir_conditioning_content, mAir_conditioning_tx,
             mUltraviolet_radiation_content,
             mUltraviolet_radiation_tx, mSport_tx, mSport_content;
-    private String rainfall, humidity, pm;
+    private String rainfall, humidity, winddirection;
+
+    public String getWinddirection() {
+        return winddirection;
+    }
+
+    public void setWinddirection(String winddirection) {
+        this.winddirection = winddirection;
+    }
 
     public String getRainfall() {
         return rainfall;
@@ -35,13 +43,6 @@ public class CurrentWeatherBean {
         this.humidity = humidity;
     }
 
-    public String getPm() {
-        return pm;
-    }
-
-    public void setPm(String pm) {
-        this.pm = pm;
-    }
 
     public String getImg() {
         return img;
