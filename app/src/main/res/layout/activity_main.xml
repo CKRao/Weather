@@ -1,58 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:background="@drawable/edittext_background"
               android:orientation="vertical">
 
-    <RelativeLayout
+    <!--<RelativeLayout-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="48dp"-->
+    <!--android:background="@color/colorPrimary">-->
+
+    <!--<ImageButton-->
+    <!--android:id="@+id/id_back"-->
+    <!--android:layout_width="30dp"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginLeft="5dp"-->
+    <!--android:background="@color/colorPrimary"-->
+    <!--android:padding="5dp"-->
+    <!--android:scaleType="fitCenter"-->
+    <!--android:src="@drawable/back"/>-->
+
+    <!---->
+    <!--</RelativeLayout>-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/id_sToolbar"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/colorPrimary">
-<ImageButton
-    android:id="@+id/id_back"
-    android:layout_marginLeft="5dp"
-    android:padding="5dp"
-    android:scaleType="fitCenter"
-    android:src="@drawable/back"
-    android:background="@color/colorPrimary"
-    android:layout_width="40dp"
-    android:layout_height="match_parent"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:fitsSystemWindows="true"
+        app:popupTheme="@style/Theme.AppCompat.Light">
+
         <TextView
-            android:id="@+id/tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:text="请选择城市"
-            android:textColor="@android:color/white"
-            android:textSize="16dp"/>
-    </RelativeLayout>
+            android:textColor="#fff"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
 
     <com.example.ckrao.myapplication.EditTextWithDel
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="5dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="5dp"
         android:background="@drawable/edittext_background"
         android:hint="请输入城市"
+        android:maxLines="1"
         android:paddingLeft="5dp"
-        android:singleLine="true"
+        android:paddingRight="10dp"
         android:textColor="#000"
         android:textSize="15dp"/>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#fff">
 
         <ListView
             android:id="@+id/country_lvcountry"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="#fff"
             android:divider="@null"
             android:scrollbars="none"/>
 
@@ -71,9 +87,10 @@
 
         <com.example.ckrao.myapplication.SideBar
             android:id="@+id/sidrbar"
-            android:layout_width="24dp"
+            android:layout_width="26dp"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center"/>
+            android:layout_gravity="right|center"
+            android:background="@color/colorPrimary"/>
     </FrameLayout>
 
 </LinearLayout>

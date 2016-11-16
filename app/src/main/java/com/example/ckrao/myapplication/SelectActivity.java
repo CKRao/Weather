@@ -12,11 +12,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -33,7 +36,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SelectActivity extends Activity {
+public class SelectActivity extends AppCompatActivity {
     private ListView sortListView;
     private SideBar sideBar;
     private TextView dialog, mTvTitle;
@@ -41,28 +44,35 @@ public class SelectActivity extends Activity {
     private EditTextWithDel mEtCityName;
     private List<CitySortModel> SourceDateList;
     private AlertDialog mDialog;
-    private ImageButton mImageButton;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient mClient;
+    private Toolbar mToolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initViews();
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
     private void initViews() {
-        mImageButton = (ImageButton) findViewById(R.id.id_back);
+//        mImageButton = (ImageButton) findViewById(R.id.id_back);
         mEtCityName = (EditTextWithDel) findViewById(R.id.et_search);
         sideBar = (SideBar) findViewById(R.id.sidrbar);
         dialog = (TextView) findViewById(R.id.dialog);
-        mTvTitle = (TextView) findViewById(R.id.tv_title);
+//        mTvTitle = (TextView) findViewById(R.id.tv_title);
         sortListView = (ListView) findViewById(R.id.country_lvcountry);
+        mToolbar = (Toolbar) findViewById(R.id.id_sToolbar);
+        mToolbar.setTitle("");
         initDatas();
         initEvents();
         setAdapter();
@@ -104,12 +114,12 @@ public class SelectActivity extends Activity {
     }
 
     private void initEvents() {
-        mImageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+//        mImageButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                finish();
+//            }
+//        });
         //设置右侧触摸监听
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
@@ -117,7 +127,7 @@ public class SelectActivity extends Activity {
                 //该字母首次出现的位置
                 int position = adapter.getPositionForSection(s.charAt(0));
                 if (position != -1) {
-                    sortListView.setSelection(position + 1);
+                    sortListView.setSelection(position);
                 }
             }
         });
@@ -141,7 +151,7 @@ public class SelectActivity extends Activity {
 //                String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();
                 String city_name = ((CitySortModel) adapter.getItem(position)).getName();
 //                Log.i("Rao", "onItemClick: "+city_name);
-                intent.putExtra("city_name",city_name);
+                intent.putExtra("city_name", city_name);
                 setResult(0, intent);
 //                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 //                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -208,7 +218,7 @@ public class SelectActivity extends Activity {
                 String sorString = sortModel.getFullSort();
                 //PinyinUtils.getPingYin(name).toUpperCase().startsWith(filterStr.toString().toUpperCase())
                 if (name.toUpperCase().indexOf(filterStr.toString().toUpperCase()) != -1
-                        ||sorString .toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
+                        || sorString.toUpperCase().startsWith(filterStr.toString().toUpperCase())) {
                     mSortList.add(sortModel);
                 }
             }
@@ -225,7 +235,7 @@ public class SelectActivity extends Activity {
             CitySortModel sortModel = new CitySortModel();
             sortModel.setName(data.get(i).getCityname());
 //            String pinyin = PinyinUtils.getPingYin(data.get(i).getCityname());
-            String pinyin= data.get(i).getSortLetters();
+            String pinyin = data.get(i).getSortLetters();
             sortModel.setFullSort(pinyin.toUpperCase());
             String sortString = pinyin.substring(0, 1).toUpperCase();
             if (sortString.matches("[A-Z]")) {

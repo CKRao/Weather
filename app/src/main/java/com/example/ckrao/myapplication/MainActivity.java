@@ -433,7 +433,7 @@ public class MainActivity extends AppCompatActivity {
                 "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
         String rainfall = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getPcpn();
         String humidity = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getHum();
-        String winddirection = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getWind().getDir();
+        String winddirection = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getWind().getSpd()+"km/h";
 //        String pm = null;
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
