@@ -19,6 +19,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -26,7 +27,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.LayoutAnimationController;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -69,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
     TextView temp_03;
     TextView mSport_tx;
     TextView mSport_content;
+    CardView cardView;
     TextView mRainfall, mHumidity, mWinddirection;
     RelativeLayout layout;
     CollapsingToolbarLayout collapsingToolbarLayout;
@@ -111,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
                             BAIDU_GPS_OPEN_STATE);
                 }
 
-            }else {
+            } else {
                 mLocationClient.start();
             }
             SharedPreferences.Editor editor = PreferenceManager.
@@ -123,9 +129,16 @@ public class MainActivity extends AppCompatActivity {
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObjectAnimator.ofFloat(mFloatingActionButton, "rotation", 0F, 360F).
-                        setDuration(800).
-                        start();
+                ObjectAnimator animator = ObjectAnimator.ofFloat(mFloatingActionButton, "rotation", 0F, 360F);
+                animator.setDuration(500);
+                animator.setInterpolator(new AccelerateDecelerateInterpolator());
+                animator.start();
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
+                scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+                scaleAnimation.setDuration(1000);
+                LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
+                controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
+                cardView.setAnimation(scaleAnimation);
                 refreshData();
             }
         });
@@ -140,10 +153,10 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-                    Snackbar.make(layout,"获取定位权限失败",Snackbar.LENGTH_LONG).show();
-                }
+//                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+//                    Snackbar.make(layout,"获取定位权限失败",Snackbar.LENGTH_LONG).show();
+//                }
                 if (mLocationClient.isStarted()) {
                     mLocationClient.stop();
                 }
@@ -223,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
 //        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
+//        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.id_ll);
+         cardView = (CardView) findViewById(R.id.Card_view);
 
     }
 
@@ -372,6 +387,12 @@ public class MainActivity extends AppCompatActivity {
             myCity = data.getStringExtra("city_name");
             Snackbar.make(layout, myCity,
                     Snackbar.LENGTH_LONG).show();
+            ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
+            scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            scaleAnimation.setDuration(1000);
+            LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
+            controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
+            cardView.setAnimation(scaleAnimation);
             try {
                 address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
                         + "&key=b727f217188c4e8a91ecba4d349c73ff";
@@ -433,12 +454,12 @@ public class MainActivity extends AppCompatActivity {
                 "º～" + bean.getHeWeather5().get(0).getDaily_forecast().get(2).getTmp().getMax() + "º";
         String rainfall = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getPcpn();
         String humidity = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getHum();
-        String winddirection = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getWind().getSpd()+"km/h";
+        String winddirection = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getWind().getSpd() + "km/h";
 //        String pm = null;
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
                 mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03,
-                CityID, rainfall, humidity,winddirection);
+                CityID, rainfall, humidity, winddirection);
         CurrentWeatherBean bean1 = new CurrentWeatherBean();
         bean1.setCity(mCity);
         bean1.setWeek(mWeek);
@@ -480,10 +501,10 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case BAIDU_GPS_OPEN_STATE:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                  // 获取到权限，作相应处理
+                    // 获取到权限，作相应处理
                     mLocationClient.start();
                 } else {
-                    Snackbar.make(layout,"获取定位权限失败",Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(layout, "获取定位权限失败", Snackbar.LENGTH_LONG).show();
                 }
                 break;
             default:
@@ -505,7 +526,7 @@ public class MainActivity extends AppCompatActivity {
     class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-            setTheLocalCity(location.getCity().replace("市", "").replace("县",""));
+            setTheLocalCity(location.getCity().replace("市", "").replace("县", ""));
             Log.i("clarkRao", location.getCity());
 
         }

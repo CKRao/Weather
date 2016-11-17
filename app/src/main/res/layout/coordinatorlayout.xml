@@ -95,6 +95,7 @@
             android:paddingTop="14dp">
 
             <android.support.v7.widget.CardView
+                android:animateLayoutChanges="true"
                 android:id="@+id/Card_view"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
@@ -110,6 +111,7 @@
                     android:orientation="horizontal">
 
                     <RelativeLayout
+                        android:animateLayoutChanges="true"
                         android:id="@+id/id_layout"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
@@ -234,7 +236,6 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_gravity="center"
-                                android:layout_marginLeft="10dp"
                                 android:gravity="center"
                                 android:text="km/h"
                                 android:textSize="18sp"
@@ -246,6 +247,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/Card_view1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-10dp"
@@ -397,6 +399,7 @@
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
+                android:id="@+id/Card_view2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="-10dp"
@@ -570,6 +573,7 @@
         android:id="@+id/id_float_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:elevation="5dp"
         android:layout_margin="6dp"
         android:clickable="true"
         android:src="@drawable/refresh"
