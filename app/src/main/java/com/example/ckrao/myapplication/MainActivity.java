@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +30,6 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -133,12 +131,12 @@ public class MainActivity extends AppCompatActivity {
                 animator.setDuration(500);
                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
                 animator.start();
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
-                scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-                scaleAnimation.setDuration(1000);
-                LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
-                controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-                cardView.setAnimation(scaleAnimation);
+//                ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
+//                scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+//                scaleAnimation.setDuration(1000);
+//                LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
+//                controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
+//                cardView.setAnimation(scaleAnimation);
                 refreshData();
             }
         });
@@ -387,12 +385,12 @@ public class MainActivity extends AppCompatActivity {
             myCity = data.getStringExtra("city_name");
             Snackbar.make(layout, myCity,
                     Snackbar.LENGTH_LONG).show();
-            ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
-            scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-            scaleAnimation.setDuration(1000);
-            LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
-            controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-            cardView.setAnimation(scaleAnimation);
+//            ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
+//            scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+//            scaleAnimation.setDuration(1000);
+//            LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
+//            controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
+//            cardView.setAnimation(scaleAnimation);
             try {
                 address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
                         + "&key=b727f217188c4e8a91ecba4d349c73ff";
