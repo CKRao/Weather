@@ -16,7 +16,10 @@ import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
@@ -29,6 +32,7 @@ import android.view.Window;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.LayoutAnimationController;
 import android.view.animation.ScaleAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -81,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
     LocationClient mLocationClient;
     BDLocationListener mBDLocationListener = new MyLocationListener();
     Toolbar toolbar;
+    NavigationView mNavigationView;
+    DrawerLayout mDrawerLayout;
     private String address;
     private String myCity;
     private Httpuility mHttpuility;
@@ -94,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.coordinatorlayout);
+        setContentView(R.layout.layout_main);
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
         mLocationClient = new LocationClient(getApplicationContext());
@@ -124,6 +130,36 @@ public class MainActivity extends AppCompatActivity {
             editor.commit();
         }
         showWeather();
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                        switch (item.getItemId()) {
+                            case R.id.navigation_item_local:
+                                mDrawerLayout.closeDrawers();
+                                if (mLocationClient.isStarted()) {
+                                    mLocationClient.stop();
+                                }
+                                mLocationClient.start();
+                                break;
+                            case R.id.navigation_sub_item_search:
+                                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+                                startActivityForResult(intent, 0);
+                                mDrawerLayout.closeDrawers();
+                                break;
+//                            case R.id.navigation_sub_item_setting:
+//                                break;
+                            case R.id.navigation_sub_item_about:
+                                mDrawerLayout.closeDrawers();
+                                Snackbar.make(layout, "The App is Powered by CR", Snackbar.LENGTH_LONG).show();
+                                break;
+                            case R.id.navigation_sub_item_exit:
+                                finish();
+                                break;
+                        }
+                        return false;
+                    }
+                });
         mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,12 +167,6 @@ public class MainActivity extends AppCompatActivity {
                 animator.setDuration(500);
                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
                 animator.start();
-//                ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
-//                scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-//                scaleAnimation.setDuration(1000);
-//                LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
-//                controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-//                cardView.setAnimation(scaleAnimation);
                 refreshData();
             }
         });
@@ -151,14 +181,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
-//                    Snackbar.make(layout,"获取定位权限失败",Snackbar.LENGTH_LONG).show();
+//                if (mLocationClient.isStarted()) {
+//                    mLocationClient.stop();
 //                }
-                if (mLocationClient.isStarted()) {
-                    mLocationClient.stop();
-                }
-                mLocationClient.start();
+//                mLocationClient.start();
+                mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
     }
@@ -233,9 +260,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
-//        mPullToRefreshView = (PullToRefreshView) findViewById(R.id.pullToRefreshView);
-//        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.id_ll);
-         cardView = (CardView) findViewById(R.id.Card_view);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
 
     }
 
@@ -383,6 +409,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
             myCity = data.getStringExtra("city_name");
+
             Snackbar.make(layout, myCity,
                     Snackbar.LENGTH_LONG).show();
 //            ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
@@ -404,6 +431,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         Log.i("Rao", response);
                         analysis(response);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -486,12 +514,12 @@ public class MainActivity extends AppCompatActivity {
         mHandler.sendMessage(message);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+//        return true;
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -509,24 +537,30 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-        switch (item.getItemId()) {
-            case R.id.search:
-                startActivityForResult(intent, 0);
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+//        switch (item.getItemId()) {
+//            case R.id.search:
+//                startActivityForResult(intent, 0);
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     class MyLocationListener implements BDLocationListener {
         @Override
         public void onReceiveLocation(BDLocation location) {
-            setTheLocalCity(location.getCity().replace("市", "").replace("县", ""));
+//            if (location.getDistrict()!= null) {
+//                setTheLocalCity(location.getDistrict());
+//            } else {
+            setTheLocalCity(location.getCity()
+                    .replace("市", "")
+                    .replace("区", ""));
+//            }
             Log.i("clarkRao", location.getCity());
-
+            Log.i("clarkRao", location.getDistrict());
         }
 
     }
