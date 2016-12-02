@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
     <android.support.v7.widget.CardView
         android:id="@+id/Card_view"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:animateLayoutChanges="true"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="2dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="5dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
@@ -159,9 +162,12 @@
         android:id="@+id/Card_view1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="5dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
 
@@ -269,17 +275,6 @@
                     android:padding="10dp"
                     android:src="@drawable/mytemp"/>
 
-                <TextView
-                    android:id="@+id/week_03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:layout_toRightOf="@id/id_tomorrow03"
-                    android:text="后天"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-
                 <ImageView
                     android:id="@+id/id_wea_03"
                     android:layout_width="40dp"
@@ -300,6 +295,19 @@
                     android:text="temp1～temp2"
                     android:textColor="#000"
                     android:textSize="23sp"/>
+
+                <TextView
+                    android:id="@+id/week_03"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/temp_03"
+                    android:layout_marginLeft="9dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_toEndOf="@+id/id_tomorrow03"
+                    android:layout_toRightOf="@+id/id_tomorrow03"
+                    android:text="后天"
+                    android:textColor="#000"
+                    android:textSize="20sp"/>
             </RelativeLayout>
 
         </LinearLayout>
@@ -309,9 +317,12 @@
         android:id="@+id/Card_view2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:clickable="true"
+        android:foreground="?android:attr/selectableItemBackground"
         app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="3dp"
-        app:cardElevation="4dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="5dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true"
         >
@@ -324,7 +335,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp">
+                android:layout_height="80dp">
 
                 <ImageView
                     android:id="@+id/id_cloth"
@@ -343,7 +354,7 @@
                     android:layout_toRightOf="@id/id_cloth"
                     android:text="穿衣指数"
                     android:textColor="#000"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/id_cloth_content"
@@ -356,12 +367,12 @@
                     android:maxLines="3"
                     android:text=""
                     android:textColor="#000"
-                    android:textSize="15sp"/>
+                    android:textSize="13sp"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp">
+                android:layout_height="80dp">
 
                 <ImageView
                     android:id="@+id/id_sport"
@@ -379,7 +390,7 @@
                     android:layout_toRightOf="@id/id_sport"
                     android:text="运动指数"
                     android:textColor="#000"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/id_sport_content"
@@ -392,12 +403,12 @@
                     android:maxLines="3"
                     android:text=""
                     android:textColor="#000"
-                    android:textSize="15sp"/>
+                    android:textSize="14sp"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp">
+                android:layout_height="80dp">
 
                 <ImageView
                     android:id="@+id/id_ultraviolet_radiation"
@@ -415,7 +426,7 @@
                     android:layout_toRightOf="@id/id_ultraviolet_radiation"
                     android:text="紫外线指数"
                     android:textColor="#000"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/id_ultraviolet_radiation_content"
@@ -428,12 +439,12 @@
                     android:maxLines="3"
                     android:text=""
                     android:textColor="#000"
-                    android:textSize="15sp"/>
+                    android:textSize="13sp"/>
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="90dp">
+                android:layout_height="80dp">
 
                 <ImageView
                     android:id="@+id/id_air_conditioning"
@@ -451,7 +462,7 @@
                     android:layout_toRightOf="@id/id_air_conditioning"
                     android:text="感冒指数"
                     android:textColor="#000"
-                    android:textSize="20sp"/>
+                    android:textSize="18sp"/>
 
                 <TextView
                     android:id="@+id/id_air_conditioning_content"
@@ -464,7 +475,7 @@
                     android:maxLines="3"
                     android:text=""
                     android:textColor="#000"
-                    android:textSize="15sp"/>
+                    android:textSize="13sp"/>
             </RelativeLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>

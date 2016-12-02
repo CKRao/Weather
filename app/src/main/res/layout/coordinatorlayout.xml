@@ -73,13 +73,14 @@
     <!--</com.yalantis.phoenix.PullToRefreshView>-->
     <!--</LinearLayout>-->
     <android.support.design.widget.FloatingActionButton
+        app:layout_behavior="com.example.ckrao.myapplication.ScrollAwareFABBehavior"
         android:id="@+id/id_float_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
+        android:layout_margin="14dp"
         android:clickable="true"
         android:src="@drawable/refresh"
-        app:backgroundTint="#FA3D3D"
+        app:backgroundTint="#03A9CB"
         app:elevation="5dp"
         app:layout_anchor="@id/main_layout"
         app:layout_anchorGravity="bottom|right|end"/>

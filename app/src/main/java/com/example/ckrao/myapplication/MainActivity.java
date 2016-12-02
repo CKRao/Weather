@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -43,6 +42,7 @@ import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
 import com.example.ckrao.myapplication.HttpUtility.Httpuility;
 import com.example.ckrao.myapplication.Utility.GetWeekOfDate;
+import com.example.ckrao.myapplication.Utility.ToastUtil;
 import com.google.gson.Gson;
 import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
@@ -59,34 +59,34 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    TextView week;
-    TextView temp;
-    TextView weather;
-    TextView mCloth_tx;
-    TextView mCloth_content;
-    TextView mAir_conditioning_content;
-    TextView mAir_conditioning_tx;
-    TextView mUltraviolet_radiation_content;
-    TextView mUltraviolet_radiation_tx;
-    ImageView img_01;
-    ImageView img_02;
-    ImageView img_03;
-    TextView temp_01;
-    TextView temp_02;
-    TextView temp_03;
-    TextView mSport_tx;
-    TextView mSport_content;
-    CardView cardView;
-    TextView mRainfall, mHumidity, mWinddirection;
-    RelativeLayout layout;
-    CollapsingToolbarLayout collapsingToolbarLayout;
-    FloatingActionButton mFloatingActionButton;
-    ImageView bgImg;
-    LocationClient mLocationClient;
-    BDLocationListener mBDLocationListener = new MyLocationListener();
-    Toolbar toolbar;
-    NavigationView mNavigationView;
-    DrawerLayout mDrawerLayout;
+    private TextView week;
+    private TextView temp;
+    private TextView weather;
+    private TextView mCloth_tx;
+    private TextView mCloth_content;
+    private TextView mAir_conditioning_content;
+    private TextView mAir_conditioning_tx;
+    private TextView mUltraviolet_radiation_content;
+    private TextView mUltraviolet_radiation_tx;
+    private ImageView img_01;
+    private ImageView img_02;
+    private ImageView img_03;
+    private TextView temp_01;
+    private TextView temp_02;
+    private TextView temp_03;
+    private TextView mSport_tx;
+    private TextView mSport_content;
+    private CardView cardView;
+    private TextView mRainfall, mHumidity, mWinddirection;
+    private RelativeLayout layout;
+    private CollapsingToolbarLayout collapsingToolbarLayout;
+    private FloatingActionButton mFloatingActionButton;
+    private ImageView bgImg;
+    private LocationClient mLocationClient;
+    private BDLocationListener mBDLocationListener = new MyLocationListener();
+    private Toolbar toolbar;
+    private NavigationView mNavigationView;
+    private DrawerLayout mDrawerLayout;
     private String address;
     private String myCity;
     private Httpuility mHttpuility;
@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private static boolean isDay;
     private static final int BAIDU_GPS_OPEN_STATE = 100;
+   private long exitTime = 0;
 //    private PullToRefreshView mPullToRefreshView;
 
     @Override
@@ -101,8 +102,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_main);
-        Intent intent = new Intent(this, AutoUpdateService.class);
-        startService(intent);
+        refreshData();
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
         determineTheTime();
@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
         mNavigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    public boolean onNavigationItemSelected(MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.navigation_item_local:
                                 mDrawerLayout.closeDrawers();
@@ -143,9 +143,10 @@ public class MainActivity extends AppCompatActivity {
                                 mLocationClient.start();
                                 break;
                             case R.id.navigation_sub_item_search:
+                                mDrawerLayout.closeDrawers();
                                 Intent intent = new Intent(MainActivity.this, SelectActivity.class);
                                 startActivityForResult(intent, 0);
-                                mDrawerLayout.closeDrawers();
+
                                 break;
 //                            case R.id.navigation_sub_item_setting:
 //                                break;
@@ -262,7 +263,7 @@ public class MainActivity extends AppCompatActivity {
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
         mNavigationView = (NavigationView) findViewById(R.id.navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
-
+        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
     }
 
     private void setChange() {
@@ -522,7 +523,7 @@ public class MainActivity extends AppCompatActivity {
 //    }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case BAIDU_GPS_OPEN_STATE:
@@ -592,6 +593,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mLocationClient.stop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        Intent intent = new Intent(this, AutoUpdateService.class);
+        startService(intent);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            ToastUtil.showToast(getApplicationContext(), "再按一次退出程序");
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
     }
 }
 
