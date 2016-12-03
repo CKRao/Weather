@@ -45,13 +45,17 @@ public class SelectActivity extends AppCompatActivity {
     private List<CitySortModel> SourceDateList;
     private AlertDialog mDialog;
     private Toolbar mToolbar;
-
+    private static final String FROM_SEARCH = "from search";
+    private static final String FROM_MORE = "from more";
+    private String result;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+        Intent intent = getIntent();
+        result = intent.getStringExtra("From");
         initViews();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -139,22 +143,16 @@ public class SelectActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-//                if (!PreferenceManager.getDefaultSharedPreferences(SelectActivity.this).getBoolean("isChoose", false)) {
-//                    SharedPreferences.Editor editor = PreferenceManager.
-//                            getDefaultSharedPreferences(SelectActivity.this).edit();
-//                    editor.putBoolean("isChoose", true);
-//                    editor.commit();
-//                }
-//                Toast.makeText(getApplication(), ((CitySortModel) adapter.getItem(position)).getName(), Toast.LENGTH_SHORT).show();
-
                 Intent intent = new Intent();
-//                String city_id = ((CitySortModel) adapter.getItem(position)).getCityId();
                 String city_name = ((CitySortModel) adapter.getItem(position)).getName();
 //                Log.i("Rao", "onItemClick: "+city_name);
                 intent.putExtra("city_name", city_name);
-                setResult(0, intent);
-//                final InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                if (result.equals(FROM_SEARCH)){
+                    setResult(0, intent);
+                }else if (result.equals(FROM_MORE)){
+                    setResult(1, intent);
+                }
+
                 //判断隐藏软键盘是否弹出
                 if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
                     //隐藏软键盘

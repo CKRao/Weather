@@ -14,15 +14,22 @@ import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,10 +41,14 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.example.ckrao.myapplication.Adapter.MyViewPagerAdapter;
+import com.example.ckrao.myapplication.Adapter.RecyclerAdapter;
 import com.example.ckrao.myapplication.Model.CurrentWeatherBean;
 import com.example.ckrao.myapplication.Model.DataBean;
+import com.example.ckrao.myapplication.Model.MoreCityModel;
 import com.example.ckrao.myapplication.Service.AutoUpdateService;
 import com.example.ckrao.myapplication.HttpUtility.HttpCallBackListener;
 import com.example.ckrao.myapplication.HttpUtility.Httpuility;
@@ -54,11 +65,12 @@ import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private TextView week;
     private TextView temp;
     private TextView weather;
@@ -91,27 +103,48 @@ public class MainActivity extends AppCompatActivity {
     private String myCity;
     private Httpuility mHttpuility;
     private List<DataBean> mDataBeanList;
-    private Handler mHandler;
+    private ViewPager mViewPager;
+    private TabLayout mTableLayout;
+    private LayoutInflater mLayoutInflater;
+    private View mView1, mView2;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private List<View> mViewList = new ArrayList<>();
     private static boolean isDay;
     private static final int BAIDU_GPS_OPEN_STATE = 100;
-   private long exitTime = 0;
-//    private PullToRefreshView mPullToRefreshView;
+    private static final int REFRESH_COMPLETE = 101;
+    private RecyclerView mRecyclerView;
+    private long exitTime = 0;
+    private List<MoreCityModel> mMoreCityModels;
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case REFRESH_COMPLETE:
+                    refreshData();
+                    mSwipeRefreshLayout.setRefreshing(false);
+                    break;
+                default:
+                    CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
+                    setTheInfo(bean);
+                    break;
+            }
+        }
+    };
+    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_main);
-        refreshData();
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
+        mMoreCityModels = new ArrayList<>();
         determineTheTime();
         initUI();
         initLocation();
         setChange();
         if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
-//            Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-//            startActivityForResult(intent, 0);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 if (getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
@@ -128,6 +161,9 @@ public class MainActivity extends AppCompatActivity {
                     getDefaultSharedPreferences(this).edit();
             editor.putBoolean("isChoose", true);
             editor.commit();
+        } else {
+            mSwipeRefreshLayout.setRefreshing(true);
+            onRefresh();
         }
         showWeather();
         mNavigationView.setNavigationItemSelectedListener(
@@ -143,13 +179,19 @@ public class MainActivity extends AppCompatActivity {
                                 mLocationClient.start();
                                 break;
                             case R.id.navigation_sub_item_search:
-                                mDrawerLayout.closeDrawers();
+                                String data = "from search";
                                 Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+                                intent.putExtra("From", data);
                                 startActivityForResult(intent, 0);
-
+                                mDrawerLayout.closeDrawers();
                                 break;
-//                            case R.id.navigation_sub_item_setting:
-//                                break;
+                            case R.id.navigation_sub_item_morecity:
+                                String data1 = "from more";
+                                Intent intent1 = new Intent(MainActivity.this, SelectActivity.class);
+                                intent1.putExtra("From", data1);
+                                startActivityForResult(intent1, 1);
+                                mDrawerLayout.closeDrawers();
+                                break;
                             case R.id.navigation_sub_item_about:
                                 mDrawerLayout.closeDrawers();
                                 Snackbar.make(layout, "The App is Powered by CR", Snackbar.LENGTH_LONG).show();
@@ -161,31 +203,11 @@ public class MainActivity extends AppCompatActivity {
                         return false;
                     }
                 });
-        mFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ObjectAnimator animator = ObjectAnimator.ofFloat(mFloatingActionButton, "rotation", 0F, 360F);
-                animator.setDuration(500);
-                animator.setInterpolator(new AccelerateDecelerateInterpolator());
-                animator.start();
-                refreshData();
-            }
-        });
-        mHandler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-
-                CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
-                setTheInfo(bean);
-            }
-        };
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (mLocationClient.isStarted()) {
-//                    mLocationClient.stop();
-//                }
-//                mLocationClient.start();
                 mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
@@ -227,43 +249,66 @@ public class MainActivity extends AppCompatActivity {
                 isDay = true;
             }
         }
-
     }
 
     private void initUI() {
+        mLayoutInflater = LayoutInflater.from(this);
+        mViewPager = (ViewPager) findViewById(R.id.view_pager);
+        mTableLayout = (TabLayout) findViewById(R.id.tabs);
+        mView1 = mLayoutInflater.inflate(R.layout.show_layout, null);
+        mView2 = mLayoutInflater.inflate(R.layout.more_city, null);
+
+        mViewList.add(mView1);
+        mViewList.add(mView2);
+
+        mTableLayout.setTabMode(TabLayout.MODE_FIXED);
+        mTableLayout.addTab(mTableLayout.newTab().setText(""));
+        mTableLayout.addTab(mTableLayout.newTab().setText(""));
+
         bgImg = (ImageView) findViewById(R.id.id_bg_img);
-        mFloatingActionButton = (FloatingActionButton) findViewById(R.id.id_float_bt);
-        layout = (RelativeLayout) findViewById(R.id.id_layout);
-        temp = (TextView) findViewById(R.id.temp);
-        week = (TextView) findViewById(R.id.week);
-        weather = (TextView) findViewById(R.id.weather);
-        mCloth_tx = (TextView) findViewById(R.id.id_cloth_tx);
-        mCloth_content = (TextView) findViewById(R.id.id_cloth_content);
-        mSport_tx = (TextView) findViewById(R.id.id_sport_tx);
-        mSport_content = (TextView) findViewById(R.id.id_sport_content);
-        mUltraviolet_radiation_tx = (TextView) findViewById(R.id.id_ultraviolet_radiation_tx);
-        mUltraviolet_radiation_content = (TextView) findViewById(R.id.id_ultraviolet_radiation_content);
-        mAir_conditioning_tx = (TextView) findViewById(R.id.id_air_conditioning_tx);
-        mAir_conditioning_content = (TextView) findViewById(R.id.id_air_conditioning_content);
+        layout = (RelativeLayout) mView1.findViewById(R.id.id_layout);
+        temp = (TextView) mView1.findViewById(R.id.temp);
+        week = (TextView) mView1.findViewById(R.id.week);
+        weather = (TextView) mView1.findViewById(R.id.weather);
+        mCloth_tx = (TextView) mView1.findViewById(R.id.id_cloth_tx);
+        mCloth_content = (TextView) mView1.findViewById(R.id.id_cloth_content);
+        mSport_tx = (TextView) mView1.findViewById(R.id.id_sport_tx);
+        mSport_content = (TextView) mView1.findViewById(R.id.id_sport_content);
+        mUltraviolet_radiation_tx = (TextView) mView1.findViewById(R.id.id_ultraviolet_radiation_tx);
+        mUltraviolet_radiation_content = (TextView) mView1.findViewById(R.id.id_ultraviolet_radiation_content);
+        mAir_conditioning_tx = (TextView) mView1.findViewById(R.id.id_air_conditioning_tx);
+        mAir_conditioning_content = (TextView) mView1.findViewById(R.id.id_air_conditioning_content);
 
-        img_01 = (ImageView) findViewById(R.id.id_wea_01);
-        img_02 = (ImageView) findViewById(R.id.id_wea_02);
-        img_03 = (ImageView) findViewById(R.id.id_wea_03);
+        img_01 = (ImageView) mView1.findViewById(R.id.id_wea_01);
+        img_02 = (ImageView) mView1.findViewById(R.id.id_wea_02);
+        img_03 = (ImageView) mView1.findViewById(R.id.id_wea_03);
 
-        temp_01 = (TextView) findViewById(R.id.temp_01);
-        temp_02 = (TextView) findViewById(R.id.temp_02);
-        temp_03 = (TextView) findViewById(R.id.temp_03);
+        temp_01 = (TextView) mView1.findViewById(R.id.temp_01);
+        temp_02 = (TextView) mView1.findViewById(R.id.temp_02);
+        temp_03 = (TextView) mView1.findViewById(R.id.temp_03);
 
-        mRainfall = (TextView) findViewById(R.id.rainfall);
-        mHumidity = (TextView) findViewById(R.id.humidity);
-        mWinddirection = (TextView) findViewById(R.id.winddirection);
+        mRainfall = (TextView) mView1.findViewById(R.id.rainfall);
+        mHumidity = (TextView) mView1.findViewById(R.id.humidity);
+        mWinddirection = (TextView) mView1.findViewById(R.id.winddirection);
         toolbar = (Toolbar) findViewById(R.id.id_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         collapsingToolbarLayout = (CollapsingToolbarLayout) findViewById(R.id.id_collapsing);
         mNavigationView = (NavigationView) findViewById(R.id.navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
+        mSwipeRefreshLayout = (SwipeRefreshLayout) mView1.findViewById(R.id.swipe_refresh);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
+
+        mRecyclerView = (RecyclerView) mView2.findViewById(R.id.recycleview);
+        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setAdapter(recyclerAdapter);
+
+        MyViewPagerAdapter viewPagerAdapter = new MyViewPagerAdapter(mViewList);
+        mViewPager.setAdapter(viewPagerAdapter);
+        mTableLayout.setupWithViewPager(mViewPager);
+        mTableLayout.setTabsFromPagerAdapter(viewPagerAdapter);
+
     }
 
     private void setChange() {
@@ -325,7 +370,6 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-//                       ToastUtil.showToast(getApplicationContext(),"更新成功");
                         Snackbar.make(bgImg, "更新成功", Snackbar.LENGTH_SHORT).show();
                     }
                 });
@@ -409,41 +453,79 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-            myCity = data.getStringExtra("city_name");
+            switch (resultCode) {
+                case 0:
+                    myCity = data.getStringExtra("city_name");
 
-            Snackbar.make(layout, myCity,
-                    Snackbar.LENGTH_LONG).show();
-//            ScaleAnimation scaleAnimation = new ScaleAnimation(1,1,0,1);
-//            scaleAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-//            scaleAnimation.setDuration(1000);
-//            LayoutAnimationController controller = new LayoutAnimationController(scaleAnimation,0.5F);
-//            controller.setOrder(LayoutAnimationController.ORDER_NORMAL);
-//            cardView.setAnimation(scaleAnimation);
-            try {
-                address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
-                        + "&key=b727f217188c4e8a91ecba4d349c73ff";
-                Log.i("Rao", address);
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }
-            mHttpuility = new Httpuility(address, new HttpCallBackListener() {
-                @Override
-                public void onFinish(String response) {
+                    Snackbar.make(layout, myCity,
+                            Snackbar.LENGTH_LONG).show();
                     try {
-                        Log.i("Rao", response);
-                        analysis(response);
-
-                    } catch (Exception e) {
+                        address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
+                                + "&key=b727f217188c4e8a91ecba4d349c73ff";
+                        Log.i("Rao", address);
+                    } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                }
+                    mHttpuility = new Httpuility(address, new HttpCallBackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            try {
+                                Log.i("Rao", response);
+                                analysis(response);
 
-                @Override
-                public void onError(Exception e) {
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
 
-                }
-            });
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                    break;
+                case 1:
+                    myCity = data.getStringExtra("city_name");
+
+                    Snackbar.make(layout, myCity,
+                            Snackbar.LENGTH_LONG).show();
+                    try {
+                        address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
+                                + "&key=b727f217188c4e8a91ecba4d349c73ff";
+                        Log.i("Rao", address);
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+                    mHttpuility = new Httpuility(address, new HttpCallBackListener() {
+                        @Override
+                        public void onFinish(String response) {
+                            try {
+                                addMoreCity(response);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Exception e) {
+
+                        }
+                    });
+                    break;
+            }
         }
+    }
+
+    private void addMoreCity(String response) {
+        Gson gson = new Gson();
+        DataBean bean = gson.fromJson(response, DataBean.class);
+        MoreCityModel moreCityModel = new MoreCityModel();
+        moreCityModel.setCity(bean.getHeWeather5().get(0).getBasic().getCity());
+        moreCityModel.setTemp(bean.getHeWeather5().get(0).getNow().getTmp());
+        moreCityModel.setWeather(bean.getHeWeather5().get(0).getNow().getCond().getTxt());
+        mMoreCityModels.add(moreCityModel);
+        mRecyclerView.invalidate();
+        mViewPager.setCurrentItem(1);
     }
 
     public void analysis(String response) {
@@ -482,7 +564,6 @@ public class MainActivity extends AppCompatActivity {
         String rainfall = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getPcpn();
         String humidity = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getHum();
         String winddirection = bean.getHeWeather5().get(0).getDaily_forecast().get(0).getWind().getSpd() + "km/h";
-//        String pm = null;
         saveMessage(getApplicationContext(), air_conditioning_tx, air_conditioning_content, sport_tx,
                 sport_content, ultraviolet_radiation_tx, ultraviolet_radiation_content, cloth_tx, cloth_content,
                 mCity, mWeek, mTemp, mWeather, img, img01, img02, img03, temp01, temp02, temp03,
@@ -515,13 +596,6 @@ public class MainActivity extends AppCompatActivity {
         mHandler.sendMessage(message);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu, menu);
-//        return true;
-//    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -537,6 +611,11 @@ public class MainActivity extends AppCompatActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        mHandler.sendEmptyMessageDelayed(REFRESH_COMPLETE, 1500);
     }
 //
 //    @Override

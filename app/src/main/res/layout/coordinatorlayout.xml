@@ -40,8 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 app:layout_collapseMode="pin"
-                app:navigationIcon="@drawable/more"
                 app:layout_scrollFlags="scroll|enterAlways"
+                app:navigationIcon="@drawable/more"
                 app:popupTheme="@style/Theme.AppCompat.Light"
                 app:tabIndicatorColor="@android:color/white"
                 app:tabIndicatorHeight="4dp">
@@ -49,39 +49,23 @@
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
+
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
+    <RelativeLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <LinearLayout
-            android:id="@+id/main_layout"
+        android:layout_height="match_parent">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingTop="4dp">
+            android:layout_height="4dp"
+            app:tabIndicatorHeight="4dp"
+            app:tabIndicatorColor="@color/colorAccent"/>
+        <android.support.v4.view.ViewPager
+            android:layout_below="@id/tabs"
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
 
-            <include layout="@layout/show_layout"/>
-
-        </LinearLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
-    <!--</com.yalantis.phoenix.PullToRefreshView>-->
-    <!--</LinearLayout>-->
-    <android.support.design.widget.FloatingActionButton
-        app:layout_behavior="com.example.ckrao.myapplication.ScrollAwareFABBehavior"
-        android:id="@+id/id_float_bt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="14dp"
-        android:clickable="true"
-        android:src="@drawable/refresh"
-        app:backgroundTint="#03A9CB"
-        app:elevation="5dp"
-        app:layout_anchor="@id/main_layout"
-        app:layout_anchorGravity="bottom|right|end"/>
 </android.support.design.widget.CoordinatorLayout>
