@@ -5,10 +5,15 @@
     android:id="@+id/liner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-   <!--<android.support.design.widget.CoordinatorLayout-->
-       <!--android:id="@+id/coordinator"-->
-       <!--android:layout_width="match_parent"-->
-       <!--android:layout_height="match_parent">-->
+   <android.support.design.widget.CoordinatorLayout
+       android:id="@+id/coordinator"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+      <android.support.v4.widget.SwipeRefreshLayout
+          android:id="@+id/view2_swiperefresh"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+
    <android.support.v7.widget.RecyclerView
        android:id="@+id/recycleview"
        android:layout_width="match_parent"
@@ -29,5 +34,6 @@
        <!--app:layout_anchorGravity="bottom|right|end"-->
        <!--app:pressedTranslationZ="12dp"-->
        <!--app:rippleColor="#a6a6a6"/>-->
-   <!--</android.support.design.widget.CoordinatorLayout>-->
+      </android.support.v4.widget.SwipeRefreshLayout>
+   </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

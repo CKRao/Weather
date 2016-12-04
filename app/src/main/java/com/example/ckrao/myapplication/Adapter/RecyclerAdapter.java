@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +21,7 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyViewHolder> {
     private List<MoreCityModel> dataList;
+    private RecyclerViewOnItemLongClickListener onItemLongClickListener;
 
     public RecyclerAdapter(List<MoreCityModel> dataList) {
         this.dataList = dataList;
@@ -34,9 +36,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_sunny);
+        if (dataList.get(position).getWeather().indexOf("雨") != -1) {
+            holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_rainy);
+        } else if (dataList.get(position).getWeather().indexOf("晴") != -1) {
+            holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_sunny);
+        } else {
+            holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_cloudy);
+        }
         holder.city.setText(dataList.get(position).getCity());
-        holder.temp.setText(dataList.get(position).getTemp());
+        holder.temp.setText(dataList.get(position).getTemp() + "℃");
         holder.weather.setText(dataList.get(position).getWeather());
     }
 
@@ -45,7 +53,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         return dataList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
+
+
+    public interface RecyclerViewOnItemLongClickListener {
+        void onItemLongClick(View view, int position);
+    }
+
+    public void setOnItemLongClickListener(RecyclerViewOnItemLongClickListener onItemLongClickListener) {
+        this.onItemLongClickListener = onItemLongClickListener;
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener {
         ImageView mImageView;
         TextView city;
         TextView temp;
@@ -53,10 +71,20 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
         public MyViewHolder(View itemView) {
             super(itemView);
+
             mImageView = (ImageView) itemView.findViewById(R.id.item_img);
             city = (TextView) itemView.findViewById(R.id.item_city);
             temp = (TextView) itemView.findViewById(R.id.item_temp);
             weather = (TextView) itemView.findViewById(R.id.item_weather);
+            itemView.setOnLongClickListener(this);
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (onItemLongClickListener != null){
+                onItemLongClickListener.onItemLongClick(v,getPosition());
+            }
+            return true;
         }
     }
 }

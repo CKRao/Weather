@@ -2,8 +2,11 @@ package com.example.ckrao.myapplication;
 
 
 import android.Manifest;
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -13,6 +16,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -23,6 +27,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,18 +35,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.LayoutAnimationController;
-import android.view.animation.ScaleAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TableLayout;
 import android.widget.TextView;
 
 import com.example.ckrao.myapplication.Adapter.MyViewPagerAdapter;
@@ -59,6 +58,7 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -108,10 +108,14 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private LayoutInflater mLayoutInflater;
     private View mView1, mView2;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private MyViewPagerAdapter viewPagerAdapter;
+    private RecyclerAdapter recyclerAdapter;
     private List<View> mViewList = new ArrayList<>();
     private static boolean isDay;
     private static final int BAIDU_GPS_OPEN_STATE = 100;
     private static final int REFRESH_COMPLETE = 101;
+    private static final int REFRESH_RECYCLERVIEW = 102;
+    private boolean isExit = false;
     private RecyclerView mRecyclerView;
     private long exitTime = 0;
     private List<MoreCityModel> mMoreCityModels;
@@ -123,6 +127,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     refreshData();
                     mSwipeRefreshLayout.setRefreshing(false);
                     break;
+                case REFRESH_RECYCLERVIEW:
+                    recyclerAdapter.notifyDataSetChanged();
+                    mRecyclerView.invalidate();
+                    viewPagerAdapter.notifyDataSetChanged();
+                    mViewPager.setCurrentItem(1);
+                    break;
                 default:
                     CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
                     setTheInfo(bean);
@@ -130,7 +140,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         }
     };
-    ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
         mMoreCityModels = new ArrayList<>();
+        setDataForList("moreCity", mMoreCityModels);
         determineTheTime();
         initUI();
         initLocation();
@@ -184,6 +194,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 intent.putExtra("From", data);
                                 startActivityForResult(intent, 0);
                                 mDrawerLayout.closeDrawers();
+                                mViewPager.setCurrentItem(0);
                                 break;
                             case R.id.navigation_sub_item_morecity:
                                 String data1 = "from more";
@@ -211,6 +222,63 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 mDrawerLayout.openDrawer(GravityCompat.START);
             }
         });
+        recyclerAdapter.setOnItemLongClickListener(new RecyclerAdapter.RecyclerViewOnItemLongClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onItemLongClick(final View view, final int position) {
+                view.animate().translationZ(15F).setDuration(300).setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        view.animate().translationZ(1F).setDuration(500).start();
+                    }
+                }).start();
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialogCusto);
+                alertDialog.setMessage("是否删除此城市");
+                alertDialog.setCancelable(false);
+                alertDialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mMoreCityModels.remove(position);
+                        recyclerAdapter.notifyDataSetChanged();
+                        setDataForList("moreCity", mMoreCityModels);
+                    }
+                });
+                alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                alertDialog.show();
+            }
+        });
+    }
+
+    public void setDataForList(String tag, List<MoreCityModel> modelList) {
+        if (modelList == null || modelList.size() <= 0) {
+            return;
+        }
+        Gson gson = new Gson();
+        String result = gson.toJson(modelList);
+        SharedPreferences.Editor editor = PreferenceManager.
+                getDefaultSharedPreferences(getApplicationContext()).edit();
+        editor.putString(tag, null);
+        editor.putString(tag, result);
+        editor.commit();
+
+    }
+
+    private List<MoreCityModel> getDataFromList(String tag) {
+        List<MoreCityModel> models = new ArrayList<>();
+        String strJson = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext()).getString(tag, "");
+        if (strJson == null) {
+            return models;
+        }
+        Gson gson = new Gson();
+        models = gson.fromJson(strJson, new TypeToken<List<MoreCityModel>>() {
+        }.getType());
+        return models;
     }
 
     private void initLocation() {
@@ -300,11 +368,19 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
 
         mRecyclerView = (RecyclerView) mView2.findViewById(R.id.recycleview);
-        RecyclerAdapter recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
+        if (getDataFromList("moreCity") == null) {
+            recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
+
+        } else {
+            mMoreCityModels = getDataFromList("moreCity");
+            recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
+        }
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(recyclerAdapter);
 
-        MyViewPagerAdapter viewPagerAdapter = new MyViewPagerAdapter(mViewList);
+        viewPagerAdapter = new MyViewPagerAdapter(mViewList);
+
         mViewPager.setAdapter(viewPagerAdapter);
         mTableLayout.setupWithViewPager(mViewPager);
         mTableLayout.setTabsFromPagerAdapter(viewPagerAdapter);
@@ -486,31 +562,39 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     break;
                 case 1:
                     myCity = data.getStringExtra("city_name");
-
-                    Snackbar.make(layout, myCity,
-                            Snackbar.LENGTH_LONG).show();
-                    try {
-                        address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
-                                + "&key=b727f217188c4e8a91ecba4d349c73ff";
-                        Log.i("Rao", address);
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
+                    for (int i = 0; i < mMoreCityModels.size(); i++) {
+                        if (myCity.equals(mMoreCityModels.get(i).getCity())) {
+                            Snackbar.make(layout, "此城市已存在",
+                                    Snackbar.LENGTH_LONG).show();
+                            isExit = true;
+                            break;
+                        }
                     }
-                    mHttpuility = new Httpuility(address, new HttpCallBackListener() {
-                        @Override
-                        public void onFinish(String response) {
-                            try {
-                                addMoreCity(response);
-                            } catch (Exception e) {
-                                e.printStackTrace();
+                    if (!isExit) {
+                        Snackbar.make(layout, "添加城市：" + myCity,
+                                Snackbar.LENGTH_LONG).show();
+                        try {
+                            address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
+                                    + "&key=b727f217188c4e8a91ecba4d349c73ff";
+                            Log.i("Rao", address);
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        mHttpuility = new Httpuility(address, new HttpCallBackListener() {
+                            @Override
+                            public void onFinish(String response) {
+                                try {
+                                    addMoreCity(response);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
-
-                        @Override
-                        public void onError(Exception e) {
-
-                        }
-                    });
+                            @Override
+                            public void onError(Exception e) {
+                            }
+                        });
+                    }
+                    mViewPager.setCurrentItem(1);
                     break;
             }
         }
@@ -524,8 +608,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         moreCityModel.setTemp(bean.getHeWeather5().get(0).getNow().getTmp());
         moreCityModel.setWeather(bean.getHeWeather5().get(0).getNow().getCond().getTxt());
         mMoreCityModels.add(moreCityModel);
-        mRecyclerView.invalidate();
-        mViewPager.setCurrentItem(1);
+        setDataForList("moreCity", mMoreCityModels);
+        mHandler.sendEmptyMessage(REFRESH_RECYCLERVIEW);
     }
 
     public void analysis(String response) {
