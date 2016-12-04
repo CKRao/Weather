@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private LayoutInflater mLayoutInflater;
     private View mView1, mView2;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private SwipeRefreshLayout mSwipeRefreshLayout_view2;
     private MyViewPagerAdapter viewPagerAdapter;
     private RecyclerAdapter recyclerAdapter;
     private List<View> mViewList = new ArrayList<>();
@@ -115,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final int BAIDU_GPS_OPEN_STATE = 100;
     private static final int REFRESH_COMPLETE = 101;
     private static final int REFRESH_RECYCLERVIEW = 102;
+    private static final int REFRESH_MORECITY = 103;
     private boolean isExit = false;
     private RecyclerView mRecyclerView;
     private long exitTime = 0;
@@ -132,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     mRecyclerView.invalidate();
                     viewPagerAdapter.notifyDataSetChanged();
                     mViewPager.setCurrentItem(1);
+                    break;
+                case REFRESH_MORECITY:
+                    refreshMorCity();
+                    mSwipeRefreshLayout_view2.setRefreshing(false);
+                    Snackbar.make(bgImg, "更新成功", Snackbar.LENGTH_SHORT).show();
                     break;
                 default:
                     CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
@@ -154,9 +161,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         initUI();
         initLocation();
         setChange();
+        initEvent();
+    }
+
+    private void initEvent() {
         if (!PreferenceManager.getDefaultSharedPreferences(this).getBoolean("isChoose", false)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (getApplicationContext().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION)
+                if (getApplicationContext().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
                     requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
                                     Manifest.permission.ACCESS_FINE_LOCATION,
@@ -187,6 +198,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     mLocationClient.stop();
                                 }
                                 mLocationClient.start();
+                                mViewPager.setCurrentItem(0);
                                 break;
                             case R.id.navigation_sub_item_search:
                                 String data = "from search";
@@ -216,6 +228,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 });
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setColorSchemeColors(Color.BLUE);
+
+        mSwipeRefreshLayout_view2.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mHandler.sendEmptyMessageDelayed(REFRESH_MORECITY, 1500);
+            }
+        });
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -319,6 +338,52 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
+    private void refreshMorCity() {
+        if (mMoreCityModels.size() > 0) {
+            for (int i = 0; i < mMoreCityModels.size(); i++) {
+                myCity = mMoreCityModels.get(i).getCity();
+                try {
+                    address = "https://free-api.heweather.com/v5/weather?city=" + URLEncoder.encode(myCity, "UTF-8")
+                            + "&key=b727f217188c4e8a91ecba4d349c73ff";
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+                final int finalI = i;
+                mHttpuility = new Httpuility(address, new HttpCallBackListener() {
+                    @Override
+                    public void onFinish(String response) {
+                        Gson gson = new Gson();
+                        DataBean bean = gson.fromJson(response, DataBean.class);
+
+                        mMoreCityModels.get(finalI).setCity(bean.getHeWeather5().get(0).getBasic().getCity());
+                        mMoreCityModels.get(finalI).setTemp(bean.getHeWeather5().get(0).getNow().getTmp());
+                        mMoreCityModels.get(finalI).setWeather(bean.getHeWeather5().get(0).getNow().getCond().getTxt());
+                        setDataForList("moreCity", mMoreCityModels);
+                        mHandler.sendEmptyMessage(REFRESH_RECYCLERVIEW);
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                Snackbar.make(bgImg, "更新成功", Snackbar.LENGTH_SHORT).show();
+//                            }
+//                        });
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Snackbar.make(bgImg, "更新失败", Snackbar.LENGTH_SHORT).show();
+                                ToastUtil.showToast(getApplicationContext(),"更新失败");
+                            }
+                        });
+                    }
+                });
+
+            }
+        }
+    }
+
     private void initUI() {
         mLayoutInflater = LayoutInflater.from(this);
         mViewPager = (ViewPager) findViewById(R.id.view_pager);
@@ -365,6 +430,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mNavigationView = (NavigationView) findViewById(R.id.navigation);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         mSwipeRefreshLayout = (SwipeRefreshLayout) mView1.findViewById(R.id.swipe_refresh);
+        mSwipeRefreshLayout_view2 = (SwipeRefreshLayout) mView2.findViewById(R.id.view2_swiperefresh);
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
 
         mRecyclerView = (RecyclerView) mView2.findViewById(R.id.recycleview);
@@ -589,6 +655,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                     e.printStackTrace();
                                 }
                             }
+
                             @Override
                             public void onError(Exception e) {
                             }
