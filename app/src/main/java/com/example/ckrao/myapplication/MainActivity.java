@@ -321,11 +321,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 .getDefaultSharedPreferences(getApplicationContext()).getString(tag, null);
         if (strJson == null) {
             return models;
+        }else {
+            Gson gson = new Gson();
+            models = gson.fromJson(strJson, new TypeToken<List<MoreCityModel>>() {
+            }.getType());
+            return models;
         }
-        Gson gson = new Gson();
-        models = gson.fromJson(strJson, new TypeToken<List<MoreCityModel>>() {
-        }.getType());
-        return models;
     }
 
     private void initLocation() {
@@ -464,7 +465,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
 
         mRecyclerView = (RecyclerView) mView2.findViewById(R.id.recycleview);
-        if (mMoreCityModels.size()<=0||getDataFromList("moreCity")==null) {
+        if (mMoreCityModels.size()<=0) {
             mHandler.sendEmptyMessage(MORECITY_ISNULL);
             recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
         } else {
