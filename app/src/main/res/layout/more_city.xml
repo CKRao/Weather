@@ -5,35 +5,61 @@
     android:id="@+id/liner"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-   <android.support.design.widget.CoordinatorLayout
-       android:id="@+id/coordinator"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-      <android.support.v4.widget.SwipeRefreshLayout
-          android:id="@+id/view2_swiperefresh"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
 
-   <android.support.v7.widget.RecyclerView
-       android:id="@+id/recycleview"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent">
-   </android.support.v7.widget.RecyclerView>
-   <!--<android.support.design.widget.FloatingActionButton-->
-       <!--android:id="@+id/fab"-->
-       <!--android:layout_width="wrap_content"-->
-       <!--android:layout_height="wrap_content"-->
-       <!--android:src="@drawable/add"-->
-       <!--app:backgroundTint="#30469b"-->
-       <!--app:borderWidth="0dp"-->
-       <!--app:elevation="6dp"-->
-       <!--android:clickable="true"-->
-       <!--app:fabSize="normal"-->
-       <!--android:layout_margin="16dp"-->
-       <!--app:layout_anchor="@id/recycleview"-->
-       <!--app:layout_anchorGravity="bottom|right|end"-->
-       <!--app:pressedTranslationZ="12dp"-->
-       <!--app:rippleColor="#a6a6a6"/>-->
-      </android.support.v4.widget.SwipeRefreshLayout>
-   </android.support.design.widget.CoordinatorLayout>
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/view2_swiperefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/view2_notyetadd"
+                    android:layout_width="70dp"
+                    android:layout_height="80dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="100dp"
+                    android:src="@drawable/icon25"/>
+
+                <TextView
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/id_tip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/view2_notyetadd"
+                    android:layout_centerHorizontal="true"
+                    android:text="您尚未添加城市，请到多城市管理添加"
+                    android:textSize="15sp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycleview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                </android.support.v7.widget.RecyclerView>
+            </RelativeLayout>
+
+            <!--<android.support.design.widget.FloatingActionButton-->
+            <!--android:id="@+id/fab"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/add"-->
+            <!--app:backgroundTint="#30469b"-->
+            <!--app:borderWidth="0dp"-->
+            <!--app:elevation="6dp"-->
+            <!--android:clickable="true"-->
+            <!--app:fabSize="normal"-->
+            <!--android:layout_margin="16dp"-->
+            <!--app:layout_anchor="@id/recycleview"-->
+            <!--app:layout_anchorGravity="bottom|right|end"-->
+            <!--app:pressedTranslationZ="12dp"-->
+            <!--app:rippleColor="#a6a6a6"/>-->
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

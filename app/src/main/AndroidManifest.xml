@@ -25,7 +25,7 @@
         android:icon="@drawable/weather_icon"
         android:label="SpeedWeather"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/MyTheme">
 
         <activity android:name=".SplashActivity"
             android:theme="@style/SplashTheme">
@@ -37,7 +37,8 @@
         </activity>
         <activity android:name=".MainActivity"
            />
-        <activity android:name="com.example.ckrao.myapplication.SelectActivity"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
+        <activity android:name="com.example.ckrao.myapplication.SelectActivity"
+            android:theme="@style/AppTheme"/><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
         <service android:name=".Service.AutoUpdateService"></service>
         <service

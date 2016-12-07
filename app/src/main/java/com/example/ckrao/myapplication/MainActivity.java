@@ -71,6 +71,7 @@ import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private ImageView isnotadd;
     private TextView week;
     private TextView temp;
     private TextView weather;
@@ -88,6 +89,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private TextView temp_03;
     private TextView mSport_tx;
     private TextView mSport_content;
+    private TextView tip;
     private CardView cardView;
     private TextView mRainfall, mHumidity, mWinddirection;
     private RelativeLayout layout;
@@ -117,6 +119,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final int REFRESH_COMPLETE = 101;
     private static final int REFRESH_RECYCLERVIEW = 102;
     private static final int REFRESH_MORECITY = 103;
+    private static final int MORECITY_ISNULL = 104;
+    private static final int MORECITY_ISEXIT = 105;
+    private static final int START_SEARCH = 106;
+    private static final int START_MORECITY = 107;
     private boolean isExit = false;
     private RecyclerView mRecyclerView;
     private long exitTime = 0;
@@ -138,7 +144,32 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 case REFRESH_MORECITY:
                     refreshMorCity();
                     mSwipeRefreshLayout_view2.setRefreshing(false);
-                    Snackbar.make(bgImg, "更新成功", Snackbar.LENGTH_SHORT).show();
+                    if (recyclerAdapter.getItemCount() >0){
+                        Snackbar.make(bgImg, "更新成功", Snackbar.LENGTH_SHORT).show();
+                    }else {
+                        ToastUtil.showToast(getApplicationContext(),"您尚未添加城市，无法获取数据");
+                    }
+
+                    break;
+                case MORECITY_ISNULL:
+                    isnotadd.setVisibility(View.VISIBLE);
+                    tip.setVisibility(View.VISIBLE);
+                    break;
+                case MORECITY_ISEXIT:
+                    isnotadd.setVisibility(View.GONE);
+                    tip.setVisibility(View.GONE);
+                    break;
+                case START_MORECITY:
+                    String data1 = "from more";
+                    Intent intent1 = new Intent(MainActivity.this, SelectActivity.class);
+                    intent1.putExtra("From", data1);
+                    startActivityForResult(intent1, 1);
+                    break;
+                case START_SEARCH:
+                    String data = "from search";
+                    Intent intent = new Intent(MainActivity.this, SelectActivity.class);
+                    intent.putExtra("From", data);
+                    startActivityForResult(intent, 0);
                     break;
                 default:
                     CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
@@ -155,7 +186,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         setContentView(R.layout.layout_main);
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
-        mMoreCityModels = new ArrayList<>();
+        mMoreCityModels =getDataFromList("moreCity");
         setDataForList("moreCity", mMoreCityModels);
         determineTheTime();
         initUI();
@@ -201,19 +232,13 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                                 mViewPager.setCurrentItem(0);
                                 break;
                             case R.id.navigation_sub_item_search:
-                                String data = "from search";
-                                Intent intent = new Intent(MainActivity.this, SelectActivity.class);
-                                intent.putExtra("From", data);
-                                startActivityForResult(intent, 0);
                                 mDrawerLayout.closeDrawers();
                                 mViewPager.setCurrentItem(0);
+                                mHandler.sendEmptyMessageDelayed(START_SEARCH, 200);
                                 break;
                             case R.id.navigation_sub_item_morecity:
-                                String data1 = "from more";
-                                Intent intent1 = new Intent(MainActivity.this, SelectActivity.class);
-                                intent1.putExtra("From", data1);
-                                startActivityForResult(intent1, 1);
                                 mDrawerLayout.closeDrawers();
+                                mHandler.sendEmptyMessageDelayed(START_MORECITY, 200);
                                 break;
                             case R.id.navigation_sub_item_about:
                                 mDrawerLayout.closeDrawers();
@@ -261,6 +286,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                         mMoreCityModels.remove(position);
                         recyclerAdapter.notifyDataSetChanged();
                         setDataForList("moreCity", mMoreCityModels);
+                        if (mMoreCityModels.size() <= 0) {
+                            mHandler.sendEmptyMessage(MORECITY_ISNULL);
+                        }
                     }
                 });
                 alertDialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -275,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void setDataForList(String tag, List<MoreCityModel> modelList) {
         if (modelList == null || modelList.size() <= 0) {
-            return;
+            modelList = new ArrayList<>();
         }
         Gson gson = new Gson();
         String result = gson.toJson(modelList);
@@ -374,7 +402,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             @Override
                             public void run() {
                                 Snackbar.make(bgImg, "更新失败", Snackbar.LENGTH_SHORT).show();
-                                ToastUtil.showToast(getApplicationContext(),"更新失败");
+                                ToastUtil.showToast(getApplicationContext(), "更新失败");
                             }
                         });
                     }
@@ -398,6 +426,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mTableLayout.addTab(mTableLayout.newTab().setText(""));
         mTableLayout.addTab(mTableLayout.newTab().setText(""));
 
+        tip = (TextView) mView2.findViewById(R.id.id_tip);
+        isnotadd = (ImageView) mView2.findViewById(R.id.view2_notyetadd);
         bgImg = (ImageView) findViewById(R.id.id_bg_img);
         layout = (RelativeLayout) mView1.findViewById(R.id.id_layout);
         temp = (TextView) mView1.findViewById(R.id.temp);
@@ -434,10 +464,11 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
 
         mRecyclerView = (RecyclerView) mView2.findViewById(R.id.recycleview);
-        if (getDataFromList("moreCity") == null) {
+        if (getDataFromList("moreCity") == null || mMoreCityModels.size() <= 0) {
+            mHandler.sendEmptyMessage(MORECITY_ISNULL);
             recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
-
         } else {
+            mHandler.sendEmptyMessage(MORECITY_ISEXIT);
             mMoreCityModels = getDataFromList("moreCity");
             recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
         }
@@ -523,7 +554,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     @Override
                     public void run() {
                         Snackbar.make(bgImg, "更新失败", Snackbar.LENGTH_SHORT).show();
-//                        ToastUtil.showToast(getApplicationContext(),"更新失败");
                     }
                 });
             }
@@ -627,6 +657,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     });
                     break;
                 case 1:
+                    isExit = false;
                     myCity = data.getStringExtra("city_name");
                     for (int i = 0; i < mMoreCityModels.size(); i++) {
                         if (myCity.equals(mMoreCityModels.get(i).getCity())) {
@@ -677,6 +708,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mMoreCityModels.add(moreCityModel);
         setDataForList("moreCity", mMoreCityModels);
         mHandler.sendEmptyMessage(REFRESH_RECYCLERVIEW);
+        mHandler.sendEmptyMessage(MORECITY_ISEXIT);
     }
 
     public void analysis(String response) {
@@ -834,7 +866,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onBackPressed() {
-        if ((System.currentTimeMillis() - exitTime) > 2000) {
+        if (mDrawerLayout.isDrawerOpen(GravityCompat.START)){
+            mDrawerLayout.closeDrawers();
+        }else if ((System.currentTimeMillis() - exitTime) > 2000) {
             ToastUtil.showToast(getApplicationContext(), "再按一次退出程序");
             exitTime = System.currentTimeMillis();
         } else {
