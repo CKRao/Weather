@@ -7,23 +7,7 @@
               android:background="@drawable/edittext_background"
               android:orientation="vertical">
 
-    <!--<RelativeLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="48dp"-->
-    <!--android:background="@color/colorPrimary">-->
 
-    <!--<ImageButton-->
-    <!--android:id="@+id/id_back"-->
-    <!--android:layout_width="30dp"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_marginLeft="5dp"-->
-    <!--android:background="@color/colorPrimary"-->
-    <!--android:padding="5dp"-->
-    <!--android:scaleType="fitCenter"-->
-    <!--android:src="@drawable/back"/>-->
-
-    <!---->
-    <!--</RelativeLayout>-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/id_sToolbar"
         android:layout_width="match_parent"

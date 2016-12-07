@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mLocationClient = new LocationClient(getApplicationContext());
         mLocationClient.registerLocationListener(mBDLocationListener);
         mMoreCityModels =getDataFromList("moreCity");
-        setDataForList("moreCity", mMoreCityModels);
+        setDataForList("moreCity",mMoreCityModels);
         determineTheTime();
         initUI();
         initLocation();
@@ -318,7 +318,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private List<MoreCityModel> getDataFromList(String tag) {
         List<MoreCityModel> models = new ArrayList<>();
         String strJson = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext()).getString(tag, "");
+                .getDefaultSharedPreferences(getApplicationContext()).getString(tag, null);
         if (strJson == null) {
             return models;
         }
@@ -464,7 +464,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         collapsingToolbarLayout.setCollapsedTitleTextColor(Color.BLACK);
 
         mRecyclerView = (RecyclerView) mView2.findViewById(R.id.recycleview);
-        if (getDataFromList("moreCity") == null || mMoreCityModels.size() <= 0) {
+        if (mMoreCityModels.size()<=0||getDataFromList("moreCity")==null) {
             mHandler.sendEmptyMessage(MORECITY_ISNULL);
             recyclerAdapter = new RecyclerAdapter(mMoreCityModels);
         } else {
