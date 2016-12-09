@@ -29,16 +29,7 @@
             android:text="City"
             android:textSize="20sp"/>
 
-        <TextView
-            android:id="@+id/item_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_marginRight="20dp"
-            android:text="Temp"
-            android:textSize="40sp"/>
+
 
         <TextView
             android:id="@+id/item_weather"
@@ -50,6 +41,61 @@
             android:layout_marginLeft="10dp"
             android:text="weather"
             android:textSize="30sp"/>
+
+        <LinearLayout
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:id="@+id/item_maxmin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/up"/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/id_max"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="max"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/down"/>
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/id_min"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="min"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:layout_toLeftOf="@id/item_maxmin"
+            android:id="@+id/item_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_margin="10dp"
+            android:layout_marginRight="20dp"
+            android:text="Temp"
+            android:textSize="40sp"/>
     </RelativeLayout>
 
 

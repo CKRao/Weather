@@ -61,7 +61,7 @@
             android:layout_height="4dp"
             app:tabIndicatorHeight="4dp"
             app:tabIndicatorColor="#FA3D3D"/>
-        <android.support.v4.view.ViewPager
+        <com.example.ckrao.myapplication.MyViewPager
             android:layout_below="@id/tabs"
             android:id="@+id/view_pager"
             android:layout_width="match_parent"

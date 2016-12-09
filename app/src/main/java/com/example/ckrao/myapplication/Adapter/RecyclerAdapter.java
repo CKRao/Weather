@@ -46,6 +46,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         holder.city.setText(dataList.get(position).getCity());
         holder.temp.setText(dataList.get(position).getTemp() + "℃");
         holder.weather.setText(dataList.get(position).getWeather());
+        holder.max.setText(dataList.get(position).getMax()+"º");
+        holder.min.setText(dataList.get(position).getMin()+"º");
     }
 
     @Override
@@ -68,6 +70,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         TextView city;
         TextView temp;
         TextView weather;
+        TextView max;
+        TextView min;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -76,6 +80,8 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             city = (TextView) itemView.findViewById(R.id.item_city);
             temp = (TextView) itemView.findViewById(R.id.item_temp);
             weather = (TextView) itemView.findViewById(R.id.item_weather);
+            max = (TextView) itemView.findViewById(R.id.id_max);
+            min = (TextView) itemView.findViewById(R.id.id_min);
             itemView.setOnLongClickListener(this);
         }
 

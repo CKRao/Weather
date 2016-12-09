@@ -4,508 +4,705 @@
               android:id="@+id/show_layout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-             android:orientation="vertical">
+              android:orientation="vertical">
+
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scrollbars="none"
-       >
-
-        <LinearLayout
-            android:id="@+id/main_layout"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
+            android:scrollbars="none"
             >
-    <android.support.v7.widget.CardView
-        android:id="@+id/Card_view"
-        android:layout_width="match_parent"
-        android:layout_height="160dp"
-        android:animateLayoutChanges="true"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="5dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <RelativeLayout
-                android:id="@+id/id_layout"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:animateLayoutChanges="true"
-                android:padding="10dp">
-
-                <TextView
-                    android:id="@+id/week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:text="Week"
-                    android:textColor="#000"
-                    android:textSize="25sp"/>
-
-                <TextView
-                    android:id="@+id/temp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:text="30°"
-                    android:textColor="#000"
-                    android:textSize="55sp"/>
-
-                <TextView
-                    android:id="@+id/weather"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/week"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginStart="11dp"
-                    android:layout_marginTop="20dp"
-                    android:text="weather"
-                    android:textColor="#000"
-                    android:textSize="30sp"/>
-            </RelativeLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:id="@+id/main_layout"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#FA3D3D"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                >
 
-                <LinearLayout
+                <android.support.v7.widget.CardView
+                    android:id="@+id/Card_view"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    >
+                    android:layout_height="160dp"
+                    android:animateLayoutChanges="true"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="5dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:padding="5dp"
-                        android:src="@drawable/rainfall"/>
-
-                    <TextView
-                        android:id="@+id/rainfall"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:gravity="center"
-                        android:text="降雨量"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                        android:orientation="horizontal">
 
-                <LinearLayout
+                        <RelativeLayout
+                            android:id="@+id/id_layout"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="2"
+                            android:animateLayoutChanges="true"
+                            android:padding="10dp">
+
+                            <TextView
+                                android:id="@+id/week"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:paddingTop="10dp"
+                                android:text="Week"
+                                android:textSize="25sp"/>
+
+                            <TextView
+                                android:id="@+id/temp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:text="30°"
+                                android:textColor="#000"
+                                android:textSize="55sp"/>
+
+                            <TextView
+                                android:id="@+id/weather"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_below="@+id/week"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="11dp"
+                                android:layout_marginTop="20dp"
+                                android:text="weather"
+                                android:textSize="30sp"/>
+                        </RelativeLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="#FA3D3D"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                >
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:padding="5dp"
+                                    android:src="@drawable/rainfall"/>
+
+                                <TextView
+                                    android:id="@+id/rainfall"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="center"
+                                    android:text="降雨量"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                >
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:padding="5dp"
+                                    android:src="@drawable/humidity"/>
+
+                                <TextView
+                                    android:id="@+id/humidity"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="center"
+                                    android:text="湿度"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:orientation="horizontal"
+                                >
+
+                                <ImageView
+                                    android:layout_width="40dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:layout_marginLeft="5dp"
+                                    android:padding="5dp"
+                                    android:src="@drawable/winddirection"/>
+
+                                <TextView
+                                    android:id="@+id/winddirection"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="km/h"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/Card_view1"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
-                    >
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="5dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:padding="5dp"
-                        android:src="@drawable/humidity"/>
-
-                    <TextView
-                        android:id="@+id/humidity"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:gravity="center"
-                        android:text="湿度"
-                        android:textSize="20sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                        android:orientation="vertical">
 
-                <LinearLayout
+                        <LinearLayout
+                            android:padding="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:layout_marginLeft="10dp"
+                                android:background="@color/colorPrimary"
+                                android:layout_width="3dp"
+                                android:layout_height="match_parent"/>
+                            <TextView
+                                android:textColor="@color/colorPrimary"
+                                android:layout_marginLeft="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="未来天气"
+                                android:textSize="20sp"/>
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow01"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <TextView
+                                android:id="@+id/week_01"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:layout_toRightOf="@id/id_tomorrow01"
+                                android:text="今天"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_01"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_01"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow02"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <TextView
+                                android:id="@+id/week_02"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:layout_toRightOf="@id/id_tomorrow02"
+                                android:text="明天"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_02"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_02"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow03"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_03"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_03"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+
+                            <TextView
+                                android:id="@+id/week_03"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/temp_03"
+                                android:layout_marginLeft="9dp"
+                                android:layout_marginStart="9dp"
+                                android:layout_toEndOf="@+id/id_tomorrow03"
+                                android:layout_toRightOf="@+id/id_tomorrow03"
+                                android:text="后天"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow04"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <TextView
+                                android:id="@+id/week_04"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:layout_toRightOf="@id/id_tomorrow04"
+                                android:text="None"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_04"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_04"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow05"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <TextView
+                                android:id="@+id/week_05"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:layout_toRightOf="@id/id_tomorrow05"
+                                android:text="None"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_05"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_05"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow06"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <TextView
+                                android:id="@+id/week_06"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:layout_toRightOf="@id/id_tomorrow06"
+                                android:text="Nome"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_06"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_06"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="60dp">
+
+                            <ImageView
+                                android:id="@+id/id_tomorrow07"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
+                                android:padding="10dp"
+                                android:src="@drawable/mytemp"/>
+
+                            <TextView
+                                android:id="@+id/week_07"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:layout_toRightOf="@id/id_tomorrow07"
+                                android:text="None"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/id_wea_07"
+                                android:layout_width="40dp"
+                                android:layout_height="match_parent"
+                                android:layout_centerInParent="true"
+                                android:layout_margin="10dp"
+                                android:src="@drawable/img999"
+                                android:textColor="#000"
+                                android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_07"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textColor="#000"
+                                android:textSize="23sp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/Card_view2"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    app:cardBackgroundColor="#fff"
+                    app:cardCornerRadius="4dp"
+                    app:cardElevation="5dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true"
                     >
 
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="5dp"
-                        android:padding="5dp"
-                        android:src="@drawable/winddirection"/>
 
-                    <TextView
-                        android:id="@+id/winddirection"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="km/h"
-                        android:textSize="18sp"
-                        android:textStyle="bold"/>
-                </LinearLayout>
+                        android:orientation="vertical"
+                        android:padding="10dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <ImageView
+                                android:background="@color/colorPrimary"
+                                android:layout_width="3dp"
+                                android:layout_height="match_parent"/>
+                            <TextView
+                                android:textColor="@color/colorPrimary"
+                                android:layout_marginLeft="5dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:padding="5dp"
+                                android:text="生活指数"
+                                android:textSize="20sp"/>
+                        </LinearLayout>
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp">
+
+                            <ImageView
+                                android:id="@+id/id_cloth"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/cloth"/>
+
+                            <TextView
+                                android:id="@+id/id_cloth_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_cloth"
+                                android:text="穿衣指数"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <TextView
+                                android:id="@+id/id_cloth_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_cloth_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_cloth"
+                                android:maxLines="3"
+                                android:textSize="13sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp">
+
+                            <ImageView
+                                android:id="@+id/id_sport"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/sport"/>
+
+
+
+
+                            <TextView
+                                android:id="@+id/id_sport_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@+id/id_sport_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignStart="@+id/id_sport_content"
+                                android:text="运动指数"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+                            <TextView
+                                android:id="@+id/id_sport_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_sport_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_sport"
+                                android:maxLines="3"
+                                android:textSize="14sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp">
+
+                            <ImageView
+                                android:id="@+id/id_ultraviolet_radiation"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/ultraviolet_radiation"/>
+
+                            <TextView
+                                android:id="@+id/id_ultraviolet_radiation_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_ultraviolet_radiation"
+                                android:text="紫外线指数"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <TextView
+                                android:id="@+id/id_ultraviolet_radiation_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_ultraviolet_radiation_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_ultraviolet_radiation"
+                                android:maxLines="3"
+                                android:textSize="13sp"/>
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp">
+
+                            <ImageView
+                                android:id="@+id/id_air_conditioning"
+                                android:layout_width="40dp"
+                                android:layout_height="40dp"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="20dp"
+                                android:src="@drawable/getcold1"/>
+
+                            <TextView
+                                android:id="@+id/id_air_conditioning_tx"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_air_conditioning"
+                                android:text="感冒指数"
+                                android:textColor="#000"
+                                android:textSize="18sp"/>
+
+                            <TextView
+                                android:id="@+id/id_air_conditioning_content"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/id_air_conditioning_tx"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="20dp"
+                                android:layout_toRightOf="@id/id_air_conditioning"
+                                android:maxLines="3"
+                                android:textSize="13sp"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/Card_view1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="5dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
-
-                <ImageView
-                    android:id="@+id/id_tomorrow01"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:src="@drawable/mytemp"/>
-
-                <TextView
-                    android:id="@+id/week_01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:layout_toRightOf="@id/id_tomorrow01"
-                    android:text="今天"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-
-                <ImageView
-                    android:id="@+id/id_wea_01"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/img999"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:id="@+id/temp_01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:text="temp1～temp2"
-                    android:textColor="#000"
-                    android:textSize="23sp"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
-
-                <ImageView
-                    android:id="@+id/id_tomorrow02"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:src="@drawable/mytemp"/>
-
-                <TextView
-                    android:id="@+id/week_02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:layout_toRightOf="@id/id_tomorrow02"
-                    android:text="明天"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-
-                <ImageView
-                    android:id="@+id/id_wea_02"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/img999"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:id="@+id/temp_02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:text="temp1～temp2"
-                    android:textColor="#000"
-                    android:textSize="23sp"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="60dp">
-
-                <ImageView
-                    android:id="@+id/id_tomorrow03"
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:padding="10dp"
-                    android:src="@drawable/mytemp"/>
-
-                <ImageView
-                    android:id="@+id/id_wea_03"
-                    android:layout_width="40dp"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_margin="10dp"
-                    android:src="@drawable/img999"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-
-                <TextView
-                    android:id="@+id/temp_03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="10dp"
-                    android:text="temp1～temp2"
-                    android:textColor="#000"
-                    android:textSize="23sp"/>
-
-                <TextView
-                    android:id="@+id/week_03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@+id/temp_03"
-                    android:layout_marginLeft="9dp"
-                    android:layout_marginStart="9dp"
-                    android:layout_toEndOf="@+id/id_tomorrow03"
-                    android:layout_toRightOf="@+id/id_tomorrow03"
-                    android:text="后天"
-                    android:textColor="#000"
-                    android:textSize="20sp"/>
-            </RelativeLayout>
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/Card_view2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:foreground="?android:attr/selectableItemBackground"
-        app:cardBackgroundColor="#fff"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="5dp"
-        app:cardPreventCornerOverlap="true"
-        app:cardUseCompatPadding="true"
-        >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="10dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp">
-
-                <ImageView
-                    android:id="@+id/id_cloth"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/cloth"/>
-
-                <TextView
-                    android:id="@+id/id_cloth_tx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_cloth"
-                    android:text="穿衣指数"
-                    android:textColor="#000"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/id_cloth_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/id_cloth_tx"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_cloth"
-                    android:maxLines="3"
-                    android:text=""
-                    android:textColor="#000"
-                    android:textSize="13sp"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp">
-
-                <ImageView
-                    android:id="@+id/id_sport"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/sport"/>
-
-                <TextView
-                    android:id="@+id/id_sport_tx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20sp"
-                    android:layout_toRightOf="@id/id_sport"
-                    android:text="运动指数"
-                    android:textColor="#000"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/id_sport_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/id_sport_tx"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_sport"
-                    android:maxLines="3"
-                    android:text=""
-                    android:textColor="#000"
-                    android:textSize="14sp"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp">
-
-                <ImageView
-                    android:id="@+id/id_ultraviolet_radiation"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/ultraviolet_radiation"/>
-
-                <TextView
-                    android:id="@+id/id_ultraviolet_radiation_tx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_ultraviolet_radiation"
-                    android:text="紫外线指数"
-                    android:textColor="#000"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/id_ultraviolet_radiation_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/id_ultraviolet_radiation_tx"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_ultraviolet_radiation"
-                    android:maxLines="3"
-                    android:text=""
-                    android:textColor="#000"
-                    android:textSize="13sp"/>
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="80dp">
-
-                <ImageView
-                    android:id="@+id/id_air_conditioning"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_centerVertical="true"
-                    android:layout_margin="20dp"
-                    android:src="@drawable/getcold1"/>
-
-                <TextView
-                    android:id="@+id/id_air_conditioning_tx"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_air_conditioning"
-                    android:text="感冒指数"
-                    android:textColor="#000"
-                    android:textSize="18sp"/>
-
-                <TextView
-                    android:id="@+id/id_air_conditioning_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/id_air_conditioning_tx"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toRightOf="@id/id_air_conditioning"
-                    android:maxLines="3"
-                    android:text=""
-                    android:textColor="#000"
-                    android:textSize="13sp"/>
-            </RelativeLayout>
-        </LinearLayout>
-    </android.support.v7.widget.CardView></LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </android.support.v4.widget.SwipeRefreshLayout>
-    <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/id_float_bt"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginRight="12dp"-->
-        <!--android:clickable="true"-->
-        <!--android:src="@drawable/refresh"-->
-        <!--app:backgroundTint="#03A9CB"-->
-        <!--app:elevation="5dp"-->
-        <!--app:layout_anchor="@id/main_layout"-->
-        <!--app:layout_anchorGravity="bottom|right|end"-->
-        <!--app:layout_behavior="com.example.ckrao.myapplication.ScrollAwareFABBehavior"/>-->
 </LinearLayout>
