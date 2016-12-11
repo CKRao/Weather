@@ -11,15 +11,16 @@
     app:cardElevation="4dp">
 
     <RelativeLayout
+        android:id="@+id/item_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/item_img"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            />
+        <!--<ImageView-->
+            <!--android:id="@+id/item_img"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:scaleType="fitXY"-->
+            <!--/>-->
 
         <TextView
             android:id="@+id/item_city"

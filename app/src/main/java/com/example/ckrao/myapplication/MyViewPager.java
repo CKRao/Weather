@@ -10,7 +10,7 @@ import android.view.MotionEvent;
  */
 
 public class MyViewPager extends ViewPager {
-    private float preX = 0;
+    private float preY = 0;
 
     public MyViewPager(Context context) {
         super(context);
@@ -23,12 +23,12 @@ public class MyViewPager extends ViewPager {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            preX = (int) ev.getX();
+            preY = (int) ev.getY();
         } else {
-            if (Math.abs((int) ev.getX() - preX) > 10) {
-                return true;
+            if (Math.abs((int) ev.getY() - preY) > 10) {
+                return false;
             } else {
-                preX = (int) ev.getX();
+                preY = (int) ev.getY();
             }
         }
         return super.onInterceptTouchEvent(ev);

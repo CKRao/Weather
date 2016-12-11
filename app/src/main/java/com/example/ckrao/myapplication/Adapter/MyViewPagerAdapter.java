@@ -13,6 +13,7 @@ import java.util.List;
 
 public class MyViewPagerAdapter extends PagerAdapter {
     private List<View> mViews;
+    private String[] mTitles = {"主界面", "多城市"};
 
     public MyViewPagerAdapter(List<View> viewList) {
         mViews = viewList;

@@ -37,11 +37,11 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         if (dataList.get(position).getWeather().indexOf("雨") != -1) {
-            holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_rainy);
+            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_rainy);
         } else if (dataList.get(position).getWeather().indexOf("晴") != -1) {
-            holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_sunny);
+            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_sunny);
         } else {
-            holder.mImageView.setBackgroundResource(R.drawable.dialog_bg_cloudy);
+            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_cloudy);
         }
         holder.city.setText(dataList.get(position).getCity());
         holder.temp.setText(dataList.get(position).getTemp() + "℃");
@@ -66,7 +66,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder implements  View.OnLongClickListener {
-        ImageView mImageView;
+       RelativeLayout mLayout;
         TextView city;
         TextView temp;
         TextView weather;
@@ -76,7 +76,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
         public MyViewHolder(View itemView) {
             super(itemView);
 
-            mImageView = (ImageView) itemView.findViewById(R.id.item_img);
+            mLayout = (RelativeLayout) itemView.findViewById(R.id.item_layout);
             city = (TextView) itemView.findViewById(R.id.item_city);
             temp = (TextView) itemView.findViewById(R.id.item_temp);
             weather = (TextView) itemView.findViewById(R.id.item_weather);

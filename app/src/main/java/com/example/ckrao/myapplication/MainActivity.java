@@ -311,6 +311,30 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 alertDialog.show();
             }
         });
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if (mViewPager.getCurrentItem() == 0){
+                            mTableLayout.getTabAt(0).setIcon(R.drawable.home1);
+                            mTableLayout.getTabAt(1).setIcon(R.drawable.morecity);
+                    }  else {
+                    mTableLayout.getTabAt(0).setIcon(R.drawable.home2);
+                    mTableLayout.getTabAt(1).setIcon(R.drawable.morecity1);
+                }
+                }
+
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     public void setDataForList(String tag, List<MoreCityModel> modelList) {
@@ -438,8 +462,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mViewList.add(mView2);
 
         mTableLayout.setTabMode(TabLayout.MODE_FIXED);
-        mTableLayout.addTab(mTableLayout.newTab().setText(""));
-        mTableLayout.addTab(mTableLayout.newTab().setText(""));
+        mTableLayout.addTab(mTableLayout.newTab());
+        mTableLayout.addTab(mTableLayout.newTab());
+
 
         tip = (TextView) mView2.findViewById(R.id.id_tip);
         isnotadd = (ImageView) mView2.findViewById(R.id.view2_notyetadd);
@@ -473,12 +498,10 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         temp_06 = (TextView) mView1.findViewById(R.id.temp_06);
         temp_07 = (TextView) mView1.findViewById(R.id.temp_07);
 
-
         week_04 = (TextView) mView1.findViewById(R.id.week_04);
         week_05 = (TextView) mView1.findViewById(R.id.week_05);
         week_06 = (TextView) mView1.findViewById(R.id.week_06);
         week_07 = (TextView) mView1.findViewById(R.id.week_07);
-
 
         mRainfall = (TextView) mView1.findViewById(R.id.rainfall);
         mHumidity = (TextView) mView1.findViewById(R.id.humidity);
@@ -511,6 +534,8 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         mViewPager.setAdapter(viewPagerAdapter);
         mTableLayout.setupWithViewPager(mViewPager);
         mTableLayout.setTabsFromPagerAdapter(viewPagerAdapter);
+        mTableLayout.getTabAt(0).setIcon(R.drawable.home1);
+        mTableLayout.getTabAt(1).setIcon(R.drawable.morecity);
 
     }
 
