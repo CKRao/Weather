@@ -7,8 +7,8 @@
     android:layout_margin="5dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="2dp"
+    app:cardElevation="2dp">
 
     <RelativeLayout
         android:id="@+id/item_layout"
@@ -32,21 +32,30 @@
 
 
 
-        <TextView
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:id="@+id/item_weather"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_margin="10dp"
             android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:id="@+id/item_temp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
-            android:text="weather"
-            android:textSize="30sp"/>
+            android:layout_marginRight="10dp"
+            android:text="Temp"
+            android:textSize="40sp"/>
 
         <LinearLayout
-            android:layout_marginRight="10dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/item_temp"
+            android:layout_alignParentBottom="true"
             android:orientation="vertical"
             android:id="@+id/item_maxmin"
             android:layout_width="wrap_content"
@@ -87,16 +96,7 @@
                     android:textSize="13sp"/>
             </LinearLayout>
         </LinearLayout>
-        <TextView
-            android:layout_toLeftOf="@id/item_maxmin"
-            android:id="@+id/item_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_margin="10dp"
-            android:layout_marginRight="20dp"
-            android:text="Temp"
-            android:textSize="40sp"/>
+
     </RelativeLayout>
 
 

@@ -193,22 +193,24 @@
                         android:orientation="vertical">
 
                         <LinearLayout
-                            android:padding="5dp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:padding="5dp">
+
                             <ImageView
-                                android:layout_marginLeft="10dp"
-                                android:background="@color/colorPrimary"
                                 android:layout_width="3dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="10dp"
+                                android:background="#1296db"/>
+
                             <TextView
-                                android:textColor="@color/colorPrimary"
-                                android:layout_marginLeft="5dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
                                 android:padding="5dp"
                                 android:text="未来天气"
+                                android:textColor="#1296db"
                                 android:textSize="20sp"/>
                         </LinearLayout>
 
@@ -231,7 +233,6 @@
                                 android:layout_margin="10dp"
                                 android:layout_toRightOf="@id/id_tomorrow01"
                                 android:text="今天"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <ImageView
@@ -252,7 +253,6 @@
                                 android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
-                                android:textColor="#000"
                                 android:textSize="23sp"/>
                         </RelativeLayout>
 
@@ -275,7 +275,6 @@
                                 android:layout_margin="10dp"
                                 android:layout_toRightOf="@id/id_tomorrow02"
                                 android:text="明天"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <ImageView
@@ -285,7 +284,6 @@
                                 android:layout_centerInParent="true"
                                 android:layout_margin="10dp"
                                 android:src="@drawable/img999"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <TextView
@@ -296,7 +294,6 @@
                                 android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
-                                android:textColor="#000"
                                 android:textSize="23sp"/>
                         </RelativeLayout>
 
@@ -322,17 +319,6 @@
                                 android:textSize="20sp"/>
 
                             <TextView
-                                android:id="@+id/temp_03"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
-                                android:text="temp1～temp2"
-                                android:textColor="#000"
-                                android:textSize="23sp"/>
-
-                            <TextView
                                 android:id="@+id/week_03"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -342,8 +328,17 @@
                                 android:layout_toEndOf="@+id/id_tomorrow03"
                                 android:layout_toRightOf="@+id/id_tomorrow03"
                                 android:text="后天"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
+
+                            <TextView
+                                android:id="@+id/temp_03"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:layout_margin="10dp"
+                                android:text="temp1～temp2"
+                                android:textSize="23sp"/>
                         </RelativeLayout>
 
                         <RelativeLayout
@@ -365,7 +360,6 @@
                                 android:layout_margin="10dp"
                                 android:layout_toRightOf="@id/id_tomorrow04"
                                 android:text="None"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <ImageView
@@ -386,7 +380,6 @@
                                 android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
-                                android:textColor="#000"
                                 android:textSize="23sp"/>
                         </RelativeLayout>
 
@@ -409,7 +402,6 @@
                                 android:layout_margin="10dp"
                                 android:layout_toRightOf="@id/id_tomorrow05"
                                 android:text="None"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <ImageView
@@ -419,7 +411,6 @@
                                 android:layout_centerInParent="true"
                                 android:layout_margin="10dp"
                                 android:src="@drawable/img999"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <TextView
@@ -430,7 +421,6 @@
                                 android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
-                                android:textColor="#000"
                                 android:textSize="23sp"/>
                         </RelativeLayout>
 
@@ -453,7 +443,6 @@
                                 android:layout_margin="10dp"
                                 android:layout_toRightOf="@id/id_tomorrow06"
                                 android:text="Nome"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <ImageView
@@ -463,7 +452,6 @@
                                 android:layout_centerInParent="true"
                                 android:layout_margin="10dp"
                                 android:src="@drawable/img999"
-                                android:textColor="#000"
                                 android:textSize="20sp"/>
 
                             <TextView
@@ -474,53 +462,10 @@
                                 android:layout_centerVertical="true"
                                 android:layout_margin="10dp"
                                 android:text="temp1～temp2"
-                                android:textColor="#000"
                                 android:textSize="23sp"/>
                         </RelativeLayout>
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="60dp">
 
-                            <ImageView
-                                android:id="@+id/id_tomorrow07"
-                                android:layout_width="60dp"
-                                android:layout_height="match_parent"
-                                android:padding="10dp"
-                                android:src="@drawable/mytemp"/>
-
-                            <TextView
-                                android:id="@+id/week_07"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
-                                android:layout_toRightOf="@id/id_tomorrow07"
-                                android:text="None"
-                                android:textColor="#000"
-                                android:textSize="20sp"/>
-
-                            <ImageView
-                                android:id="@+id/id_wea_07"
-                                android:layout_width="40dp"
-                                android:layout_height="match_parent"
-                                android:layout_centerInParent="true"
-                                android:layout_margin="10dp"
-                                android:src="@drawable/img999"
-                                android:textColor="#000"
-                                android:textSize="20sp"/>
-
-                            <TextView
-                                android:id="@+id/temp_07"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_margin="10dp"
-                                android:text="temp1～temp2"
-                                android:textColor="#000"
-                                android:textSize="23sp"/>
-                        </RelativeLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 
@@ -548,19 +493,23 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">
+
                             <ImageView
-                                android:background="@color/colorPrimary"
+                                android:id="@+id/imageView"
                                 android:layout_width="3dp"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                                android:background="#1296db"/>
+
                             <TextView
-                                android:textColor="@color/colorPrimary"
-                                android:layout_marginLeft="5dp"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
                                 android:padding="5dp"
                                 android:text="生活指数"
+                                android:textColor="#1296db"
                                 android:textSize="20sp"/>
                         </LinearLayout>
+
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="80dp">
@@ -609,8 +558,6 @@
                                 android:src="@drawable/sport"/>
 
 
-
-
                             <TextView
                                 android:id="@+id/id_sport_tx"
                                 android:layout_width="wrap_content"
@@ -621,6 +568,7 @@
                                 android:text="运动指数"
                                 android:textColor="#000"
                                 android:textSize="18sp"/>
+
                             <TextView
                                 android:id="@+id/id_sport_content"
                                 android:layout_width="wrap_content"

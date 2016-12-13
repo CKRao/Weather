@@ -42,6 +42,6 @@ public class MyViewPagerAdapter extends PagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "";
+        return mTitles[position];
     }
 }

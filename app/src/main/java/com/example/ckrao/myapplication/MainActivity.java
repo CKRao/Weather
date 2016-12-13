@@ -87,18 +87,15 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private ImageView img_04;
     private ImageView img_05;
     private ImageView img_06;
-    private ImageView img_07;
     private TextView temp_01;
     private TextView temp_02;
     private TextView temp_03;
     private TextView temp_04;
     private TextView temp_05;
     private TextView temp_06;
-    private TextView temp_07;
     private TextView week_04;
     private TextView week_05;
     private TextView week_06;
-    private TextView week_07;
     private TextView mSport_tx;
     private TextView mSport_content;
     private TextView tip;
@@ -135,6 +132,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private static final int MORECITY_ISEXIT = 105;
     private static final int START_SEARCH = 106;
     private static final int START_MORECITY = 107;
+    private static final int REFRESH_LOCALCITY= 108;
     private boolean isExit = false;
     private RecyclerView mRecyclerView;
     private long exitTime = 0;
@@ -182,6 +180,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     Intent intent = new Intent(MainActivity.this, SelectActivity.class);
                     intent.putExtra("From", data);
                     startActivityForResult(intent, 0);
+                    break;
+                case REFRESH_LOCALCITY:
+                    mSwipeRefreshLayout.setRefreshing(false);
                     break;
                 default:
                     CurrentWeatherBean bean = (CurrentWeatherBean) msg.obj;
@@ -422,7 +423,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                         mMoreCityModels.get(finalI).setCity(bean.getHeWeather5().get(0).getBasic().getCity());
                         mMoreCityModels.get(finalI).setTemp(bean.getHeWeather5().get(0).getNow().getTmp());
-                        mMoreCityModels.get(finalI).setWeather(bean.getHeWeather5().get(0).getNow().getCond().getTxt());
+                        mMoreCityModels.get(finalI).setWeather(getResource("img" + bean.getHeWeather5().get(0).getDaily_forecast().get(0).getCond().getCode_d()));
                         mMoreCityModels.get(finalI).setMax(bean.getHeWeather5().get(0).getDaily_forecast().get(0).getTmp().getMax());
                         mMoreCityModels.get(finalI).setMin(bean.getHeWeather5().get(0).getDaily_forecast().get(0).getTmp().getMin());
                         setDataForList("moreCity", mMoreCityModels);
@@ -488,7 +489,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         img_04 = (ImageView) mView1.findViewById(R.id.id_wea_04);
         img_05 = (ImageView) mView1.findViewById(R.id.id_wea_05);
         img_06 = (ImageView) mView1.findViewById(R.id.id_wea_06);
-        img_07 = (ImageView) mView1.findViewById(R.id.id_wea_07);
+
 
         temp_01 = (TextView) mView1.findViewById(R.id.temp_01);
         temp_02 = (TextView) mView1.findViewById(R.id.temp_02);
@@ -496,12 +497,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         temp_04 = (TextView) mView1.findViewById(R.id.temp_04);
         temp_05 = (TextView) mView1.findViewById(R.id.temp_05);
         temp_06 = (TextView) mView1.findViewById(R.id.temp_06);
-        temp_07 = (TextView) mView1.findViewById(R.id.temp_07);
+
 
         week_04 = (TextView) mView1.findViewById(R.id.week_04);
         week_05 = (TextView) mView1.findViewById(R.id.week_05);
         week_06 = (TextView) mView1.findViewById(R.id.week_06);
-        week_07 = (TextView) mView1.findViewById(R.id.week_07);
+
 
         mRainfall = (TextView) mView1.findViewById(R.id.rainfall);
         mHumidity = (TextView) mView1.findViewById(R.id.humidity);
@@ -570,25 +571,25 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         img_04.setImageResource(getResource(bean.getImg_04()));
         img_05.setImageResource(getResource(bean.getImg_05()));
         img_06.setImageResource(getResource(bean.getImg_06()));
-        img_07.setImageResource(getResource(bean.getImg_07()));
+
         temp_01.setText(bean.getTemp_01());
         temp_02.setText(bean.getTemp_02());
         temp_03.setText(bean.getTemp_03());
         temp_04.setText(bean.getTemp_04());
         temp_05.setText(bean.getTemp_05());
         temp_06.setText(bean.getTemp_06());
-        temp_07.setText(bean.getTemp_07());
+
         week_04.setText(bean.getWeek_04());
         week_05.setText(bean.getWeek_05());
         week_06.setText(bean.getWeek_06());
-        week_07.setText(bean.getWeek_07());
+
         mRainfall.setText(bean.getRainfall() + "%");
         mHumidity.setText(bean.getHumidity() + "%");
         mWinddirection.setText(bean.getWinddirection());
     }
 
     //通过图片名获取资源ID
-    private int getResource(String img) {
+    public  int getResource(String img) {
         Context ctx = getApplicationContext();
         int resId = getResources().getIdentifier(img, "drawable", ctx.getPackageName());
         return resId;
@@ -647,18 +648,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         img_04.setImageResource(getResource(prefs.getString("img04", "img999")));
         img_05.setImageResource(getResource(prefs.getString("img05", "img999")));
         img_06.setImageResource(getResource(prefs.getString("img06", "img999")));
-        img_07.setImageResource(getResource(prefs.getString("img07", "img999")));
+
         temp_01.setText(prefs.getString("temp01", ""));
         temp_02.setText(prefs.getString("temp02", ""));
         temp_03.setText(prefs.getString("temp03", ""));
         temp_04.setText(prefs.getString("temp04", ""));
         temp_05.setText(prefs.getString("temp05", ""));
         temp_06.setText(prefs.getString("temp06", ""));
-        temp_07.setText(prefs.getString("temp07", ""));
+
         week_04.setText(prefs.getString("week04", ""));
         week_05.setText(prefs.getString("week05", ""));
         week_06.setText(prefs.getString("week06", ""));
-        week_07.setText(prefs.getString("week07", ""));
+
         mRainfall.setText(prefs.getString("rainfall", "降雨量") + "%");
         mHumidity.setText(prefs.getString("humidity", "湿度") + "%");
         mWinddirection.setText(prefs.getString("winddirection", "None"));
@@ -722,7 +723,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             switch (resultCode) {
                 case 0:
                     myCity = data.getStringExtra("city_name");
-
                     Snackbar.make(layout, myCity,
                             Snackbar.LENGTH_LONG).show();
                     try {
@@ -738,7 +738,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             try {
                                 Log.i("Rao", response);
                                 analysis(response);
-
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -798,7 +797,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         MoreCityModel moreCityModel = new MoreCityModel();
         moreCityModel.setCity(bean.getHeWeather5().get(0).getBasic().getCity());
         moreCityModel.setTemp(bean.getHeWeather5().get(0).getNow().getTmp());
-        moreCityModel.setWeather(bean.getHeWeather5().get(0).getNow().getCond().getTxt());
+        moreCityModel.setWeather(getResource("img" + bean.getHeWeather5().get(0).getDaily_forecast().get(0).getCond().getCode_d()));
         moreCityModel.setMax(bean.getHeWeather5().get(0).getDaily_forecast().get(0).getTmp().getMax());
         moreCityModel.setMin(bean.getHeWeather5().get(0).getDaily_forecast().get(0).getTmp().getMin());
         mMoreCityModels.add(moreCityModel);
@@ -911,6 +910,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         Message message = new Message();
         message.obj = bean1;
         mHandler.sendMessage(message);
+
     }
 
     @Override
@@ -954,6 +954,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
 
     private void setTheLocalCity(String city) {
+        mSwipeRefreshLayout.setRefreshing(true);
         Snackbar.make(layout, "当前城市：" + city,
                 Snackbar.LENGTH_LONG).show();
         try {
@@ -979,6 +980,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             }
         });
         mLocationClient.stop();
+        mHandler.sendEmptyMessageDelayed(REFRESH_LOCALCITY,2000);
     }
 
     @Override

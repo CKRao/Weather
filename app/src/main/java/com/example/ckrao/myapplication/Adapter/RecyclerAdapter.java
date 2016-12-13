@@ -1,5 +1,6 @@
 package com.example.ckrao.myapplication.Adapter;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.ckrao.myapplication.MainActivity;
 import com.example.ckrao.myapplication.Model.MoreCityModel;
 import com.example.ckrao.myapplication.R;
 
@@ -36,16 +38,17 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        if (dataList.get(position).getWeather().indexOf("雨") != -1) {
-            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_rainy);
-        } else if (dataList.get(position).getWeather().indexOf("晴") != -1) {
-            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_sunny);
-        } else {
-            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_cloudy);
-        }
+//        if (dataList.get(position).getWeather().indexOf("雨") != -1) {
+//            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_rainy);
+//        } else if (dataList.get(position).getWeather().indexOf("晴") != -1) {
+//            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_sunny);
+//        } else {
+//            holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_cloudy);
+//        }
+        holder.mLayout.setBackgroundResource(R.drawable.dialog_bg_rainy);
         holder.city.setText(dataList.get(position).getCity());
         holder.temp.setText(dataList.get(position).getTemp() + "℃");
-        holder.weather.setText(dataList.get(position).getWeather());
+        holder.weather.setImageResource(dataList.get(position).getWeather());
         holder.max.setText(dataList.get(position).getMax()+"º");
         holder.min.setText(dataList.get(position).getMin()+"º");
     }
@@ -54,7 +57,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
     public int getItemCount() {
         return dataList.size();
     }
-
 
 
     public interface RecyclerViewOnItemLongClickListener {
@@ -69,7 +71,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
        RelativeLayout mLayout;
         TextView city;
         TextView temp;
-        TextView weather;
+        ImageView weather;
         TextView max;
         TextView min;
 
@@ -79,7 +81,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.MyView
             mLayout = (RelativeLayout) itemView.findViewById(R.id.item_layout);
             city = (TextView) itemView.findViewById(R.id.item_city);
             temp = (TextView) itemView.findViewById(R.id.item_temp);
-            weather = (TextView) itemView.findViewById(R.id.item_weather);
+            weather = (ImageView) itemView.findViewById(R.id.item_weather);
             max = (TextView) itemView.findViewById(R.id.id_max);
             min = (TextView) itemView.findViewById(R.id.id_min);
             itemView.setOnLongClickListener(this);

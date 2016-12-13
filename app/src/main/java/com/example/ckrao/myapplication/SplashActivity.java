@@ -23,7 +23,7 @@ public class SplashActivity extends Activity {
                 finish();
         overridePendingTransition(R.anim.stand,R.anim.splash);
             }
-        },500);
+        },700);
 
     }
 }

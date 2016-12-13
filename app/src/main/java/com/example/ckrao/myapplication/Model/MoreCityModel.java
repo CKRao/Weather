@@ -7,7 +7,7 @@ package com.example.ckrao.myapplication.Model;
 public class MoreCityModel {
     private String city;
     private String temp;
-    private String weather;
+    private int weather;
     private String max,min;
 
     public String getMax() {
@@ -42,11 +42,11 @@ public class MoreCityModel {
         this.temp = temp;
     }
 
-    public String getWeather() {
+    public int getWeather() {
         return weather;
     }
 
-    public void setWeather(String weather) {
+    public void setWeather(int weather) {
         this.weather = weather;
     }
 }
