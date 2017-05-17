@@ -6,4 +6,5 @@
 ![image](https://github.com/CKRao/Weather/blob/master/title.jpg)
 ##Json数据是使用Gson解析的，使用GsonFormat实现Javabean。
 ### 城市信息是从存放在assets文件夹下的CityId.db文件中读取的。
+###在腾讯应用宝上架了 地址：http://sj.qq.com/myapp/detail.htm?apkName=com.example.ckrao.myapplication
 ###此项目未完善。。。
